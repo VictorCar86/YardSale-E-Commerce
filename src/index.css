@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+      font-family: 'Quicksand', sans-serif;
+  }
+}
+
+@layer components {
+  .grid-auto-fill {
+      grid-template-columns: repeat(auto-fill, 240px);
+  }
+  @media (max-width: 640px) {
+      .grid-auto-fill {
+          grid-template-columns: repeat(auto-fill, 140px);
+      }
+  }
+  .primary-button {
+      @apply flex justify-center items-center h-[50px] mt-4 mb-8 rounded-lg text-white font-bold cursor-pointer bg-hospital-green;
+  }
+  .secondary-button {
+      @apply flex justify-center items-center h-[50px] mt-4 mb-8 rounded-lg border-2 border-hospital-green text-hospital-green font-bold cursor-pointer bg-white;
+  }
+}
+
+/* @layer utilities {
+} */
