@@ -1,12 +1,15 @@
 import { useRef, useState } from "react";
 import { Toaster, toast } from "sonner";
-import { RiLoader4Fill } from "react-icons/ri";
-import LogoYardSale from "../assets/logos/logoYardSale";
-import FormError from "../components/FormError";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RiLoader4Fill } from "react-icons/ri";
+import fetchUser from "../utils/fetchUser";
+import FormError from "../components/FormError";
+import LogoYardSale from "../assets/logos/logoYardSale";
 
 const Signup = () => {
     const navigator = useNavigate();
+    const dispatcher = useDispatch();
 
     const initialFormErrors = {
         firstName: false,
@@ -31,48 +34,38 @@ const Signup = () => {
             password: formData.get('password_1'),
         };
 
-        const firstNameExist = taskPayload.firstName !== '';
-        const lastNameExist = taskPayload.lastName !== '';
-        const emailExist = taskPayload.email !== '';
-        const password_1Exist = taskPayload.password !== '';
-        const comparePasswords = taskPayload.password === formData.get('password_2');
+        const { firstName, lastName, email, password } = taskPayload;
+
+        const emptyFirstName = firstName === '';
+        const emptyLastName = lastName === '';
+        const emptyEmail = email === '';
+        const emptyPassword = password === '';
+        const comparePasswords = password !== formData.get('password_2');
 
         setFormError({
-            firstName: !firstNameExist,
-            lastName: !lastNameExist,
-            email: !emailExist,
-            password_1: !password_1Exist,
-            password_2: !comparePasswords,
+            firstName: emptyFirstName,
+            lastName: emptyLastName,
+            email: emptyEmail,
+            password_1: emptyPassword,
+            password_2: comparePasswords,
         });
 
-        if (!firstNameExist || !lastNameExist || !emailExist || !password_1Exist || !comparePasswords) {
+        if (emptyFirstName || emptyLastName || emptyEmail || emptyPassword || comparePasswords) {
             return;
         }
 
         setLoader(true);
 
-        const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-        const options = {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ user: taskPayload }),
+        const fetchConfig = {
+            body: { user: taskPayload },
+            onSuccess: () => navigator('/'),
+            onError: (err) => {
+                toast.error('Something went wrong 😳', { description: err });
+            },
+            finally: () => setLoader(false),
         };
 
-        try {
-            const response = await fetch(`${BACKEND_URL}/api/v1/customers`, options);
-            const jsonResponse = await response.json();
-
-            if (jsonResponse.error) throw jsonResponse.message;
-
-            navigator('/');
-        }
-        catch (err) {
-            toast.error('Something went wrong 😳', { description: err });
-        }
-        finally {
-            setLoader(false);
-        }
+        fetchUser.SIGNUP(fetchConfig, dispatcher);
     }
 
     function chechPassword(){

@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "sonner";
 import { RiLoader4Fill } from "react-icons/ri";
-import { fetchUser, userState } from "../context/sliceLogin";
+import { userState } from "../context/sliceUserState";
 import { Link, useNavigate } from "react-router-dom";
-import LogoYardSale from "../assets/logos/logoYardSale";
+import fetchUser from "../utils/fetchUser";
 import FormError from "../components/FormError";
+import LogoYardSale from "../assets/logos/logoYardSale";
 
 const Login = () => {
     const state = useSelector(userState);
@@ -18,8 +19,8 @@ const Login = () => {
         }
     }, [navigator, state.token]);
 
-    const [loader, setLoader] = useState(false);
     const [formMistakes, setFormMistakes] = useState({ email: false, password: false });
+    const [loader, setLoader] = useState(false);
 
     const formRef = useRef(null);
 
@@ -51,7 +52,7 @@ const Login = () => {
             finally: () => setLoader(false),
         };
 
-        fetchUser.POST(fetchConfig, dispatcher);
+        fetchUser.LOGIN(fetchConfig, dispatcher);
     }
 
     return (
@@ -90,15 +91,20 @@ const Login = () => {
                     <FormError text="Please introduce a valid password"/>
                 )}
 
-                <button type="submit" className="primary-button" onClick={sendUserInfo}>
+                <button
+                    type="submit"
+                    className="primary-button"
+                    disabled={loader}
+                    onClick={sendUserInfo}
+                >
                     {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Log in"}
                 </button>
 
-                <a href="#" className="mb-12 text-sm text-hospital-green text-center">
+                <Link to={'/recovery'} className="w-max mx-auto mb-12 text-sm text-hospital-green text-center">
                     Forgot my password
-                </a>
+                </Link>
 
-                <Link className="secondary-button" to={'/signup'}>
+                <Link to={'/signup'} className="secondary-button">
                     Sign up
                 </Link>
             </section>
