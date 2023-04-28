@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import navbarIcon from '../assets/iconos/icon_menu.svg'
+import navbarIcon from '../assets/icons/icon_menu.svg'
 import mainLogo from '../assets/logos/logo_yard_sale.svg'
-import shoppingCartIcon from '../assets/iconos/icon_shopping_cart.svg'
+import shoppingCartIcon from '../assets/icons/icon_shopping_cart.svg'
 import AccountMenu from './AccountMenu'
 import ShoppingCartModal from './ShoppingCartModal'
 

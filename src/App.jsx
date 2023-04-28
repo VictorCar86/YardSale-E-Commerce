@@ -7,7 +7,8 @@ import MainPage from './routes/MainPage';
 import Error404 from './routes/Error404';
 import AccountMenu from './containers/AccountMenu';
 import ShoppingCartModal from './containers/ShoppingCartModal';
-import SuccessRecover from './routes/SuccessRecover';
+import Recovery from './routes/Recovery';
+// import SuccessRecover from './routes/SuccessRecover';
 import "./App.css";
 
 const App = () => {
@@ -19,7 +20,7 @@ const App = () => {
           <Route index element={<MainPage />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
-          <Route path='/recovery' element={<SuccessRecover />} />
+          <Route path='/recovery' element={<Recovery />} />
           <Route path='/account-menu' element={<AccountMenu />} />
           <Route path='/shopping-cart' element={<ShoppingCartModal />} />
           <Route path='*' element={<Error404 />}/>

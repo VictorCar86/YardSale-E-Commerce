@@ -1,5 +1,5 @@
-import MiniArrowIcon from "../assets/iconos/flechita.svg";
-import ItemShoppingCart from './ItemShoppingCart';
+import MiniArrowIcon from "../assets/icons/flechita.svg";
+// import ItemShoppingCart from './ItemShoppingCart';
 
 const ShoppingCartModal = () => {
     // const displayItems = () => {

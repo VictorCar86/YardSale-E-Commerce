@@ -1,4 +1,4 @@
-import addToCartIcon from '../assets/iconos/bt_add_to_cart.svg';
+import addToCartIcon from '../assets/icons/bt_add_to_cart.svg';
 
 const ProductItemDesc = ({ product = {} }) => {
     return (

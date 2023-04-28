@@ -3,34 +3,34 @@ import simpleLocalStorage from "../utils/simpleLocalStorage";
 
 const [value, setValueInLocalStorage] = simpleLocalStorage('yardsale_token');
 
-export const sliceLogin = createSlice({
-    name: 'login',
+export const sliceUserState = createSlice({
+    name: 'userState',
     initialState: {
         token: Boolean(value),
         fetching: false,
         error: false,
     },
     reducers: {
-        requestLogin: (state) => {
+        requestUser: (state) => {
             state.error = false;
             state.fetching = true;
         },
-        resultLogin: (state, action) => {
+        resultUserLogin: (state, action) => {
             const token = action.payload.token;
             setValueInLocalStorage(token);
             state.token = true;
             state.fetching = false;
         },
-        errorLogin: (state) => {
+        errorUser: (state) => {
             state.error = true;
             state.fetching = false;
         }
     }
 })
 
-export const loginState = (state) => state.sliceLogin;
-export const { requestLogin, resultLogin, errorLogin } = sliceLogin.actions;
-export default sliceLogin.reducer;
+export const userState = (state) => state.sliceUserState;
+export const { requestUser, resultUserLogin, errorUser } = sliceUserState.actions;
+export default sliceUserState.reducer;
 
 
 // Fetch Methods
@@ -45,20 +45,20 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 //     };
 
 //     try {
-//         dispatcher(requestLogin());
+//         dispatcher(requestUser());
 
 //         const response = await fetch(`${BACKEND_URL}/api/v1/login/goal/${goalId}`, options)
 //         const jsonResponse = await response.json();
 
-//         dispatcher(resultLogin(jsonResponse));
+//         dispatcher(resultUserLogin(jsonResponse));
 //     }
 //     catch (err) {
 //         console.error(err);
-//         dispatcher(errorLogin());
+//         dispatcher(errorUser());
 //     }
 // }
 
-async function POST(config, dispatch) {
+async function LOGIN(config, dispatch) {
     const options = {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -66,31 +66,48 @@ async function POST(config, dispatch) {
     };
 
     try {
-        dispatch(requestLogin);
+        dispatch(requestUser);
 
         const response = await fetch(`${BACKEND_URL}/api/v1/auth/login`, options);
         const jsonResponse = await response.json();
 
         if (jsonResponse.error) throw jsonResponse.message;
 
-        dispatch(resultLogin(jsonResponse));
+        dispatch(resultUserLogin(jsonResponse));
 
-        if (config.onSuccess){
-            config.onSuccess();
-        }
+        if (config.onSuccess) config.onSuccess();
     }
     catch (err) {
-        dispatch(errorLogin);
+        dispatch(errorUser);
 
-        if (config.onError){
-            config.onError(err);
-        }
+        if (config.onError) config.onError(err);
     }
     finally {
-        if (config.finally){
-            config.finally();
-        }
+        if (config.finally) config.finally();
     }
 }
 
-export const fetchLogin = { POST };
+async function RECOVER_BY_EMAIL(config){
+    const options = {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(config.body),
+    };
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/v1/auth/recovery`, options);
+        const jsonResponse = await response.json();
+
+        if (jsonResponse.error) throw jsonResponse.message;
+
+        if (config.onSuccess) config.onSuccess();
+    }
+    catch (err) {
+        if (config.onError) config.onError(err);
+    }
+    finally {
+        if (config.finally) config.finally();
+    }
+}
+
+export const fetchUser = { LOGIN, RECOVER_BY_EMAIL };

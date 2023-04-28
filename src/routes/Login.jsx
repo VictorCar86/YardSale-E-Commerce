@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "sonner";
 import { RiLoader4Fill } from "react-icons/ri";
-import { fetchLogin, loginState } from "../context/sliceLogin";
+import { fetchUser, userState } from "../context/sliceLogin";
+import { Link, useNavigate } from "react-router-dom";
 import LogoYardSale from "../assets/logos/logoYardSale";
 import FormError from "../components/FormError";
-import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const state = useSelector(loginState);
+    const state = useSelector(userState);
     const dispatcher = useDispatch();
     const navigator = useNavigate();
 
@@ -23,9 +23,7 @@ const Login = () => {
 
     const formRef = useRef(null);
 
-    async function sendUserInfo(event) {
-        event.preventDefault();
-
+    async function sendUserInfo() {
         const formData = new FormData(formRef.current);
 
         const taskPayload = {
@@ -53,7 +51,7 @@ const Login = () => {
             finally: () => setLoader(false),
         };
 
-        fetchLogin.POST(fetchConfig, dispatcher);
+        fetchUser.POST(fetchConfig, dispatcher);
     }
 
     return (
@@ -83,10 +81,6 @@ const Login = () => {
                         placeholder="********"
                         className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
                     />
-
-                    <button type="submit" className="primary-button" onClick={sendUserInfo}>
-                        {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Log in"}
-                    </button>
                 </form>
 
                 {formMistakes.email && (
@@ -95,6 +89,10 @@ const Login = () => {
                 {formMistakes.password && (
                     <FormError text="Please introduce a valid password"/>
                 )}
+
+                <button type="submit" className="primary-button" onClick={sendUserInfo}>
+                    {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Log in"}
+                </button>
 
                 <a href="#" className="mb-12 text-sm text-hospital-green text-center">
                     Forgot my password
