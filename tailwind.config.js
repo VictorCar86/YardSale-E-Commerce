@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        "very-light-pink": "#C7C7C7",
+        "very-light-pink": "#7B7B7B",
         "input-field": "#F7F7F7",
         "hospital-green": "#ACD9B2",
       }

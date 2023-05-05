@@ -23,8 +23,8 @@ export const sliceUserState = createSlice({
         resultUserLogin: (state, action) => {
             const data = action.payload;
             setValueInLocalStorage(data.token);
-            state.fetching = false;
             state.email = data.email;
+            state.fetching = false;
             state.token = true;
         },
         errorUserGeneral: (state) => {
