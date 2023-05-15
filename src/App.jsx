@@ -10,9 +10,10 @@ import ShoppingCartModal from './containers/ShoppingCartModal';
 import Recovery from './routes/Recovery';
 // import SuccessRecover from './routes/SuccessRecover';
 import "./App.css";
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const App = () => {
-
   return (
     <Provider store={store}>
       <BrowserRouter>
