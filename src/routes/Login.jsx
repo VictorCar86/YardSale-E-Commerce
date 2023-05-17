@@ -9,15 +9,15 @@ import FormError from "../components/FormError";
 import LogoYardSale from "../assets/logos/logoYardSale";
 
 const Login = () => {
-    const state = useSelector(userState);
+    const { userInfo } = useSelector(userState);
     const dispatcher = useDispatch();
     const navigator = useNavigate();
 
-    // useEffect(() => {
-    //     if (state.token){
-    //         navigator('/');
-    //     }
-    // }, [navigator, state.token]);
+    useEffect(() => {
+        if (userInfo !== null){
+            navigator('/');
+        }
+    }, [navigator, userInfo]);
 
     const [formMistakes, setFormMistakes] = useState({ email: false, password: false });
     const [loader, setLoader] = useState(false);
@@ -45,7 +45,10 @@ const Login = () => {
 
         const fetchConfig = {
             body: taskPayload,
-            // onSuccess: () => navigator('/'),
+            onSuccess: () => {
+                fetchUser.USER_INFO({}, dispatcher);
+                navigator('/');
+            },
             onError: (err) => {
                 toast.error('Something went wrong 😳', { description: err });
             },

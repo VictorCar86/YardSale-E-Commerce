@@ -10,9 +10,10 @@ import ShoppingCartModal from './ShoppingCartModal'
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-    const { email } = useSelector(userState);
+    const mainUserState = useSelector(userState);
+    const { userInfo } = mainUserState;
 
-    const [userInfo, setUserInfo] = useState(false);
+    const [accountModal, setAccountModal] = useState(false);
     const [shopModal, setShopModal] = useState(false);
 
     const accountMenuRef = useRef(null);
@@ -20,12 +21,11 @@ const Navbar = () => {
     useEffect(() => {
         function handleClickOutside(event) {
             if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
-                setUserInfo(prev => !prev);
+                setAccountModal(prev => !prev);
             }
         }
 
         document.addEventListener('mousedown', handleClickOutside);
-
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
@@ -76,28 +76,42 @@ const Navbar = () => {
             <div className=''>
                 <ul className='flex items-center gap-5'>
                     <li className='relative md:block hidden text-white'>
-                        {email && (
+                        {mainUserState.fetching && (
                             <button
-                                className='py-1 px-1.5 border-2 border-hospital-green rounded-md text-very-light-pink'
-                                onClick={() => setUserInfo(true)}
+                                className='py-1 px-1.5 border-2 border-hospital-green rounded-md text-very-light-pink animate-pulse'
                                 type='button'
+                                disabled={true}
                             >
                                 <FaRegUser className='inline-block w-5 h-max mr-1.5'/>
-                                <span>{email}</span>
+                                <span className='blur-[2px]'>example@email.com</span>
                             </button>
                         )}
-                        {!email && (
+                        {!mainUserState.fetching && (
                           <>
-                            <Link className='inline-block h-9 py-1.5 px-3 mr-4 rounded-md bg-hospital-green' to={'/login'}>
-                                Log In
-                            </Link>
-                            <Link className='inline-block h-9 py-1.5 px-3 rounded-md bg-hospital-green' to={'/signup'}>
-                                Sign Up
-                            </Link>
+                            {userInfo?.email && (
+                                <button
+                                    className='py-1 px-1.5 border-2 border-hospital-green rounded-md text-very-light-pink'
+                                    onClick={() => setAccountModal(true)}
+                                    type='button'
+                                >
+                                    <FaRegUser className='inline-block w-5 h-max mr-1.5'/>
+                                    <span>{userInfo.email}</span>
+                                </button>
+                            )}
+                            {!userInfo?.email && (
+                            <>
+                                <Link className='inline-block h-9 py-1.5 px-3 mr-4 rounded-md bg-hospital-green' to={'/login'}>
+                                    Log In
+                                </Link>
+                                <Link className='inline-block h-9 py-1.5 px-3 rounded-md bg-hospital-green' to={'/signup'}>
+                                    Sign Up
+                                </Link>
+                            </>
+                            )}
+                            {accountModal && (
+                                <AccountMenu customRef={accountMenuRef}/>
+                            )}
                           </>
-                        )}
-                        {userInfo && (
-                            <AccountMenu customRef={accountMenuRef}/>
                         )}
                     </li>
                     <li>

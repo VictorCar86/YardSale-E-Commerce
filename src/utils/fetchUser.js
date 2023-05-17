@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { errorUserGeneral, requestUserGeneral, resultUserGeneral, resultUserLogin } from "../context/sliceUserState";
+import { errorUserGeneral, requestUserGeneral, resultUserGeneral, resultUserInfo } from "../context/sliceUserState";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-async function LOGIN(config, dispatch) {
+async function LOGIN(config = {}, dispatch) {
     const axiosOptions = {
         method: 'POST',
         url: `${BACKEND_URL}/api/v1/auth/login`,
@@ -15,7 +15,7 @@ async function LOGIN(config, dispatch) {
         dispatch(requestUserGeneral());
         const response = await axios(axiosOptions);
 
-        dispatch(resultUserLogin(response.data));
+        dispatch(resultUserGeneral());
         if (config.onSuccess) config.onSuccess(response.data.message);
     }
     catch (err) {
@@ -27,7 +27,7 @@ async function LOGIN(config, dispatch) {
     }
 }
 
-async function SIGNUP(config, dispatch) {
+async function SIGNUP(config = {}, dispatch) {
     const options = {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -42,7 +42,7 @@ async function SIGNUP(config, dispatch) {
 
         if (jsonResponse.error) throw jsonResponse.message;
 
-        dispatch(resultUserLogin(jsonResponse));
+        dispatch(resultUserGeneral());
 
         if (config.onSuccess) config.onSuccess(jsonResponse.message);
     }
@@ -56,7 +56,7 @@ async function SIGNUP(config, dispatch) {
     }
 }
 
-async function RECOVER_BY_EMAIL(config, dispatch){
+async function RECOVER_BY_EMAIL(config = {}, dispatch){
     const options = {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -77,7 +77,6 @@ async function RECOVER_BY_EMAIL(config, dispatch){
     }
     catch (err) {
         dispatch(errorUserGeneral());
-
         if (config.onError) config.onError(err);
     }
     finally {
@@ -85,9 +84,19 @@ async function RECOVER_BY_EMAIL(config, dispatch){
     }
 }
 
-// async function SESSION_STATUS(){
-//     const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/session-status`);
-//     console.log(response)
-// }
+async function USER_INFO(config = {}, dispatch){
+    try {
+        dispatch(requestUserGeneral());
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/info`);
+        dispatch(resultUserInfo(response.data));
+    }
+    catch (err){
+        dispatch(errorUserGeneral());
+        if (config.onError) config.onError(err);
+    }
+    finally {
+        if (config.finally) config.finally();
+    }
+}
 
-export default { LOGIN, SIGNUP, RECOVER_BY_EMAIL };
+export default { LOGIN, SIGNUP, RECOVER_BY_EMAIL, USER_INFO };

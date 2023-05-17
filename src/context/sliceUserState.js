@@ -1,13 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import simpleLocalStorage from "../utils/simpleLocalStorage";
-
-const [value, setValueInLocalStorage] = simpleLocalStorage('yardsale_token');
+// import simpleLocalStorage from "../utils/simpleLocalStorage";
+// const [value, setValueInLocalStorage] = simpleLocalStorage('yardsale_token');
 
 export const sliceUserState = createSlice({
     name: 'userState',
     initialState: {
-        email: "",
-        token: Boolean(value),
+        userInfo: null,
         fetching: false,
         error: false,
     },
@@ -20,12 +18,10 @@ export const sliceUserState = createSlice({
             state.error = false;
             state.fetching = true;
         },
-        resultUserLogin: (state, action) => {
+        resultUserInfo: (state, action) => {
             const data = action.payload;
-            setValueInLocalStorage(data.token);
-            state.email = data.email;
+            state.userInfo = data;
             state.fetching = false;
-            state.token = true;
         },
         errorUserGeneral: (state) => {
             state.error = true;
@@ -35,5 +31,5 @@ export const sliceUserState = createSlice({
 })
 
 export const userState = (state) => state.sliceUserState;
-export const { requestUserGeneral, resultUserGeneral, resultUserLogin, errorUserGeneral } = sliceUserState.actions;
+export const { requestUserGeneral, resultUserGeneral, resultUserInfo, errorUserGeneral } = sliceUserState.actions;
 export default sliceUserState.reducer;
