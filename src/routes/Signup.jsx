@@ -24,9 +24,10 @@ const Signup = () => {
 
     const formRef = useRef(null);
 
-    async function sendUserInfo() {
-        const formData = new FormData(formRef.current);
+    async function sendUserInfo(event) {
+        event.preventDefault();
 
+        const formData = new FormData(formRef.current);
         const taskPayload = {
             firstName: formData.get('first_name'),
             lastName: formData.get('last_name'),
@@ -79,7 +80,7 @@ const Signup = () => {
     }
 
     return (
-        <main className="grid place-content-center h-screen">
+        <main className="grid place-content-center min-h-screen">
             <section className="grid w-[300px]">
                 <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
 
@@ -139,24 +140,28 @@ const Signup = () => {
                         onChange={chechPassword}
                         className={`bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base ${formError.password_2 && "ring-2 ring-red-600"}`}
                     />
+
+                    {formError.firstName && (
+                        <FormError text="Please fill the first name's field"/>
+                    )}
+                    {formError.lastName && (
+                        <FormError text="Please fill the last name's field"/>
+                    )}
+                    {formError.email && (
+                        <FormError text="Please fill the email's field"/>
+                    )}
+                    {formError.password_1 && (
+                        <FormError text="Please fill the password's field"/>
+                    )}
+
+                    <button
+                        className="flex justify-center items-center primary-button"
+                        onClick={sendUserInfo}
+                        type="submit"
+                    >
+                        {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Create"}
+                    </button>
                 </form>
-
-                {formError.firstName && (
-                    <FormError text="Please introduce a valid first name"/>
-                )}
-                {formError.lastName && (
-                    <FormError text="Please introduce a valid last name"/>
-                )}
-                {formError.email && (
-                    <FormError text="Please introduce a valid email"/>
-                )}
-                {formError.password_1 && (
-                    <FormError text="Please introduce a valid password"/>
-                )}
-
-                <button type="submit" className="flex justify-center items-center primary-button" onClick={sendUserInfo}>
-                    {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Create"}
-                </button>
             </section>
 
             <Toaster richColors position="bottom-center"/>

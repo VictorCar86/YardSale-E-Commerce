@@ -8,11 +8,13 @@ import shoppingCartIcon from '../assets/icons/icon_shopping_cart.svg'
 import AccountMenu from './AccountMenu'
 import ShoppingCartModal from './ShoppingCartModal'
 import { Link } from 'react-router-dom';
+import NavbarMobile from './NavbarMobile';
 
 const Navbar = () => {
     const mainUserState = useSelector(userState);
     const { userInfo } = mainUserState;
 
+    const [secondNavbar, setSecondNavbar] = useState(false);
     const [accountModal, setAccountModal] = useState(false);
     const [shopModal, setShopModal] = useState(false);
 
@@ -20,11 +22,11 @@ const Navbar = () => {
 
     useEffect(() => {
         function handleClickOutside(event) {
-            if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+            const menu = accountMenuRef.current;
+            if (menu && !menu.contains(event.target)) {
                 setAccountModal(prev => !prev);
             }
         }
-
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
@@ -33,7 +35,7 @@ const Navbar = () => {
 
     return (
         <nav className='flex justify-between items-center h-14 w-full py-2 px-6 bg-white border-b-very-light-pink border-b fixed'>
-            <button className='md:hidden block'>
+            <button className='md:hidden block' onClick={() => setSecondNavbar(prev => !prev)}>
                 <img src={navbarIcon} alt="icon" />
             </button>
             <div className='flex'>
@@ -79,8 +81,8 @@ const Navbar = () => {
                         {mainUserState.fetching && (
                             <button
                                 className='py-1 px-1.5 border-2 border-hospital-green rounded-md text-very-light-pink animate-pulse'
-                                type='button'
                                 disabled={true}
+                                type='button'
                             >
                                 <FaRegUser className='inline-block w-5 h-max mr-1.5'/>
                                 <span className='blur-[2px]'>example@email.com</span>
@@ -91,7 +93,8 @@ const Navbar = () => {
                             {userInfo?.email && (
                                 <button
                                     className='py-1 px-1.5 border-2 border-hospital-green rounded-md text-very-light-pink'
-                                    onClick={() => setAccountModal(true)}
+                                    onMouseUp={() => setAccountModal(true)}
+                                    disabled={accountModal}
                                     type='button'
                                 >
                                     <FaRegUser className='inline-block w-5 h-max mr-1.5'/>
@@ -132,6 +135,9 @@ const Navbar = () => {
             </div>
             {shopModal && (
                 <ShoppingCartModal />
+            )}
+            {secondNavbar && (
+                <NavbarMobile userState={mainUserState} />
             )}
         </nav>
     )

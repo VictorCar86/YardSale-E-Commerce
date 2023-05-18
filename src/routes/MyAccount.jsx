@@ -35,13 +35,14 @@ const MyAccount = () => {
 
     async function patchUserInfo() {
         const formData = new FormData(formRef.current);
-        const fields = ['first_name', 'last_name', 'email', 'password'];
+        const fields = ['firstName', 'lastName', 'email', 'password'];
 
         const payload = {};
         fields.forEach(key => {
             const value = formData.get(key);
             if (value !== "") payload[key] = value;
         });
+        console.log("🚀 ~ file: MyAccount.jsx:41 ~ patchUserInfo ~ payload:", payload)
 
         if (Object.keys(payload).length === 0) {
             toast.error('Lack of content 📄', { description: 'Fill at least one field' });
@@ -76,14 +77,14 @@ const MyAccount = () => {
                         <article className="mb-1.5 text-sm">
                             <p>First name</p>
                             <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                {userInfo !== null ? userInfo.first_name : 'loading...'}
+                                {userInfo !== null ? userInfo.firstName : 'loading...'}
                             </p>
                         </article>
 
                         <article className="mb-1.5 text-sm">
                             <p>Last name</p>
                             <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                {userInfo !== null ? userInfo.last_name : 'loading...'}
+                                {userInfo !== null ? userInfo.lastName : 'loading...'}
                             </p>
                         </article>
 
@@ -122,7 +123,7 @@ const MyAccount = () => {
                         <input
                             type="text"
                             id="first_name"
-                            name="first_name"
+                            name="firstName"
                             placeholder="Your first name"
                             className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
                         />
@@ -133,7 +134,7 @@ const MyAccount = () => {
                         <input
                             type="text"
                             id="last_name"
-                            name="last_name"
+                            name="lastName"
                             placeholder="Your last name"
                             className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
                         />

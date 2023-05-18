@@ -25,9 +25,10 @@ const Login = () => {
 
     const formRef = useRef(null);
 
-    async function sendUserInfo() {
-        const formData = new FormData(formRef.current);
+    async function sendUserInfo(event) {
+        event.preventDefault();
 
+        const formData = new FormData(formRef.current);
         const taskPayload = {
             email: formData.get('email'),
             password: formData.get('password'),
@@ -83,23 +84,23 @@ const Login = () => {
                         placeholder="********"
                         className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
                     />
+
+                    {formMistakes.email && (
+                        <FormError text="Please introduce a valid email"/>
+                    )}
+                    {formMistakes.password && (
+                        <FormError text="Please introduce a valid password"/>
+                    )}
+
+                    <button
+                        type="submit"
+                        className="primary-button"
+                        disabled={loader}
+                        onClick={sendUserInfo}
+                    >
+                        {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Log in"}
+                    </button>
                 </form>
-
-                {formMistakes.email && (
-                    <FormError text="Please introduce a valid email"/>
-                )}
-                {formMistakes.password && (
-                    <FormError text="Please introduce a valid password"/>
-                )}
-
-                <button
-                    type="submit"
-                    className="primary-button"
-                    disabled={loader}
-                    onClick={sendUserInfo}
-                >
-                    {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Log in"}
-                </button>
 
                 <Link to={'/recovery'} className="w-max mx-auto mb-12 text-sm text-hospital-green text-center">
                     Forgot my password

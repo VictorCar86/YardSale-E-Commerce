@@ -89,6 +89,7 @@ async function UPDATE_DATA(config = {}, dispatch) {
         method: 'PATCH',
         url: `${BACKEND_URL}/api/v1/users`,
         headers: { 'content-type': 'application/json' },
+        data: config.body,
     };
 
     try {
