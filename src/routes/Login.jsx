@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import fetchUser from "../utils/fetchUser";
 import FormError from "../components/FormError";
 import LogoYardSale from "../assets/logos/logoYardSale";
+import LoadingPage from "../containers/LoadingPage";
 
 const Login = () => {
     const { userInfo } = useSelector(userState);
@@ -45,10 +46,7 @@ const Login = () => {
 
         const fetchConfig = {
             body: taskPayload,
-            onSuccess: () => {
-                fetchUser.USER_INFO({}, dispatcher);
-                navigator('/');
-            },
+            onSuccess: () => navigator('/'),
             onError: (err) => {
                 toast.error('Something went wrong 😳', { description: err });
             },
@@ -113,6 +111,10 @@ const Login = () => {
             </section>
 
             <Toaster richColors position="bottom-center"/>
+
+            {userInfo && (
+                <LoadingPage />
+            )}
         </main>
     )
 }

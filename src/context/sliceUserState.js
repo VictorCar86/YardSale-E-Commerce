@@ -14,15 +14,20 @@ export const sliceUserState = createSlice({
             state.error = false;
             state.fetching = true;
         },
+
         resultUserGeneral: (state) => {
-            state.error = false;
-            state.fetching = true;
+            state.fetching = false;
         },
         resultUserInfo: (state, action) => {
             const data = action.payload;
             state.userInfo = data;
             state.fetching = false;
         },
+        resultUserSignout: (state) => {
+            state.userInfo = null;
+            state.fetching = false;
+        },
+
         errorUserGeneral: (state) => {
             state.error = true;
             state.fetching = false;
@@ -31,5 +36,11 @@ export const sliceUserState = createSlice({
 })
 
 export const userState = (state) => state.sliceUserState;
-export const { requestUserGeneral, resultUserGeneral, resultUserInfo, errorUserGeneral } = sliceUserState.actions;
+export const {
+    requestUserGeneral,
+    resultUserGeneral,
+    resultUserInfo,
+    resultUserSignout,
+    errorUserGeneral
+} = sliceUserState.actions;
 export default sliceUserState.reducer;

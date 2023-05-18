@@ -109,7 +109,7 @@ const Navbar = () => {
                             </>
                             )}
                             {accountModal && (
-                                <AccountMenu customRef={accountMenuRef}/>
+                                <AccountMenu customRef={accountMenuRef} setStateModal={setAccountModal}/>
                             )}
                           </>
                         )}
