@@ -3,7 +3,7 @@ import { Toaster, toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RiLoader4Fill } from "react-icons/ri";
-import fetchUser from "../utils/fetchUser";
+import userAPI from "../utils/requests/UserAPI";
 import FormError from "../components/FormError";
 import LogoYardSale from "../assets/logos/logoYardSale";
 
@@ -66,7 +66,7 @@ const Signup = () => {
             finally: () => setLoader(false),
         };
 
-        fetchUser.SIGNUP(fetchConfig, dispatcher);
+        userAPI.SIGNUP(fetchConfig, dispatcher);
     }
 
     function chechPassword(){

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import LogoYardSale from '../assets/logos/logoYardSale';
 import IconEmail from '../assets/icons/IconEmail';
 import FormError from '../components/FormError';
-import fetchUser from '../utils/fetchUser';
+import userAPI from '../utils/requests/UserAPI';
 
 const Recovery = () => {
     const dispatcher = useDispatch();
@@ -43,7 +43,7 @@ const Recovery = () => {
             finally: () => setLoader(false),
         };
 
-        fetchUser.RECOVER_BY_EMAIL(fetchConfig, dispatcher);
+        userAPI.RECOVER_BY_EMAIL(fetchConfig, dispatcher);
     }
 
     return (

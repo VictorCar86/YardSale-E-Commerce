@@ -6,7 +6,7 @@ import { userState } from "../context/sliceUserState";
 import { Toaster, toast } from "sonner";
 import LogoYardSale from "../assets/logos/logoYardSale";
 import LoadingPage from "../containers/LoadingPage";
-import fetchUser from "../utils/fetchUser";
+import userAPI from "../utils/requests/UserAPI";
 
 const MyAccount = () => {
     const mainUserState = useSelector(userState);
@@ -20,7 +20,7 @@ const MyAccount = () => {
             const fetchConfig = {
                 onError: () => navigator('/login'),
             };
-            fetchUser.USER_INFO(fetchConfig, dispatcher);
+            userAPI.USER_INFO(fetchConfig, dispatcher);
         }
     }, [dispatcher, navigator, userInfo]);
 
@@ -63,7 +63,7 @@ const MyAccount = () => {
             finally: () => setLoader(false),
         };
 
-        fetchUser.UPDATE_DATA(fetchConfig, dispatcher);
+        userAPI.UPDATE_DATA(fetchConfig, dispatcher);
     }
 
     return (

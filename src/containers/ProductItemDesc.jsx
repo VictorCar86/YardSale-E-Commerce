@@ -1,19 +1,25 @@
 import addToCartIcon from '../assets/icons/bt_add_to_cart.svg';
+import productNotFoundImg from '../assets/images/product_not_found.webp';
 
-const ProductItemDesc = ({ product = {} }) => {
+// eslint-disable-next-line react/prop-types
+const ProductItemDesc = ({ productData = {} }) => {
     return (
-        <article className='inline-block sm:w-60 w-[140px]'>
-            <img className='sm:h-60 h-[140px] sm:w-60 w-[140px] object-cover rounded-2xl' src={product.images[0]} alt={product.title} />
-            <div className='flex justify-between mt-3.5'>
-                <div className='w-max'>
-                    <span className='font-bold'>${product.price}</span>
-                    <p className='text-sm text-very-light-pink'>{product.title}</p>
-                </div>
-                <button onClick={() => console.log(product)} className='w-9'>
-                    <img src={addToCartIcon} alt="Add to cart icon" />
-                </button>
-            </div>
-        </article>
+        <li className='relative'>
+            <figure className='inline-block sm:w-60 w-[140px] cursor-pointer' onClick={() => console.log("zzz")}>
+                <img
+                    className='sm:h-60 h-[140px] sm:w-60 w-[140px] object-cover rounded-2xl'
+                    src={productData.image || productNotFoundImg}
+                    alt={productData.title}
+                />
+                <figcaption className='mt-3.5'>
+                    <p className='font-bold'>${productData.price}</p>
+                    <p className='text-sm text-very-light-pink'>{productData.name}</p>
+                </figcaption>
+            </figure>
+            <button onClick={() => console.log(productData)} className='absolute right-1 bottom-1 w-9'>
+                <img src={addToCartIcon} alt="Add to cart icon"/>
+            </button>
+        </li>
     )
 }
 

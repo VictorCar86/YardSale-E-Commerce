@@ -4,7 +4,7 @@ import { Toaster, toast } from "sonner";
 import { RiLoader4Fill } from "react-icons/ri";
 import { userState } from "../context/sliceUserState";
 import { Link, useNavigate } from "react-router-dom";
-import fetchUser from "../utils/fetchUser";
+import fetchUser from "../utils/requests/UserAPI";
 import FormError from "../components/FormError";
 import LogoYardSale from "../assets/logos/logoYardSale";
 import LoadingPage from "../containers/LoadingPage";

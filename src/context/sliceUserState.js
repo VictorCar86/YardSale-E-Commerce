@@ -33,7 +33,7 @@ export const sliceUserState = createSlice({
             state.fetching = false;
         }
     }
-})
+});
 
 export const userState = (state) => state.sliceUserState;
 export const {
