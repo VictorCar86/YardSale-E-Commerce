@@ -4,7 +4,7 @@ import { productsState } from '../context/sliceProductsState';
 import Navbar from '../containers/Navbar';
 import ProductItemDesc from '../containers/ProductItemDesc';
 import productsAPI from '../utils/requests/ProductsAPI';
-import ProductPreview from '../containers/ProductPreview';
+import ProductPreviewModal from '../containers/ProductPreviewModal';
 
 const MainPage = () => {
     const dispatcher = useDispatch();
@@ -17,7 +17,7 @@ const MainPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const [previewModal, setPreviewModal] = useState(true);
+    const [previewModal, setPreviewModal] = useState(false);
 
     return (
         <>
@@ -28,13 +28,19 @@ const MainPage = () => {
                 <section className='w-full h-full pt-6'>
                     <ul className='grid grid-auto-fill gap-6 justify-center'>
                         {productsData?.products.map((item, index) => (
-                            <ProductItemDesc productData={item} key={index}/>
+                            <ProductItemDesc
+                                productData={item}
+                                openModal={() => setPreviewModal(true)}
+                                key={index}
+                            />
                         ))}
                     </ul>
                 </section>
-                {previewModal && (
-                    <ProductPreview className='fixed top-14 right-0'/>
-                )}
+                <ProductPreviewModal
+                    className='fixed top-14 right-0'
+                    stateModal={previewModal}
+                    closeModal={() => setPreviewModal(false)}
+                />
             </main>
         </>
     )

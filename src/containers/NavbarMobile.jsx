@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import SignoutModal from "../components/SignoutModal";
+import SignoutModal from "./SignoutModal";
 
 // eslint-disable-next-line react/prop-types
-const NavbarMobile = ({ userState = {} }) => {
+const NavbarMobile = ({ userState = {}, stateModal }) => {
     const [signoutModal, setSignoutModal] = useState(false);
 
     function toggleModal() {
@@ -11,7 +11,7 @@ const NavbarMobile = ({ userState = {} }) => {
     }
 
     return (
-        <nav className="fixed top-14 left-0 flex flex-col justify-between h-[calc(100vh-56px)] w-screen max-w-sm py-9 px-6">
+        <nav className={`fixed top-14 left-0 flex flex-col justify-between h-[calc(100vh-56px)] w-screen max-w-sm py-9 px-6 border-r bg-white transition-all duration-500 ${!stateModal && '-translate-x-full'}`}>
             <article className="font-bold">
                 <h1 className="mb-5">CATEGORIES</h1>
                 <ul className="grid gap-5">

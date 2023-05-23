@@ -34,7 +34,7 @@ const Navbar = () => {
     }, [accountMenuRef]);
 
     return (
-        <nav className='flex justify-between items-center h-14 w-full py-2 px-6 bg-white border-b-very-light-pink border-b fixed'>
+        <nav className='fixed z-30 flex justify-between items-center h-14 w-full py-2 px-6 border-b-very-light-pink border-b bg-white'>
             <button className='md:hidden block' onClick={() => setSecondNavbar(prev => !prev)}>
                 <img src={navbarIcon} alt="icon" />
             </button>
@@ -133,11 +133,15 @@ const Navbar = () => {
                     </li>
                 </ul>
             </div>
-            {shopModal && (
-                <ShoppingCartModal />
-            )}
-            {secondNavbar && (
-                <NavbarMobile userState={mainUserState} />
+
+            {shopModal && <ShoppingCartModal/>}
+
+            {window.screen.width < 768 && (
+                <NavbarMobile
+                    userState={mainUserState}
+                    stateModal={secondNavbar}
+                    closeModal={() => setSecondNavbar(false)}
+                />
             )}
         </nav>
     )

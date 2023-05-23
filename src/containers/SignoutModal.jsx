@@ -1,19 +1,12 @@
 import { IoMdClose } from 'react-icons/io';
 import { GoAlert } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
-import { useEffect, useRef } from 'react';
 import userAPI from '../utils/requests/UserAPI';
+import DialogModal from '../components/DialogModal';
 
 // eslint-disable-next-line react/prop-types
 const SignoutModal = ({ toggleModal }) => {
     const dispatcher = useDispatch();
-    const dialogRef = useRef(null);
-
-    useEffect(() => {
-        if (dialogRef.current !== null && !dialogRef.current.open){
-            dialogRef.current.showModal();
-        }
-    }, []);
 
     function closeSession() {
         toggleModal();
@@ -21,7 +14,7 @@ const SignoutModal = ({ toggleModal }) => {
     }
 
     return (
-        <dialog className='p-0 rounded-md shadow-[0px_2px_14px_0px_gray]' ref={dialogRef}>
+        <DialogModal>
             <div className='flex justify-end h-6 m-4'>
                 <button type='button' onClick={toggleModal}>
                     <IoMdClose className='inline-block w-[22px] h-min fill-gray-400'/>
@@ -39,7 +32,7 @@ const SignoutModal = ({ toggleModal }) => {
                     No, Cancel
                 </button>
             </div>
-        </dialog>
+        </DialogModal>
     )
 }
 

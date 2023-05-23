@@ -4,6 +4,7 @@ export const sliceProductsState = createSlice({
     name: 'productsState',
     initialState: {
         productsData: null,
+        productPreview: null,
         fetching: false,
         error: false,
     },
@@ -25,7 +26,15 @@ export const sliceProductsState = createSlice({
         errorProductsGeneral: (state) => {
             state.fetching = false;
             state.error = true;
-        }
+        },
+
+        createProductPreview: (state, action) => {
+            const data = action.payload;
+            state.productPreview = data;
+        },
+        deleteProductPreview: (state) => {
+            state.productPreview = null;
+        },
     }
 });
 
@@ -35,5 +44,7 @@ export const {
     resultProductsGeneral,
     resultProductsData,
     errorProductsGeneral,
+    createProductPreview,
+    deleteProductPreview,
 } = sliceProductsState.actions;
 export default sliceProductsState.reducer;
