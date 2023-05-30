@@ -8,6 +8,7 @@ import LogoYardSale from "../assets/logos/logoYardSale";
 import LoadingPage from "../containers/LoadingPage";
 import userAPI from "../utils/requests/UserAPI";
 import GenericNavbar from "../containers/GenericNavbar";
+import MainNavbar from "../containers/MainNavbar";
 
 const MyAccount = () => {
     const mainUserState = useSelector(userState);
@@ -68,7 +69,8 @@ const MyAccount = () => {
 
     return (
         <main className="grid place-content-center min-h-screen h-full w-full">
-            <GenericNavbar />
+            {/* <GenericNavbar /> */}
+            <MainNavbar />
 
             <section className="w-full min-h-[87vh] h-full font-bold">
                 <LogoYardSale className="w-40 h-min my-6 mx-auto"/>

@@ -23,17 +23,17 @@ export const sliceProductsState = createSlice({
             state.fetching = false;
         },
 
-        errorProductsGeneral: (state) => {
-            state.fetching = false;
-            state.error = true;
-        },
-
         createProductPreview: (state, action) => {
             const data = action.payload;
             state.productPreview = data;
         },
         deleteProductPreview: (state) => {
             state.productPreview = null;
+        },
+
+        errorProductsGeneral: (state) => {
+            state.fetching = false;
+            state.error = true;
         },
     }
 });

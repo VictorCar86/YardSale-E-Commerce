@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { userState } from '../context/sliceUserState';
-import { shoppingCartState } from '../context/sliceShoppingCart';
+import { shoppingCartState } from '../context/sliceShoppingCartState';
 import { useDispatch, useSelector } from 'react-redux';
 import userAPI from '../utils/requests/UserAPI';
 import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';

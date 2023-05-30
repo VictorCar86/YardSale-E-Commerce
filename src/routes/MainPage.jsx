@@ -6,10 +6,12 @@ import ProductItemDesc from '../containers/ProductItemDesc';
 import productsAPI from '../utils/requests/ProductsAPI';
 import ProductPreviewModal from '../containers/ProductPreviewModal';
 import { Toaster } from 'sonner';
+import { modalsState, productPreviewModal, resetCurrentModal } from '../context/sliceModalsState';
 
 const MainPage = () => {
-    const dispatcher = useDispatch();
     const { productsData } = useSelector(productsState);
+    const { currentModal } = useSelector(modalsState);
+    const dispatcher = useDispatch();
 
     useEffect(() => {
         if (!productsData) {
@@ -17,8 +19,6 @@ const MainPage = () => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const [previewModal, setPreviewModal] = useState(false);
 
     return (
         <>
@@ -30,9 +30,9 @@ const MainPage = () => {
                     <ul className='grid grid-auto-fill gap-6 justify-center'>
                         {productsData?.products.map((item, index) => (
                             <ProductItemDesc
-                                productData={item}
-                                openModal={() => setPreviewModal(true)}
                                 key={index}
+                                productData={item}
+                                openModal={() => dispatcher(productPreviewModal())}
                             />
                         ))}
                     </ul>
@@ -40,8 +40,8 @@ const MainPage = () => {
 
                 <ProductPreviewModal
                     className='fixed top-14 right-0'
-                    stateModal={previewModal}
-                    closeModal={() => setPreviewModal(false)}
+                    stateModal={currentModal}
+                    closeModal={() => dispatcher(resetCurrentModal())}
                 />
 
                 <Toaster richColors position="bottom-center"/>

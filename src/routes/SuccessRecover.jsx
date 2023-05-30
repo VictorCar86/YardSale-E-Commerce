@@ -1,10 +1,14 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Toaster, toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 import LogoYardSale from "../assets/logos/logoYardSale";
 import userAPI from "../utils/requests/UserAPI";
+import shoppingCartAPI from "../utils/requests/ShoppingCartAPI";
 import FormError from "../components/FormError";
 
 const SuccessRecover = () => {
+    const navigate = useNavigate();
     const dispatcher = useDispatch();
     const searchParams = new URLSearchParams(window.location.search);
     const token = searchParams.get('token');
@@ -32,6 +36,12 @@ const SuccessRecover = () => {
                 token,
                 newPassword: formData.get('password_#2'),
             },
+            onSuccess: () => {
+                userAPI.USER_INFO({}, dispatcher);
+                shoppingCartAPI.CART_ITEMS({}, dispatcher);
+                navigate('/');
+            },
+            onError: (err) => toast.error('Something went wrong! 😳', { description: err }),
         };
         userAPI.CHANGE_PASSWORD(config, dispatcher);
     }
@@ -78,6 +88,8 @@ const SuccessRecover = () => {
                     </form>
                 </div>
             </section>
+
+            <Toaster richColors position="bottom-center"/>
         </main>
     )
 }

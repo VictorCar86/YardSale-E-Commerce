@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userState } from '../context/sliceUserState';
-import { shoppingCartState } from '../context/sliceShoppingCart';
+import { shoppingCartState } from '../context/sliceShoppingCartState';
 import { createProductPreview } from '../context/sliceProductsState';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { toast } from 'sonner';
@@ -13,10 +13,10 @@ import IconAddedToCart from '../assets/icons/IconAddedToCart';
 
 // eslint-disable-next-line react/prop-types
 const ProductItemDesc = ({ productData = {}, openModal }) => {
-    const dispatcher = useDispatch();
-    const { userInfo } = useSelector(userState);
     const mainShopCartState = useSelector(shoppingCartState);
+    const { userInfo } = useSelector(userState);
     const { itemsList } = mainShopCartState;
+    const dispatcher = useDispatch();
 
     const alreadyExistItem = useMemo(() => {
         return itemsList?.some(item => item.id === productData.id);

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { modalsState, navbarMobileModal, resetCurrentModal, shoppingCartModal } from '../context/sliceModalsState';
 import { userState } from '../context/sliceUserState';
-import { shoppingCartState } from '../context/sliceShoppingCart';
+import { shoppingCartState } from '../context/sliceShoppingCartState';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaRegUser } from 'react-icons/fa';
 import LogoYardSale from '../assets/logos/logoYardSale';
@@ -16,20 +17,32 @@ import NavbarMobile from './NavbarMobile';
 const MainNavbar = () => {
     const mainUserState = useSelector(userState);
     const mainShopCartState = useSelector(shoppingCartState);
+    const { currentModal } = useSelector(modalsState);
     const { userInfo } = mainUserState;
     const { itemsList } = mainShopCartState;
+    const dispatcher = useDispatch();
 
-    const [shopModal, setShopModal] = useState(false);
     const [adviceModal, setAdviceModal] = useState(false);
-    const [secondNavbar, setSecondNavbar] = useState(false);
     const [accountModal, setAccountModal] = useState(false);
 
-    function showCart() {
+    function toggleNavbarMobile() {
+        if (currentModal === 'NAVBAR_MOBILE') {
+            dispatcher(resetCurrentModal());
+        } else {
+            dispatcher(navbarMobileModal());
+        }
+    }
+
+    function toggleCart() {
         if (!userInfo) {
             setAdviceModal(true);
             return;
         }
-        setShopModal(prev => !prev);
+        if (currentModal === 'SHOPPING_CART') {
+            dispatcher(resetCurrentModal());
+        } else {
+            dispatcher(shoppingCartModal());
+        }
     }
 
     const accountMenuRef = useRef(null);
@@ -49,13 +62,14 @@ const MainNavbar = () => {
 
     return (
         <nav className='fixed z-30 flex justify-between items-center h-14 w-full py-2 px-6 border-b-very-light-pink border-b bg-white'>
-            <button className='md:hidden block' onClick={() => setSecondNavbar(prev => !prev)}>
+            <button className='md:hidden block' onClick={toggleNavbarMobile}>
                 <IconMenu />
             </button>
             <div className='flex'>
-                <button type="button">
+                <Link to={'/'}>
                     <LogoYardSale className='w-[100px]'/>
-                </button>
+                </Link>
+
                 <ul className='md:flex hidden items-center mx-3'>
                     <li className='inline-block text-very-light-pink px-1.5 py-1 hover:text-hospital-green hover:border-hospital-green border border-transparent rounded-md'>
                         <button type='button'>
@@ -138,7 +152,7 @@ const MainNavbar = () => {
                     <li>
                         <button
                             className='relative grid p-[5px] pb-[3px] border-2 border-hospital-green rounded-full'
-                            onClick={showCart}
+                            onClick={toggleCart}
                             type="button"
                         >
                             <IconShoppingCart />
@@ -160,16 +174,16 @@ const MainNavbar = () => {
             )}
 
             <ShoppingCartModal
-                shopModalState={shopModal}
-                closeModal={() => setShopModal(false)}
+                modalState={currentModal}
+                closeModal={() => dispatcher(resetCurrentModal())}
                 shoppingCartState={mainShopCartState}
             />
 
             {window.innerWidth < 768 && (
                 <NavbarMobile
                     userState={mainUserState}
-                    stateModal={secondNavbar}
-                    closeModal={() => setSecondNavbar(false)}
+                    stateModal={currentModal}
+                    closeModal={() => dispatcher(resetCurrentModal())}
                 />
             )}
         </nav>

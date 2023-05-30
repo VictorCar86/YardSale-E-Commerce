@@ -5,6 +5,7 @@ import Login from './routes/Login';
 import Signup from './routes/Signup';
 import Recovery from './routes/Recovery';
 import MainPage from './routes/MainPage';
+import MyOrders from './routes/MyOrders';
 import MyAccount from './routes/MyAccount';
 import Error404 from './routes/Error404';
 import SuccessRecover from './routes/SuccessRecover';
@@ -24,6 +25,7 @@ const App = () => {
           <Route path='/signup' element={<Signup />} />
           <Route path='/recovery' element={<Recovery />} />
           <Route path='/my-account' element={<MyAccount />} />
+          <Route path='/my-orders' element={<MyOrders />} />
           <Route path='/success-recover' element={<SuccessRecover />} />
           <Route path='*' element={<Error404 />}/>
         </Routes>

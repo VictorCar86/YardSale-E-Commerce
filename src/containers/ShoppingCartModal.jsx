@@ -2,7 +2,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import IconLittleArrow from "../assets/icons/IconLittleArrow.jsx";
 import ItemShoppingCart from './ItemShoppingCart';
 
-const ShoppingCartModal = ({ shopModalState = false , closeModal, shoppingCartState = {} }) => {
+const ShoppingCartModal = ({ modalState = false , closeModal, shoppingCartState = {} }) => {
     const { itemsList } = shoppingCartState;
 
     const sumTotal = (item) => {
@@ -13,7 +13,7 @@ const ShoppingCartModal = ({ shopModalState = false , closeModal, shoppingCartSt
     }
 
     return (
-        <section className={`fixed top-14 right-0 max-w-sm w-full min-h-[calc(100vh-56px)] h-full px-4 border-l border-l-very-light-pink overflow-y-auto bg-white transition-all duration-500 ${!shopModalState && 'translate-x-full'}`}>
+        <section className={`fixed top-14 right-0 max-w-sm w-full min-h-[calc(100vh-56px)] h-full px-4 border-l border-l-very-light-pink overflow-y-auto bg-white transition-all duration-500 ${(modalState !== 'SHOPPING_CART') && 'translate-x-full'}`}>
             <div className='flex items-center gap-3'>
                 <button type="button" onClick={closeModal}>
                     <IconLittleArrow className='w-3 h-max rotate-180 cursor-pointer'/>
@@ -22,10 +22,10 @@ const ShoppingCartModal = ({ shopModalState = false , closeModal, shoppingCartSt
                     Shopping cart
                 </h3>
             </div>
-            {!itemsList && (
+            {(!itemsList || itemsList?.length === 0) && (
               <p className='my-6 text-center'>{"There's no items yet 🧦"}</p>
             )}
-            {itemsList && (
+            {itemsList?.length > 0 && (
               <>
                 <section>
                     {itemsList.map((product, index) => (

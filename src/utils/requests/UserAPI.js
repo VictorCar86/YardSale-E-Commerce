@@ -6,7 +6,7 @@ import {
     resultUserReset,
     resultUserInfo,
 } from "../../context/sliceUserState";
-import { resultShopCartReset } from "../../context/sliceShoppingCart";
+import { resultShopCartReset } from "../../context/sliceShoppingCartState";
 import shoppingCartAPI from './ShoppingCartAPI';
 
 class UserAPI extends MakeRequest {

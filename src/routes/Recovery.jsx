@@ -53,7 +53,7 @@ const Recovery = () => {
 
             {!emailSent && (
                 <section className='w-full h-full min-h-[87vh] grid place-items-center'>
-                    <div className="grid w-[300px]">
+                    <div className="grid w-[300px] mb-[20%]">
                         <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
 
                         <h1 className="h-6 my-3 text-lg font-bold text-center">
@@ -95,7 +95,7 @@ const Recovery = () => {
 
             {emailSent && (
                 <section className='w-full h-full min-h-[87vh] grid place-items-center'>
-                    <div className="grid w-[300px]">
+                    <div className="grid w-[300px] mb-[20%]">
                         <h1 className="h-6 my-3 text-lg font-bold text-center">
                             Email has been sent!
                         </h1>

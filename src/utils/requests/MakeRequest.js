@@ -28,6 +28,7 @@ class MakeRequest {
 
         try {
             if (beforeRequest) dispatchItems(beforeRequest);
+
             const response = await axios(axiosOptions);
 
             if (afterRequest) dispatchItems(afterRequest, response.data);

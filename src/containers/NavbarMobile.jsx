@@ -11,7 +11,7 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
     }
 
     return (
-        <nav className={`fixed top-14 left-0 flex flex-col justify-between h-[calc(100vh-56px)] w-screen max-w-sm py-9 px-6 border-r bg-white transition-all duration-500 ${!stateModal && '-translate-x-full'}`}>
+        <nav className={`fixed top-14 left-0 flex flex-col justify-between h-[calc(100vh-56px)] w-screen max-w-sm py-9 px-6 bg-white transition-all duration-500 ${(stateModal !== 'NAVBAR_MOBILE') && '-translate-x-full'}`}>
             <article className="font-bold">
                 <h1 className="mb-5">CATEGORIES</h1>
                 <ul className="grid gap-5">
@@ -28,7 +28,9 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
                     <div className="w-full h-[1px] my-8 bg-very-light-pink" />
                     <ul>
                         <li className="mb-5">
-                            My orders
+                            <Link to={'/my-orders'}>
+                                My orders
+                            </Link>
                         </li>
                         <li>
                             <Link to={'/my-account'}>

@@ -3,7 +3,7 @@ import {
     requestShopCartGeneral,
     resultShopCartData,
     errorShopCartGeneral,
-} from "../../context/sliceShoppingCart";
+} from "../../context/sliceShoppingCartState";
 
 class ShoppingCartAPI extends MakeRequest {
     #SHOPCART_URL = '/api/v1/shopping-cart/';

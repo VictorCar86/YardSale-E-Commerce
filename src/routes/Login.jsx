@@ -62,57 +62,59 @@ const Login = () => {
         <main className="grid place-content-center min-h-screen h-full w-full">
             <GenericNavbar />
 
-            <section className="grid w-[300px] h-full min-h-[87vh]">
-                <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
+            <div className="w-full h-full min-h-[87vh]">
+                <section className="grid w-[300px] h-max mt-[10%] md:mt-[30%]">
+                    <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
 
-                <form className="grid" action="POST" ref={formRef}>
-                    <label htmlFor="email" className="mb-1.5 text-sm font-bold">
-                        Email address
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="example@yourmail.com"
-                        className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
-                    />
+                    <form className="grid" action="POST" ref={formRef}>
+                        <label htmlFor="email" className="mb-1.5 text-sm font-bold">
+                            Email address
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="example@yourmail.com"
+                            className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
+                        />
 
-                    <label htmlFor="password" className="mb-1.5 text-sm font-bold">
-                        Password
-                    </label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="********"
-                        className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
-                    />
+                        <label htmlFor="password" className="mb-1.5 text-sm font-bold">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="********"
+                            className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
+                        />
 
-                    {formMistakes.email && (
-                        <FormError text="Please introduce a valid email"/>
-                    )}
-                    {formMistakes.password && (
-                        <FormError text="Please introduce a valid password"/>
-                    )}
+                        {formMistakes.email && (
+                            <FormError text="Please introduce a valid email"/>
+                        )}
+                        {formMistakes.password && (
+                            <FormError text="Please introduce a valid password"/>
+                        )}
 
-                    <button
-                        type="submit"
-                        className="primary-button"
-                        disabled={loader}
-                        onClick={sendUserInfo}
-                    >
-                        {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Log in"}
-                    </button>
-                </form>
+                        <button
+                            type="submit"
+                            className="primary-button"
+                            disabled={loader}
+                            onClick={sendUserInfo}
+                        >
+                            {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Log in"}
+                        </button>
+                    </form>
 
-                <Link to={'/recovery'} className="w-max mx-auto mb-12 text-sm text-hospital-green text-center">
-                    Forgot my password
-                </Link>
+                    <Link to={'/recovery'} className="w-max mx-auto mb-12 text-sm text-hospital-green text-center">
+                        Forgot my password
+                    </Link>
 
-                <Link to={'/signup'} className="secondary-button">
-                    Sign up
-                </Link>
-            </section>
+                    <Link to={'/signup'} className="secondary-button">
+                        Sign up
+                    </Link>
+                </section>
+            </div>
 
             <Toaster richColors position="bottom-center"/>
 
