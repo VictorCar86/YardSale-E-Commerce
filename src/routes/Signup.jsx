@@ -6,6 +6,7 @@ import { RiLoader4Fill } from "react-icons/ri";
 import userAPI from "../utils/requests/UserAPI";
 import FormError from "../components/FormError";
 import LogoYardSale from "../assets/logos/logoYardSale";
+import GenericNavbar from "../containers/GenericNavbar";
 
 const Signup = () => {
     const navigator = useNavigate();
@@ -63,7 +64,7 @@ const Signup = () => {
             onError: (err) => {
                 toast.error('Something went wrong 😳', { description: err });
             },
-            finally: () => setLoader(false),
+            onFinally: () => setLoader(false),
         };
 
         userAPI.SIGNUP(fetchConfig, dispatcher);
@@ -81,7 +82,9 @@ const Signup = () => {
 
     return (
         <main className="grid place-content-center min-h-screen">
-            <section className="grid w-[300px]">
+            <GenericNavbar />
+
+            <section className="grid w-[300px] h-full min-h-[87vh] items-start">
                 <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
 
                 <form className="grid" action="POST" ref={formRef}>

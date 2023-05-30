@@ -1,15 +1,27 @@
-import { useState } from 'react';
-import { userState } from '../context/sliceUserState';
+import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { userState } from '../context/sliceUserState';
+import { shoppingCartState } from '../context/sliceShoppingCart';
 import { createProductPreview } from '../context/sliceProductsState';
-import addToCartIcon from '../assets/icons/bt_add_to_cart.svg';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { toast } from 'sonner';
+import IconAddToCart from '../assets/icons/IconAddToCart';
 import productNotFoundImg from '../assets/images/product_not_found.webp';
 import AdviceSessionModal from './AdviceSessionModal';
+import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
+import IconAddedToCart from '../assets/icons/IconAddedToCart';
 
 // eslint-disable-next-line react/prop-types
 const ProductItemDesc = ({ productData = {}, openModal }) => {
     const dispatcher = useDispatch();
     const { userInfo } = useSelector(userState);
+    const mainShopCartState = useSelector(shoppingCartState);
+    const { itemsList } = mainShopCartState;
+
+    const alreadyExistItem = useMemo(() => {
+        return itemsList?.some(item => item.id === productData.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [itemsList]);
 
     function createPreview() {
         dispatcher(createProductPreview(productData));
@@ -17,18 +29,29 @@ const ProductItemDesc = ({ productData = {}, openModal }) => {
     }
 
     const [adviceModal, setAdviceModal] = useState(false);
+    const [itemFetching, setItemFetching] = useState(false);
 
     function sendToCart() {
         if (!userInfo){
             setAdviceModal(true);
+            return;
         }
+
+        setItemFetching(true);
+
+        const config = {
+            body: { productId: productData.id, },
+            onSuccess: () => toast.success('One item was added to your shopping cart!'),
+            onFinally: () => setItemFetching(false),
+        };
+        shoppingCartAPI.ADD_ITEM(config, dispatcher);
     }
 
     return (
         <li className='relative'>
             <figure className='inline-block sm:w-60 w-[140px] cursor-pointer' onClick={createPreview}>
                 <img
-                    className='sm:h-60 h-[140px] sm:w-60 w-[140px] object-cover rounded-2xl'
+                    className='sm:h-60 h-[140px] sm:w-60 w-[140px] object-cover rounded-2xl shadow-[0px_0px_3px_0px_#7B7B7B]'
                     src={productData.image || productNotFoundImg}
                     alt={productData.title}
                 />
@@ -38,8 +61,17 @@ const ProductItemDesc = ({ productData = {}, openModal }) => {
                 </figcaption>
             </figure>
 
-            <button className='absolute right-1 bottom-1 w-9' onClick={sendToCart} type="button">
-                <img src={addToCartIcon} alt="Add to cart icon"/>
+            <button
+                className={`absolute right-1 bottom-1 w-10 h-10 rounded-full ${(alreadyExistItem || itemFetching) && 'shadow-[0px_0px_2px_1px_#7B7B7B]'}`}
+                onClick={sendToCart}
+                disabled={alreadyExistItem || itemFetching}
+                type="button"
+            >
+                {itemFetching && <AiOutlineLoading3Quarters className='inline-block w-7 h-max fill-very-light-pink animate-spin'/>}
+                {!itemFetching && (<>
+                    {alreadyExistItem && <IconAddedToCart />}
+                    {!alreadyExistItem && <IconAddToCart/>}
+                </>)}
             </button>
 
             {adviceModal && (

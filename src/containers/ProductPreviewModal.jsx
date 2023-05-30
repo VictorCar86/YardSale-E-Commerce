@@ -2,11 +2,13 @@ import { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { userState } from '../context/sliceUserState';
 import { productsState } from '../context/sliceProductsState';
+import { shoppingCartState } from '../context/sliceShoppingCart';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdClose } from 'react-icons/io';
-import addToCartIcon from '../assets/icons/bt_add_to_cart.svg';
 import productNotFoundImg from '../assets/images/product_not_found.webp';
 import AdviceSessionModal from './AdviceSessionModal';
+import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
+import IconAddToCart from '../assets/icons/IconAddToCart';
 import 'swiper/css';
 
 // eslint-disable-next-line react/prop-types
@@ -14,6 +16,7 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
     const dispatcher = useDispatch();
     const { userInfo } = useSelector(userState);
     const { productPreview } = useSelector(productsState);
+    const mainShopCartState = useSelector(shoppingCartState);
 
     const [swiperIndex, setSwiperIndex] = useState(0);
     const swiperRef = useRef(null);
@@ -24,7 +27,14 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
     function sendToCart() {
         if (!userInfo){
             setAdviceModal(true);
+            return;
         }
+        const config = {
+            body: {
+                productId: productPreview.id,
+            }
+        };
+        shoppingCartAPI.ADD_ITEM(config, dispatcher);
     }
 
     return (
@@ -66,10 +76,11 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
                 </figcaption>
                 <button
                     className='flex justify-center items-center w-4/5 mx-auto py-1 rounded-lg text-white font-bold bg-hospital-green'
+                    disabled={mainShopCartState.fetching}
                     onClick={sendToCart}
                     type="button"
                 >
-                    <img src={addToCartIcon} alt="" />
+                    <IconAddToCart/>
                     <span>Add to cart</span>
                 </button>
             </figure>

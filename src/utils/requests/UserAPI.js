@@ -3,9 +3,11 @@ import {
     errorUserGeneral,
     requestUserGeneral,
     resultUserGeneral,
-    resultUserSignout,
+    resultUserReset,
     resultUserInfo,
 } from "../../context/sliceUserState";
+import { resultShopCartReset } from "../../context/sliceShoppingCart";
+import shoppingCartAPI from './ShoppingCartAPI';
 
 class UserAPI extends MakeRequest {
     async LOGIN(config = {}, dispatcher) {
@@ -22,6 +24,7 @@ class UserAPI extends MakeRequest {
         );
 
         await this.USER_INFO({}, dispatcher);
+        await shoppingCartAPI.CART_ITEMS({}, dispatcher);
     }
 
     async SIGNUP(config = {}, dispatcher) {
@@ -43,7 +46,7 @@ class UserAPI extends MakeRequest {
     async SIGNOUT(config = {}, dispatcher) {
         const dispatchConfig = {
             beforeRequest: requestUserGeneral,
-            afterRequest: resultUserSignout,
+            afterRequest: [resultUserReset, resultShopCartReset],
             catchError: errorUserGeneral,
         };
 
@@ -68,6 +71,20 @@ class UserAPI extends MakeRequest {
         );
     }
 
+    async USER_INFO(config = {}, dispatcher) {
+        const dispatchConfig = {
+            beforeRequest: requestUserGeneral,
+            afterRequest: resultUserInfo,
+            catchError: resultUserReset,
+        };
+
+        await this.makeRequest(
+            dispatcher,
+            dispatchConfig,
+            { method: 'GET', url: '/api/v1/users/info', ...config }
+        );
+    }
+
     async RECOVER_BY_EMAIL(config = {}, dispatcher) {
         const dispatchConfig = {
             beforeRequest: requestUserGeneral,
@@ -82,17 +99,17 @@ class UserAPI extends MakeRequest {
         );
     }
 
-    async USER_INFO(config = {}, dispatcher) {
+    async CHANGE_PASSWORD(config = {}, dispatcher) {
         const dispatchConfig = {
             beforeRequest: requestUserGeneral,
-            afterRequest: resultUserInfo,
-            catchError: resultUserSignout,
+            afterRequest: resultUserGeneral,
+            catchError: errorUserGeneral,
         };
 
         await this.makeRequest(
             dispatcher,
             dispatchConfig,
-            { method: 'GET', url: '/api/v1/users/info', ...config }
+            { method: 'POST', url: '/api/v1/auth/new-password', ...config }
         );
     }
 }

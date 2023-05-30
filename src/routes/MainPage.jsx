@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { productsState } from '../context/sliceProductsState';
-import Navbar from '../containers/Navbar';
+import MainNavbar from '../containers/MainNavbar';
 import ProductItemDesc from '../containers/ProductItemDesc';
 import productsAPI from '../utils/requests/ProductsAPI';
 import ProductPreviewModal from '../containers/ProductPreviewModal';
+import { Toaster } from 'sonner';
 
 const MainPage = () => {
     const dispatcher = useDispatch();
@@ -22,7 +23,7 @@ const MainPage = () => {
     return (
         <>
             <header>
-                <Navbar />
+                <MainNavbar />
             </header>
             <main className='relative pt-14'>
                 <section className='w-full h-full pt-6'>
@@ -36,11 +37,14 @@ const MainPage = () => {
                         ))}
                     </ul>
                 </section>
+
                 <ProductPreviewModal
                     className='fixed top-14 right-0'
                     stateModal={previewModal}
                     closeModal={() => setPreviewModal(false)}
                 />
+
+                <Toaster richColors position="bottom-center"/>
             </main>
         </>
     )

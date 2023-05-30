@@ -7,6 +7,7 @@ import LogoYardSale from '../assets/logos/logoYardSale';
 import IconEmail from '../assets/icons/IconEmail';
 import FormError from '../components/FormError';
 import userAPI from '../utils/requests/UserAPI';
+import GenericNavbar from '../containers/GenericNavbar';
 
 const Recovery = () => {
     const dispatcher = useDispatch();
@@ -40,16 +41,18 @@ const Recovery = () => {
             onError: (err) => {
                 toast.error('Something went wrong 😳', { description: err });
             },
-            finally: () => setLoader(false),
+            onFinally: () => setLoader(false),
         };
 
         userAPI.RECOVER_BY_EMAIL(fetchConfig, dispatcher);
     }
 
     return (
-        <main>
+        <main className='grid place-content-center min-h-screen h-full w-full'>
+            <GenericNavbar />
+
             {!emailSent && (
-                <section className='w-full h-screen grid place-items-center'>
+                <section className='w-full h-full min-h-[87vh] grid place-items-center'>
                     <div className="grid w-[300px]">
                         <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
 
@@ -91,7 +94,7 @@ const Recovery = () => {
             )}
 
             {emailSent && (
-                <section className='w-full h-screen grid place-items-center'>
+                <section className='w-full h-full min-h-[87vh] grid place-items-center'>
                     <div className="grid w-[300px]">
                         <h1 className="h-6 my-3 text-lg font-bold text-center">
                             Email has been sent!

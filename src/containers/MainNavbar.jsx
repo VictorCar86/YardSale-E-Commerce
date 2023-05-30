@@ -1,22 +1,36 @@
-import { FaRegUser } from 'react-icons/fa';
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { userState } from '../context/sliceUserState';
-import navbarIcon from '../assets/icons/icon_menu.svg'
-import mainLogo from '../assets/logos/logo_yard_sale.svg'
-import shoppingCartIcon from '../assets/icons/icon_shopping_cart.svg'
-import AccountMenu from './AccountMenu'
-import ShoppingCartModal from './ShoppingCartModal'
-import { Link } from 'react-router-dom';
+import { shoppingCartState } from '../context/sliceShoppingCart';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { FaRegUser } from 'react-icons/fa';
+import LogoYardSale from '../assets/logos/logoYardSale';
+import ShoppingCartModal from './ShoppingCartModal';
+import AdviceSessionModal from './AdviceSessionModal';
+import IconMenu from '../assets/icons/IconMenu';
+import IconShoppingCart from '../assets/icons/IconShoppingCart';
+import AccountMenu from './AccountMenu';
 import NavbarMobile from './NavbarMobile';
 
-const Navbar = () => {
+const MainNavbar = () => {
     const mainUserState = useSelector(userState);
+    const mainShopCartState = useSelector(shoppingCartState);
     const { userInfo } = mainUserState;
+    const { itemsList } = mainShopCartState;
 
+    const [shopModal, setShopModal] = useState(false);
+    const [adviceModal, setAdviceModal] = useState(false);
     const [secondNavbar, setSecondNavbar] = useState(false);
     const [accountModal, setAccountModal] = useState(false);
-    const [shopModal, setShopModal] = useState(false);
+
+    function showCart() {
+        if (!userInfo) {
+            setAdviceModal(true);
+            return;
+        }
+        setShopModal(prev => !prev);
+    }
 
     const accountMenuRef = useRef(null);
 
@@ -36,11 +50,11 @@ const Navbar = () => {
     return (
         <nav className='fixed z-30 flex justify-between items-center h-14 w-full py-2 px-6 border-b-very-light-pink border-b bg-white'>
             <button className='md:hidden block' onClick={() => setSecondNavbar(prev => !prev)}>
-                <img src={navbarIcon} alt="icon" />
+                <IconMenu />
             </button>
             <div className='flex'>
                 <button type="button">
-                    <img className='w-[100px]' src={mainLogo} alt="logo" />
+                    <LogoYardSale className='w-[100px]'/>
                 </button>
                 <ul className='md:flex hidden items-center mx-3'>
                     <li className='inline-block text-very-light-pink px-1.5 py-1 hover:text-hospital-green hover:border-hospital-green border border-transparent rounded-md'>
@@ -76,29 +90,33 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className=''>
-                <ul className='flex items-center gap-5'>
+                <ul className='flex items-center gap-4 lg:gap-5'>
                     <li className='relative md:block hidden text-white'>
                         {mainUserState.fetching && (
                             <button
-                                className='py-1 px-1.5 border-2 border-hospital-green rounded-md text-very-light-pink animate-pulse'
+                                className='py-1 px-1.5 border-2 border-hospital-green rounded-full lg:rounded-md text-very-light-pink animate-pulse'
                                 disabled={true}
                                 type='button'
                             >
-                                <FaRegUser className='inline-block w-5 h-max mr-1.5'/>
-                                <span className='blur-[2px]'>example@email.com</span>
+                                <FaRegUser className='inline-block w-5 h-max lg:mr-1.5'/>
+                                <span className='hidden lg:inline blur-[2px]'>
+                                    example@email.com
+                                </span>
                             </button>
                         )}
                         {!mainUserState.fetching && (
                           <>
                             {userInfo?.email && (
                                 <button
-                                    className='py-1 px-1.5 border-2 border-hospital-green rounded-md text-very-light-pink'
+                                    className='py-1 px-1.5 border-2 border-hospital-green rounded-full lg:rounded-md text-very-light-pink'
                                     onMouseUp={() => setAccountModal(true)}
                                     disabled={accountModal}
                                     type='button'
                                 >
-                                    <FaRegUser className='inline-block w-5 h-max mr-1.5'/>
-                                    <span>{userInfo.email}</span>
+                                    <FaRegUser className='inline-block w-5 h-max lg:mr-1.5'/>
+                                    <span className='hidden lg:inline'>
+                                        {userInfo.email}
+                                    </span>
                                 </button>
                             )}
                             {!userInfo?.email && (
@@ -120,23 +138,34 @@ const Navbar = () => {
                     <li>
                         <button
                             className='relative grid p-[5px] pb-[3px] border-2 border-hospital-green rounded-full'
+                            onClick={showCart}
                             type="button"
-                            onClick={() => setShopModal(prev => !prev)}
                         >
-                            <img src={shoppingCartIcon} alt="shopping cart"/>
-                            {/* {state.cart.length > 0 && (
+                            <IconShoppingCart />
+                            {(itemsList?.length > 0 || mainShopCartState.fetching) && (
                                 <span className='absolute top-[-4px] text-xs font-bold w-4 h-4 bg-hospital-green rounded-lg'>
-                                    <span className='text-center'>{state.cart.length}</span>
+                                    <span className='text-center'>
+                                        {mainShopCartState.fetching && <AiOutlineLoading3Quarters className='inline-block w-2.5 h-max -mt-[1px] fill-black animate-spin'/>}
+                                        {!mainShopCartState.fetching && itemsList?.length}
+                                    </span>
                                 </span>
-                            )} */}
+                            )}
                         </button>
                     </li>
                 </ul>
             </div>
 
-            {shopModal && <ShoppingCartModal/>}
+            {adviceModal && (
+                <AdviceSessionModal closeModal={() => setAdviceModal(false)} />
+            )}
 
-            {window.screen.width < 768 && (
+            <ShoppingCartModal
+                shopModalState={shopModal}
+                closeModal={() => setShopModal(false)}
+                shoppingCartState={mainShopCartState}
+            />
+
+            {window.innerWidth < 768 && (
                 <NavbarMobile
                     userState={mainUserState}
                     stateModal={secondNavbar}
@@ -147,4 +176,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default MainNavbar;

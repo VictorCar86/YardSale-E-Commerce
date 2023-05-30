@@ -23,9 +23,10 @@ export const sliceUserState = createSlice({
             state.userInfo = data;
             state.fetching = false;
         },
-        resultUserSignout: (state) => {
+        resultUserReset: (state) => {
             state.userInfo = null;
             state.fetching = false;
+            state.error = false;
         },
 
         errorUserGeneral: (state) => {
@@ -40,7 +41,7 @@ export const {
     requestUserGeneral,
     resultUserGeneral,
     resultUserInfo,
-    resultUserSignout,
+    resultUserReset,
     errorUserGeneral
 } = sliceUserState.actions;
 export default sliceUserState.reducer;
