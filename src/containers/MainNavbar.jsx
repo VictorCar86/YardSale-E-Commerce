@@ -1,20 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalsState, navbarMobileModal, resetCurrentModal, shoppingCartModal } from '../context/sliceModalsState';
 import { userState } from '../context/sliceUserState';
 import { shoppingCartState } from '../context/sliceShoppingCartState';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaRegUser } from 'react-icons/fa';
-import LogoYardSale from '../assets/logos/logoYardSale';
-import ShoppingCartModal from './ShoppingCartModal';
-import AdviceSessionModal from './AdviceSessionModal';
-import IconMenu from '../assets/icons/IconMenu';
-import IconShoppingCart from '../assets/icons/IconShoppingCart';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import AccountMenu from './AccountMenu';
 import NavbarMobile from './NavbarMobile';
+import ShoppingCartModal from './ShoppingCartModal';
+import AdviceSessionModal from './AdviceSessionModal';
+import LogoYardSale from '../assets/logos/logoYardSale';
+import IconMenu from '../assets/icons/IconMenu';
+import IconShoppingCart from '../assets/icons/IconShoppingCart';
+import { IoMdArrowBack } from 'react-icons/io';
 
 const MainNavbar = () => {
+    const navigate = useNavigate();
     const mainUserState = useSelector(userState);
     const mainShopCartState = useSelector(shoppingCartState);
     const { currentModal } = useSelector(modalsState);
@@ -45,6 +47,12 @@ const MainNavbar = () => {
         }
     }
 
+    const pathname = window.location.pathname;
+    useEffect(() => {
+        dispatcher(resetCurrentModal());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pathname]);
+
     const accountMenuRef = useRef(null);
 
     useEffect(() => {
@@ -61,12 +69,17 @@ const MainNavbar = () => {
     }, [accountMenuRef]);
 
     return (
-        <nav className='fixed z-30 flex justify-between items-center h-14 w-full py-2 px-6 border-b-very-light-pink border-b bg-white'>
-            <button className='md:hidden block' onClick={toggleNavbarMobile}>
-                <IconMenu />
-            </button>
-            <div className='flex'>
-                <Link to={'/'}>
+        <nav className='fixed z-30 flex justify-between items-center h-14 w-full py-2 px-4 lg:px-6 border-b-very-light-pink border-b bg-white'>
+            <span className='flex gap-3 md:hidden'>
+                <button onClick={() => navigate(-1)} type='button'>
+                    <IoMdArrowBack className="w-7 h-max"/>
+                </button>
+                <button onClick={toggleNavbarMobile} type='button'>
+                    <IconMenu />
+                </button>
+            </span>
+            <div className='flex items-center'>
+                <Link className='h-min max-md:mr-5' to={'/'}>
                     <LogoYardSale className='w-[100px]'/>
                 </Link>
 
@@ -103,8 +116,8 @@ const MainNavbar = () => {
                     </li>
                 </ul>
             </div>
-            <div className=''>
-                <ul className='flex items-center gap-4 lg:gap-5'>
+            <div>
+                <ul className='flex items-center gap-3 lg:gap-5'>
                     <li className='relative md:block hidden text-white'>
                         {mainUserState.fetching && (
                             <button
@@ -135,7 +148,7 @@ const MainNavbar = () => {
                             )}
                             {!userInfo?.email && (
                             <>
-                                <Link className='inline-block h-9 py-1.5 px-3 mr-4 rounded-md bg-hospital-green' to={'/login'}>
+                                <Link className='inline-block h-9 py-1.5 px-3 mr-2.5 lg:mr-4 rounded-md bg-hospital-green' to={'/login'}>
                                     Log In
                                 </Link>
                                 <Link className='inline-block h-9 py-1.5 px-3 rounded-md bg-hospital-green' to={'/signup'}>

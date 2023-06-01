@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Toaster, toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LogoYardSale from "../assets/logos/logoYardSale";
 import userAPI from "../utils/requests/UserAPI";
 import shoppingCartAPI from "../utils/requests/ShoppingCartAPI";
 import FormError from "../components/FormError";
+import { GoAlert } from "react-icons/go";
 
 const SuccessRecover = () => {
     const navigate = useNavigate();
@@ -20,8 +21,8 @@ const SuccessRecover = () => {
         event.preventDefault();
 
         const formData = new FormData(formRef.current);
-        const pass1 = formData.get('password_#1');
-        const pass2 = formData.get('password_#2');
+        const pass1 = formData.get('new-password-#1');
+        const pass2 = formData.get('new-password-#2');
 
         if ((pass1 === "" || pass2 === "") || (pass1 !== pass2)){
             setPasswordError(true);
@@ -34,7 +35,7 @@ const SuccessRecover = () => {
         const config = {
             body: {
                 token,
-                newPassword: formData.get('password_#2'),
+                newPassword: pass2,
             },
             onSuccess: () => {
                 userAPI.USER_INFO({}, dispatcher);
@@ -47,9 +48,10 @@ const SuccessRecover = () => {
     }
 
     return (
-        <main>
-            <section className='w-full h-screen grid place-items-center'>
-                <div className="grid w-[300px]">
+        <main className='w-full h-screen grid place-items-center'>
+            {token && (
+
+                <section className="grid w-[300px]">
                     <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
 
                     <h1 className="text-lg my-3 font-bold text-center h-6">
@@ -60,24 +62,24 @@ const SuccessRecover = () => {
                     </p>
 
                     <form method="POST" className="flex flex-col" ref={formRef} onSubmit={sendPassword}>
-                        <label htmlFor="password_#1" className="font-bold text-sm mb-1">
+                        <label htmlFor="new-password-#1" className="font-bold text-sm mb-1">
                             Password
                         </label>
                         <input
-                            type="password"
-                            id="password_#1"
-                            name="password_#1"
+                            type="new-password"
+                            id="new-password-#1"
+                            name="new-password-#1"
                             placeholder="*********"
                             className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
                         />
 
-                        <label htmlFor="password_#2" className="font-bold text-sm mb-1">
+                        <label htmlFor="new-password-#2" className="font-bold text-sm mb-1">
                             Repeat password
                         </label>
                         <input
-                            type="password"
-                            id="password_#2"
-                            name="password_#2"
+                            type="new-password"
+                            id="new-password-#2"
+                            name="new-password-#2"
                             placeholder="*********"
                             className="bg-input-field h-[42px] p-2 mb-3 rounded-lg"
                         />
@@ -86,8 +88,23 @@ const SuccessRecover = () => {
 
                         <input type="submit" value="Confirm" className="primary-button"/>
                     </form>
-                </div>
-            </section>
+                </section>
+            )}
+
+            {!token && (
+                <section className="text-center font-bold">
+                    <span className="block w-max p-4 mx-auto mb-4 rounded-full bg-black">
+                        <GoAlert className="w-16 h-max -mt-1 mb-1 fill-yellow-500"/>
+                    </span>
+
+                    <p>{"There's no any provided token."}</p>
+                    <p>You will be redirected to main page.</p>
+
+                    <Link className="primary-button" to={'/'}>
+                        Go to Home Page
+                    </Link>
+                </section>
+            )}
 
             <Toaster richColors position="bottom-center"/>
         </main>

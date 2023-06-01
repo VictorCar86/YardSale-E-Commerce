@@ -7,7 +7,6 @@ import { Toaster, toast } from "sonner";
 import LogoYardSale from "../assets/logos/logoYardSale";
 import LoadingPage from "../containers/LoadingPage";
 import userAPI from "../utils/requests/UserAPI";
-import GenericNavbar from "../containers/GenericNavbar";
 import MainNavbar from "../containers/MainNavbar";
 
 const MyAccount = () => {
@@ -68,130 +67,134 @@ const MyAccount = () => {
     }
 
     return (
-        <main className="grid place-content-center min-h-screen h-full w-full">
-            {/* <GenericNavbar /> */}
-            <MainNavbar />
+        <>
+            <header>
+                <MainNavbar />
+            </header>
+            <main className="min-h-screen h-full w-full">
+                <section className="grid place-content-center w-full min-h-screen h-full pt-14 font-bold">
+                    <LogoYardSale className="hidden sm:block w-40 h-min my-6 mx-auto"/>
 
-            <section className="w-full min-h-[87vh] h-full font-bold">
-                <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
+                    {!editMode && (
+                        <article className='grid w-[300px]'>
+                            <h1 className="mt-3 text-2xl">
+                                My account
+                            </h1>
+                            <div className="grid gap-2 mt-9 mb-2.5">
+                                <article className="mb-1.5 text-sm">
+                                    <p>First name</p>
+                                    <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
+                                        {userInfo !== null ? userInfo.firstName : 'loading...'}
+                                    </p>
+                                </article>
 
-                {!editMode && (
-                    <article className='grid w-[300px] md:mt-[30%]'>
-                        <h1 className="mt-3 text-lg">My account</h1>
-                        <div className="grid gap-2 mt-9 mb-2.5">
-                            <article className="mb-1.5 text-sm">
-                                <p>First name</p>
-                                <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                    {userInfo !== null ? userInfo.firstName : 'loading...'}
-                                </p>
-                            </article>
+                                <article className="mb-1.5 text-sm">
+                                    <p>Last name</p>
+                                    <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
+                                        {userInfo !== null ? userInfo.lastName : 'loading...'}
+                                    </p>
+                                </article>
 
-                            <article className="mb-1.5 text-sm">
-                                <p>Last name</p>
-                                <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                    {userInfo !== null ? userInfo.lastName : 'loading...'}
-                                </p>
-                            </article>
+                                <article className="mb-1.5 text-sm">
+                                    <p>Email address</p>
+                                    <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
+                                        {userInfo !== null ? userInfo.email : 'loading...'}
+                                    </p>
+                                </article>
 
-                            <article className="mb-1.5 text-sm">
-                                <p>Email address</p>
-                                <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                    {userInfo !== null ? userInfo.email : 'loading...'}
-                                </p>
-                            </article>
+                                <article className="mb-1.5 text-sm">
+                                    <p>Password</p>
+                                    <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
+                                        **********
+                                    </p>
+                                </article>
+                            </div>
 
-                            <article className="mb-1.5 text-sm">
-                                <p>Password</p>
-                                <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                    **********
-                                </p>
-                            </article>
-                        </div>
+                            <button
+                                type="button"
+                                className="secondary-button"
+                                onClick={toggleEditMode}
+                            >
+                                Edit
+                            </button>
+                        </article>
+                    )}
 
-                        <button
-                            type="button"
-                            className="secondary-button"
-                            onClick={toggleEditMode}
-                        >
-                            Edit
-                        </button>
-                    </article>
+                    {editMode && (
+                        <article className='grid w-[300px]'>
+                            <h1 className="mt-3 text-lg">Edit profile</h1>
+                            <form className="grid gap-2 mt-9 text-sm" method="POST" ref={formRef}>
+                                <label htmlFor="first_name">
+                                    First name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="first_name"
+                                    name="firstName"
+                                    placeholder="Your first name"
+                                    className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
+                                />
+
+                                <label htmlFor="last_name">
+                                    Last name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="last_name"
+                                    name="lastName"
+                                    placeholder="Your last name"
+                                    className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
+                                />
+
+                                <label htmlFor="email">
+                                    Email address
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Your email"
+                                    className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
+                                />
+
+                                <label htmlFor="password">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="**********"
+                                    className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
+                                />
+                            </form>
+
+                            <button
+                                type="submit"
+                                className="primary-button mb-0"
+                                disabled={mainUserState.fetching}
+                                onClick={patchUserInfo}
+                            >
+                                {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Save changes"}
+                            </button>
+                            <button
+                                type="button"
+                                className="secondary-button"
+                                onClick={toggleEditMode}
+                            >
+                                Cancel
+                            </button>
+                        </article>
+                    )}
+                </section>
+
+                <Toaster richColors position="bottom-center"/>
+
+                {(!userInfo || mainUserState.fetching) && (
+                    <LoadingPage />
                 )}
-
-                {editMode && (
-                    <article className='grid w-[300px]'>
-                        <h1 className="mt-3 text-lg">Edit profile</h1>
-                        <form className="grid gap-2 mt-9 text-sm" method="POST" ref={formRef}>
-                            <label htmlFor="first_name">
-                                First name
-                            </label>
-                            <input
-                                type="text"
-                                id="first_name"
-                                name="firstName"
-                                placeholder="Your first name"
-                                className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
-                            />
-
-                            <label htmlFor="last_name">
-                                Last name
-                            </label>
-                            <input
-                                type="text"
-                                id="last_name"
-                                name="lastName"
-                                placeholder="Your last name"
-                                className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
-                            />
-
-                            <label htmlFor="email">
-                                Email address
-                            </label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="Your email"
-                                className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
-                            />
-
-                            <label htmlFor="password">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                placeholder="**********"
-                                className={'bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base'}
-                            />
-                        </form>
-
-                        <button
-                            type="submit"
-                            className="primary-button mb-0"
-                            disabled={mainUserState.fetching}
-                            onClick={patchUserInfo}
-                        >
-                            {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Save changes"}
-                        </button>
-                        <button
-                            type="button"
-                            className="secondary-button"
-                            onClick={toggleEditMode}
-                        >
-                            Cancel
-                        </button>
-                    </article>
-                )}
-            </section>
-
-            <Toaster richColors position="bottom-center"/>
-
-            {(!userInfo || mainUserState.fetching) && (
-                <LoadingPage />
-            )}
-        </main>
+            </main>
+        </>
     )
 }
 

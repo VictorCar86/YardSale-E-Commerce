@@ -6,9 +6,9 @@ import { userState } from "../context/sliceUserState";
 import { Link, useNavigate } from "react-router-dom";
 import fetchUser from "../utils/requests/UserAPI";
 import FormError from "../components/FormError";
-import LogoYardSale from "../assets/logos/logoYardSale";
+import MainNavbar from "../containers/MainNavbar";
 import LoadingPage from "../containers/LoadingPage";
-import GenericNavbar from "../containers/GenericNavbar";
+import LogoYardSale from "../assets/logos/logoYardSale";
 
 const Login = () => {
     const { userInfo } = useSelector(userState);
@@ -59,12 +59,16 @@ const Login = () => {
     }
 
     return (
-        <main className="grid place-content-center min-h-screen h-full w-full">
-            <GenericNavbar />
-
-            <div className="w-full h-full min-h-[87vh]">
-                <section className="grid w-[300px] h-max mt-[10%] md:mt-[30%]">
-                    <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
+        <>
+            <header>
+                <MainNavbar />
+            </header>
+            <main className="grid place-content-center min-h-screen pt-14">
+                <section className="w-[300px] h-max">
+                    <LogoYardSale className="hidden sm:block w-40 h-min my-6 mx-auto"/>
+                    <h1 className="block sm:hidden mb-5 text-2xl font-bold">
+                        Log in
+                    </h1>
 
                     <form className="grid" action="POST" ref={formRef}>
                         <label htmlFor="email" className="mb-1.5 text-sm font-bold">
@@ -82,7 +86,7 @@ const Login = () => {
                             Password
                         </label>
                         <input
-                            type="password"
+                            type="current-password"
                             id="password"
                             name="password"
                             placeholder="********"
@@ -106,7 +110,7 @@ const Login = () => {
                         </button>
                     </form>
 
-                    <Link to={'/recovery'} className="w-max mx-auto mb-12 text-sm text-hospital-green text-center">
+                    <Link to={'/recovery'} className="block w-max mx-auto mb-12 text-sm text-hospital-green text-center">
                         Forgot my password
                     </Link>
 
@@ -114,14 +118,14 @@ const Login = () => {
                         Sign up
                     </Link>
                 </section>
-            </div>
 
-            <Toaster richColors position="bottom-center"/>
+                <Toaster richColors position="bottom-center"/>
 
-            {userInfo && (
-                <LoadingPage />
-            )}
-        </main>
+                {userInfo && (
+                    <LoadingPage />
+                )}
+            </main>
+        </>
     )
 }
 

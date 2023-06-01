@@ -1,49 +1,38 @@
+import MainNavbar from "../containers/MainNavbar";
+import IconLittleArrow from "../assets/icons/IconLittleArrow";
+
 const MyOrders = () => {
     return (
-        <main>
-            <section className="w-full min-h-[87vh] h-full font-bold">
-                    <article className='grid w-[300px] md:mt-[30%]'>
-                        <h1 className="mt-3 text-lg">My account</h1>
-                        <div className="grid gap-2 mt-9 mb-2.5">
-                            <article className="mb-1.5 text-sm">
-                                <p>First name</p>
-                                {/* <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                    {userInfo !== null ? userInfo.firstName : 'loading...'}
-                                </p> */}
-                            </article>
-
-                            <article className="mb-1.5 text-sm">
-                                <p>Last name</p>
-                                {/* <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                    {userInfo !== null ? userInfo.lastName : 'loading...'}
-                                </p> */}
-                            </article>
-
-                            <article className="mb-1.5 text-sm">
-                                <p>Email address</p>
-                                {/* <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                    {userInfo !== null ? userInfo.email : 'loading...'}
-                                </p> */}
-                            </article>
-
-                            <article className="mb-1.5 text-sm">
-                                <p>Password</p>
-                                {/* <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                    **********
-                                </p> */}
-                            </article>
-                        </div>
-
-                        <button
-                            type="button"
-                            className="secondary-button"
-                            // onClick={toggleEditMode}
-                        >
-                            Edit
-                        </button>
-                    </article>
-            </section>
-        </main>
+        <>
+            <header>
+                <MainNavbar/>
+            </header>
+            <main className="grid place-content-center min-h-screen h-full w-screen pt-14">
+                <section className="w-[300px] h-full font-bold">
+                    <h1 className="mt-9 text-2xl">
+                        My orders
+                    </h1>
+                    <ul className="grid gap-4 mt-9">
+                        {[...Array(6).keys()].map(i => (
+                            <li key={i}>
+                                <button className="flex justify-between h-16 w-full text-base" type="button">
+                                    <span className="flex flex-col justify-center h-full">
+                                        <p>04.05.23</p>
+                                        <p className='text-sm text-very-light-pink'>
+                                            6 Articles
+                                        </p>
+                                    </span>
+                                    <span className="flex items-center gap-4 h-full text-very-light-pink">
+                                        <span>$ 300,00</span>
+                                        <IconLittleArrow className='inline-block w-2 h-max mt-0.5'/>
+                                    </span>
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            </main>
+        </>
     )
 }
 

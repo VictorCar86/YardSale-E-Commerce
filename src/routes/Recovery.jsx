@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LogoYardSale from '../assets/logos/logoYardSale';
 import IconEmail from '../assets/icons/IconEmail';
+import MainNavbar from '../containers/MainNavbar';
 import FormError from '../components/FormError';
 import userAPI from '../utils/requests/UserAPI';
-import GenericNavbar from '../containers/GenericNavbar';
 
 const Recovery = () => {
     const dispatcher = useDispatch();
@@ -48,15 +48,16 @@ const Recovery = () => {
     }
 
     return (
-        <main className='grid place-content-center min-h-screen h-full w-full'>
-            <GenericNavbar />
+        <>
+            <header>
+                <MainNavbar />
+            </header>
+            <main className='grid place-content-center min-h-screen h-full w-full'>
+                {!emailSent && (
+                    <section className="grid w-[300px]">
+                        <LogoYardSale className="hidden sm:block w-40 h-min my-6 mx-auto"/>
 
-            {!emailSent && (
-                <section className='w-full h-full min-h-[87vh] grid place-items-center'>
-                    <div className="grid w-[300px] mb-[20%]">
-                        <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
-
-                        <h1 className="h-6 my-3 text-lg font-bold text-center">
+                        <h1 className="my-3 text-2xl font-bold text-center">
                             Change your password
                         </h1>
                         <p className="mb-8 text-very-light-pink text-base font-light text-center">
@@ -89,14 +90,12 @@ const Recovery = () => {
                         >
                             {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Send"}
                         </button>
-                    </div>
-                </section>
-            )}
+                    </section>
+                )}
 
-            {emailSent && (
-                <section className='w-full h-full min-h-[87vh] grid place-items-center'>
-                    <div className="grid w-[300px] mb-[20%]">
-                        <h1 className="h-6 my-3 text-lg font-bold text-center">
+                {emailSent && (
+                    <section className="grid w-[300px]">
+                        <h1 className="my-3 text-2xl font-bold text-center">
                             Email has been sent!
                         </h1>
                         <p className="mb-8 text-very-light-pink text-base font-light text-center">
@@ -125,12 +124,12 @@ const Recovery = () => {
                                 {loader && <RiLoader4Fill className="absolute -right-[22px] inline-block w-5 h-max animate-spin"/>}
                             </button>
                         </span>
-                    </div>
-                </section>
-            )}
+                    </section>
+                )}
 
-            <Toaster richColors position="bottom-center"/>
-        </main>
+                <Toaster richColors position="bottom-center"/>
+            </main>
+        </>
     )
 }
 

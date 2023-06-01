@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { RiLoader4Fill } from "react-icons/ri";
 import userAPI from "../utils/requests/UserAPI";
 import FormError from "../components/FormError";
+import MainNavbar from "../containers/MainNavbar";
 import LogoYardSale from "../assets/logos/logoYardSale";
-import GenericNavbar from "../containers/GenericNavbar";
 
 const Signup = () => {
     const navigator = useNavigate();
@@ -81,12 +81,16 @@ const Signup = () => {
     }
 
     return (
-        <main className="grid place-content-center min-h-screen">
-            <GenericNavbar />
-
-            <div className="w-full h-full min-h-[87vh]">
-                <section className="w-[300px] h-max md:mt-[30%]">
-                    <LogoYardSale className="w-40 h-min my-6 mx-auto"/>
+        <>
+            <header>
+                <MainNavbar />
+            </header>
+            <main className="grid place-content-center min-h-screen pt-14">
+                <section className="w-[300px] h-max">
+                    <LogoYardSale className="hidden sm:block w-40 h-min my-6 mx-auto"/>
+                    <h1 className="block sm:hidden mb-5 text-2xl font-bold">
+                        Sign up
+                    </h1>
 
                     <form className="grid" action="POST" ref={formRef}>
                         <label htmlFor="first_name" className="mb-1.5 text-sm font-bold">
@@ -126,7 +130,7 @@ const Signup = () => {
                             Password
                         </label>
                         <input
-                            type="password"
+                            type="new-password"
                             id="password_1"
                             name="password_1"
                             placeholder="********"
@@ -137,7 +141,7 @@ const Signup = () => {
                             Repeat password
                         </label>
                         <input
-                            type="password"
+                            type="new-password"
                             id="password_2"
                             name="password_2"
                             placeholder="********"
@@ -167,10 +171,10 @@ const Signup = () => {
                         </button>
                     </form>
                 </section>
-            </div>
 
-            <Toaster richColors position="bottom-center"/>
-        </main>
+                <Toaster richColors position="bottom-center"/>
+            </main>
+        </>
     )
 }
 
