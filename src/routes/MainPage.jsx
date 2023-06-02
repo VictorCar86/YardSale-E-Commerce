@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { productPreviewModal } from '../context/sliceModalsState';
 import { productsState } from '../context/sliceProductsState';
-import MainNavbar from '../containers/MainNavbar';
-import ProductItemDesc from '../containers/ProductItemDesc';
-import productsAPI from '../utils/requests/ProductsAPI';
-import ProductPreviewModal from '../containers/ProductPreviewModal';
 import { Toaster } from 'sonner';
-import { modalsState, productPreviewModal, resetCurrentModal } from '../context/sliceModalsState';
+import ProductItemDesc from '../containers/ProductItemDesc';
+import MainNavbar from '../containers/MainNavbar';
+import productsAPI from '../utils/requests/ProductsAPI';
 
 const MainPage = () => {
     const { productsData } = useSelector(productsState);
-    const { currentModal } = useSelector(modalsState);
     const dispatcher = useDispatch();
 
     useEffect(() => {
@@ -37,15 +35,9 @@ const MainPage = () => {
                         ))}
                     </ul>
                 </section>
-
-                <ProductPreviewModal
-                    className='fixed top-14 right-0'
-                    stateModal={currentModal}
-                    closeModal={() => dispatcher(resetCurrentModal())}
-                />
-
-                <Toaster richColors position="bottom-center"/>
             </main>
+
+            <Toaster richColors position="bottom-center"/>
         </>
     )
 }

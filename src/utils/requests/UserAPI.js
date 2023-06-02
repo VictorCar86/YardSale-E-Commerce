@@ -3,10 +3,11 @@ import {
     errorUserGeneral,
     requestUserGeneral,
     resultUserGeneral,
-    resultUserReset,
     resultUserInfo,
+    resetUserState,
 } from "../../context/sliceUserState";
-import { resultShopCartReset } from "../../context/sliceShoppingCartState";
+import { resetShopCartState } from "../../context/sliceShoppingCartState";
+import { resetOrdersState } from "../../context/sliceOrdersState";
 import shoppingCartAPI from './ShoppingCartAPI';
 
 class UserAPI extends MakeRequest {
@@ -46,7 +47,7 @@ class UserAPI extends MakeRequest {
     async SIGNOUT(config = {}, dispatcher) {
         const dispatchConfig = {
             beforeRequest: requestUserGeneral,
-            afterRequest: [resultUserReset, resultShopCartReset],
+            afterRequest: [resetUserState, resetShopCartState, resetOrdersState],
             catchError: errorUserGeneral,
         };
 
@@ -75,7 +76,7 @@ class UserAPI extends MakeRequest {
         const dispatchConfig = {
             beforeRequest: requestUserGeneral,
             afterRequest: resultUserInfo,
-            catchError: resultUserReset,
+            catchError: resetUserState,
         };
 
         await this.makeRequest(

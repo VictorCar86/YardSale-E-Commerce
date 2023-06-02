@@ -21,8 +21,8 @@ const SuccessRecover = () => {
         event.preventDefault();
 
         const formData = new FormData(formRef.current);
-        const pass1 = formData.get('new-password-#1');
-        const pass2 = formData.get('new-password-#2');
+        const pass1 = formData.get('password_#1');
+        const pass2 = formData.get('password_#2');
 
         if ((pass1 === "" || pass2 === "") || (pass1 !== pass2)){
             setPasswordError(true);
@@ -62,24 +62,24 @@ const SuccessRecover = () => {
                     </p>
 
                     <form method="POST" className="flex flex-col" ref={formRef} onSubmit={sendPassword}>
-                        <label htmlFor="new-password-#1" className="font-bold text-sm mb-1">
+                        <label htmlFor="password_#1" className="font-bold text-sm mb-1">
                             Password
                         </label>
                         <input
-                            type="new-password"
-                            id="new-password-#1"
-                            name="new-password-#1"
+                            type="password"
+                            id="password_#1"
+                            name="password_#1"
                             placeholder="*********"
                             className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
                         />
 
-                        <label htmlFor="new-password-#2" className="font-bold text-sm mb-1">
+                        <label htmlFor="password_#2" className="font-bold text-sm mb-1">
                             Repeat password
                         </label>
                         <input
-                            type="new-password"
-                            id="new-password-#2"
-                            name="new-password-#2"
+                            type="password"
+                            id="password_#2"
+                            name="password_#2"
                             placeholder="*********"
                             className="bg-input-field h-[42px] p-2 mb-3 rounded-lg"
                         />

@@ -86,7 +86,7 @@ const Login = () => {
                             Password
                         </label>
                         <input
-                            type="current-password"
+                            type="password"
                             id="password"
                             name="password"
                             placeholder="********"

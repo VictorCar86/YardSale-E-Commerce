@@ -7,6 +7,7 @@ import Recovery from './routes/Recovery';
 import MainPage from './routes/MainPage';
 import MyOrders from './routes/MyOrders';
 import MyAccount from './routes/MyAccount';
+import Checkout from './routes/Checkout';
 import Error404 from './routes/Error404';
 import SuccessRecover from './routes/SuccessRecover';
 import InitialRequests from './hooks/InitialRequests';
@@ -26,6 +27,7 @@ const App = () => {
           <Route path='/recovery' element={<Recovery />} />
           <Route path='/my-account' element={<MyAccount />} />
           <Route path='/my-orders' element={<MyOrders />} />
+          <Route path='/checkout' element={<Checkout />} />
           <Route path='/success-recover' element={<SuccessRecover />} />
           <Route path='*' element={<Error404 />}/>
         </Routes>

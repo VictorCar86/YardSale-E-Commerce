@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import IconLittleArrow from "../assets/icons/IconLittleArrow.jsx";
 import ItemShoppingCart from './ItemShoppingCart';
 
+// eslint-disable-next-line react/prop-types
 const ShoppingCartModal = ({ modalState = false , closeModal, shoppingCartState = {} }) => {
     const { itemsList } = shoppingCartState;
 
@@ -38,9 +40,11 @@ const ShoppingCartModal = ({ modalState = false , closeModal, shoppingCartState 
                         ${sumTotal(itemsList)}
                     </span>
                 </div>
-                <button className='primary-button w-full' type='button'>
-                    Checkout
-                </button>
+                {location.pathname !== '/checkout' && (
+                    <Link className='primary-button w-full' to={'/checkout'}>
+                        Checkout
+                    </Link>
+                )}
               </>
             )}
 

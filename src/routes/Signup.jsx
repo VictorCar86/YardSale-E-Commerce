@@ -130,7 +130,7 @@ const Signup = () => {
                             Password
                         </label>
                         <input
-                            type="new-password"
+                            type="password"
                             id="password_1"
                             name="password_1"
                             placeholder="********"
@@ -141,7 +141,7 @@ const Signup = () => {
                             Repeat password
                         </label>
                         <input
-                            type="new-password"
+                            type="password"
                             id="password_2"
                             name="password_2"
                             placeholder="********"

@@ -14,6 +14,7 @@ import LogoYardSale from '../assets/logos/logoYardSale';
 import IconMenu from '../assets/icons/IconMenu';
 import IconShoppingCart from '../assets/icons/IconShoppingCart';
 import { IoMdArrowBack } from 'react-icons/io';
+import ProductPreviewModal from './ProductPreviewModal';
 
 const MainNavbar = () => {
     const navigate = useNavigate();
@@ -68,6 +69,8 @@ const MainNavbar = () => {
         };
     }, [accountMenuRef]);
 
+    const categoryBtnStyles = 'inline-block px-1.5 py-1 rounded-md border hover:text-hospital-green hover:border-hospital-green';
+
     return (
         <nav className='fixed z-30 flex justify-between items-center h-14 w-full py-2 px-4 lg:px-6 border-b-very-light-pink border-b bg-white'>
             <span className='flex gap-3 md:hidden'>
@@ -83,33 +86,33 @@ const MainNavbar = () => {
                     <LogoYardSale className='w-[100px]'/>
                 </Link>
 
-                <ul className='md:flex hidden items-center mx-3'>
-                    <li className='inline-block text-very-light-pink px-1.5 py-1 hover:text-hospital-green hover:border-hospital-green border border-transparent rounded-md'>
+                <ul className='md:flex gap-0.5 hidden items-center ml-3'>
+                    <li className={`${categoryBtnStyles} ${location.pathname === '/' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
                         <button type='button'>
                             All
                         </button>
                     </li>
-                    <li className='inline-block text-very-light-pink px-1.5 py-1 hover:text-hospital-green hover:border-hospital-green border border-transparent rounded-md'>
+                    <li className={`${categoryBtnStyles} ${location.pathname === '/clothes' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
                         <button type='button'>
                             Clothes
                         </button>
                     </li>
-                    <li className='inline-block text-very-light-pink px-1.5 py-1 hover:text-hospital-green hover:border-hospital-green border border-transparent rounded-md'>
+                    <li className={`${categoryBtnStyles} ${location.pathname === '/electronics' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
                         <button type='button'>
                             Electronics
                         </button>
                     </li>
-                    <li className='inline-block text-very-light-pink px-1.5 py-1 hover:text-hospital-green hover:border-hospital-green border border-transparent rounded-md'>
+                    <li className={`${categoryBtnStyles} ${location.pathname === '/furnitures' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
                         <button type='button'>
                             Furnitures
                         </button>
                     </li>
-                    <li className='inline-block text-very-light-pink px-1.5 py-1 hover:text-hospital-green hover:border-hospital-green border border-transparent rounded-md'>
+                    <li className={`${categoryBtnStyles} ${location.pathname === '/toys' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
                         <button type='button'>
                             Toys
                         </button>
                     </li>
-                    <li className='inline-block text-very-light-pink px-1.5 py-1 hover:text-hospital-green hover:border-hospital-green border border-transparent rounded-md'>
+                    <li className={`${categoryBtnStyles} ${location.pathname === '/others' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
                         <button type='button'>
                             Others
                         </button>
@@ -190,6 +193,12 @@ const MainNavbar = () => {
                 modalState={currentModal}
                 closeModal={() => dispatcher(resetCurrentModal())}
                 shoppingCartState={mainShopCartState}
+            />
+
+            <ProductPreviewModal
+                className='fixed top-14 right-0'
+                stateModal={currentModal}
+                closeModal={() => dispatcher(resetCurrentModal())}
             />
 
             {window.innerWidth < 768 && (

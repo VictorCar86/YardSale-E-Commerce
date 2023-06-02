@@ -23,12 +23,12 @@ export const sliceUserState = createSlice({
             state.userInfo = data;
             state.fetching = false;
         },
-        resultUserReset: (state) => {
+
+        resetUserState: (state) => {
             state.userInfo = null;
             state.fetching = false;
             state.error = false;
         },
-
         errorUserGeneral: (state) => {
             state.error = true;
             state.fetching = false;
@@ -41,7 +41,7 @@ export const {
     requestUserGeneral,
     resultUserGeneral,
     resultUserInfo,
-    resultUserReset,
+    resetUserState,
     errorUserGeneral
 } = sliceUserState.actions;
 export default sliceUserState.reducer;

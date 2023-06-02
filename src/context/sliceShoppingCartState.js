@@ -21,12 +21,12 @@ export const sliceShoppingCartState = createSlice({
             state.itemsList = data;
             state.fetching = false;
         },
-        resultShopCartReset: (state) => {
+
+        resetShopCartState: (state) => {
             state.itemsList = null;
             state.fetching = false;
             state.error = false;
         },
-
         errorShopCartGeneral: (state) => {
             state.fetching = false;
             state.error = true;
@@ -39,7 +39,7 @@ export const {
     requestShopCartGeneral,
     resultShopCartGeneral,
     resultShopCartData,
-    resultShopCartReset,
     errorShopCartGeneral,
+    resetShopCartState,
 } = sliceShoppingCartState.actions;
 export default sliceShoppingCartState.reducer;

@@ -14,16 +14,17 @@ const MyAccount = () => {
     const { userInfo } = mainUserState;
 
     const dispatcher = useDispatch();
-    const navigator = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (userInfo === null){
-            const fetchConfig = {
-                onError: () => navigator('/login'),
+            const config = {
+                onError: () => navigate('/login'),
             };
-            userAPI.USER_INFO(fetchConfig, dispatcher);
+            userAPI.USER_INFO(config, dispatcher);
         }
-    }, [dispatcher, navigator, userInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const [editMode, setEditMode] = useState(false);
 
