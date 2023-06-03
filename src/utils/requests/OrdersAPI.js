@@ -21,6 +21,20 @@ class OrdersAPI extends MakeRequest {
             { method: 'GET', url: (this.#ORDERS_URL + 'user'), ...config, },
         );
     }
+
+    async CREATE_ORDER(config = {}, dispatcher) {
+        const dispatchConfig = {
+            beforeRequest: requestOrdersGeneral,
+            afterRequest: resultOrdersData,
+            catchError: errorOrdersGeneral,
+        };
+
+        await this.makeRequest(
+            dispatcher,
+            dispatchConfig,
+            { method: 'POST', url: (this.#ORDERS_URL + 'items'), ...config, },
+        );
+    }
 }
 
 const ordersAPI = new OrdersAPI();

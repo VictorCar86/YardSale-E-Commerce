@@ -56,13 +56,17 @@ const ProductItemDesc = ({ productData = {}, openModal }) => {
                     alt={productData.title}
                 />
                 <figcaption className='mt-3.5'>
-                    <p className='font-bold'>${productData.price}</p>
-                    <p className='text-sm text-very-light-pink'>{productData.name}</p>
+                    <p className='font-bold'>
+                        ${productData.price}
+                    </p>
+                    <p className='w-[70%] text-sm text-very-light-pink overflow-ellipsis whitespace-nowrap overflow-hidden'>
+                        {productData.name}
+                    </p>
                 </figcaption>
             </figure>
 
             <button
-                className={`absolute right-1 bottom-1 w-10 h-10 rounded-full ${(alreadyExistItem || itemFetching) && 'shadow-[0px_0px_2px_1px_#7B7B7B]'}`}
+                className={`absolute right-1 bottom-2 w-10 h-10 rounded-full ${(alreadyExistItem || itemFetching) && 'shadow-[0px_0px_2px_1px_#7B7B7B]'}`}
                 onClick={sendToCart}
                 disabled={alreadyExistItem || itemFetching}
                 type="button"
