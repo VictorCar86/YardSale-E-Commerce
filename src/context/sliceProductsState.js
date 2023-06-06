@@ -10,17 +10,20 @@ export const sliceProductsState = createSlice({
     },
     reducers: {
         requestProductsGeneral: (state) => {
+            state.productsData = null;
             state.fetching = true;
             state.error = false;
         },
 
         resultProductsGeneral: (state) => {
             state.fetching = false;
+            state.error = false;
         },
         resultProductsData: (state, action) => {
             const data = action.payload;
             state.productsData = data;
             state.fetching = false;
+            state.error = false;
         },
 
         createProductPreview: (state, action) => {

@@ -1,13 +1,35 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import productCategories from "../utils/productCategories";
+import productsAPI from "../utils/requests/ProductsAPI";
 import SignoutModal from "./SignoutModal";
 
 // eslint-disable-next-line react/prop-types
 const NavbarMobile = ({ userState = {}, stateModal }) => {
+    const dispatcher = useDispatch();
+    const navigate = useNavigate();
     const [signoutModal, setSignoutModal] = useState(false);
 
     function toggleModal() {
         setSignoutModal(prev => !prev);
+    }
+
+    function changeCategory(search) {
+        if (location.href.split('/').at(-1) === search) return;
+        navigate('/');
+        history.replaceState({}, '', location.href + search);
+
+        const url = new URLSearchParams(location.search);
+        const currentCategory = productCategories[url.get('category')];
+
+        const config = {
+            params: {
+                page: 1,
+                categoryId: currentCategory,
+            },
+        };
+        productsAPI.PRODUCTS_LIST(config, dispatcher);
     }
 
     return (
@@ -15,12 +37,22 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
             <article className="font-bold">
                 <h1 className="mb-5">CATEGORIES</h1>
                 <ul className="grid gap-5">
-                    <li>All</li>
-                    <li>Clothes</li>
-                    <li>Electronics</li>
-                    <li>Furnitures</li>
-                    <li>Toys</li>
-                    <li>Others</li>
+                    <li>
+                        <button onClick={() => changeCategory('')} type="button">
+                            All
+                        </button>
+                    </li>
+                    {Object.keys(productCategories).map((category, i) => (
+                        <li key={i}>
+                            <button
+                                className="capitalize"
+                                onClick={() => changeCategory(`?category=${category}`)}
+                                type="button"
+                            >
+                                {category}
+                            </button>
+                        </li>
+                    ))}
                 </ul>
 
                 {userState.userInfo && (

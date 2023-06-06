@@ -1,29 +1,36 @@
+import {
+    modalsState,
+    navbarMobileModal,
+    resetCurrentModal,
+    shoppingCartModal,
+} from '../context/sliceModalsState';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { modalsState, navbarMobileModal, resetCurrentModal, shoppingCartModal } from '../context/sliceModalsState';
-import { userState } from '../context/sliceUserState';
 import { shoppingCartState } from '../context/sliceShoppingCartState';
-import { FaRegUser } from 'react-icons/fa';
+import { userState } from '../context/sliceUserState';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import AccountMenu from './AccountMenu';
-import NavbarMobile from './NavbarMobile';
-import ShoppingCartModal from './ShoppingCartModal';
-import AdviceSessionModal from './AdviceSessionModal';
+import { IoMdArrowBack } from 'react-icons/io';
+import { FaRegUser } from 'react-icons/fa';
+import IconShoppingCart from '../assets/icons/IconShoppingCart';
 import LogoYardSale from '../assets/logos/logoYardSale';
 import IconMenu from '../assets/icons/IconMenu';
-import IconShoppingCart from '../assets/icons/IconShoppingCart';
-import { IoMdArrowBack } from 'react-icons/io';
+import ShoppingCartModal from './ShoppingCartModal';
+import AdviceSessionModal from './AdviceSessionModal';
 import ProductPreviewModal from './ProductPreviewModal';
+import productCategories from '../utils/productCategories'
+import AccountMenu from './AccountMenu';
+import NavbarMobile from './NavbarMobile';
+import productsAPI from '../utils/requests/ProductsAPI';
 
 const MainNavbar = () => {
-    const navigate = useNavigate();
     const mainUserState = useSelector(userState);
     const mainShopCartState = useSelector(shoppingCartState);
     const { currentModal } = useSelector(modalsState);
     const { userInfo } = mainUserState;
     const { itemsList } = mainShopCartState;
     const dispatcher = useDispatch();
+    const navigate = useNavigate();
 
     const [adviceModal, setAdviceModal] = useState(false);
     const [accountModal, setAccountModal] = useState(false);
@@ -48,11 +55,27 @@ const MainNavbar = () => {
         }
     }
 
-    const pathname = window.location.pathname;
+    function changeCategory(search) {
+        if (location.href.split('/').at(-1) === search) return;
+        navigate('/');
+        history.replaceState({}, '', location.href + search);
+
+        const url = new URLSearchParams(location.search);
+        const currentCategory = productCategories[url.get('category')];
+
+        const config = {
+            params: {
+                page: 1,
+                categoryId: currentCategory,
+            },
+        };
+        productsAPI.PRODUCTS_LIST(config, dispatcher);
+    }
+
     useEffect(() => {
         dispatcher(resetCurrentModal());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pathname]);
+    }, [window.location.href]);
 
     const accountMenuRef = useRef(null);
 
@@ -82,41 +105,36 @@ const MainNavbar = () => {
                 </button>
             </span>
             <div className='flex items-center'>
-                <Link className='h-min max-md:mr-5' to={'/'}>
+                <button
+                    onClick={() => changeCategory('')}
+                    type='button'
+                >
                     <LogoYardSale className='w-[100px]'/>
-                </Link>
+                </button>
 
                 <ul className='md:flex gap-0.5 hidden items-center ml-3'>
-                    <li className={`${categoryBtnStyles} ${location.pathname === '/' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
-                        <button type='button'>
+                    <li className={`${categoryBtnStyles} ${!location.search.includes('category') ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
+                        <button
+                            onClick={() => changeCategory('')}
+                            type='button'
+                        >
                             All
                         </button>
                     </li>
-                    <li className={`${categoryBtnStyles} ${location.pathname === '/clothes' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
-                        <button type='button'>
-                            Clothes
-                        </button>
-                    </li>
-                    <li className={`${categoryBtnStyles} ${location.pathname === '/electronics' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
-                        <button type='button'>
-                            Electronics
-                        </button>
-                    </li>
-                    <li className={`${categoryBtnStyles} ${location.pathname === '/furnitures' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
-                        <button type='button'>
-                            Furnitures
-                        </button>
-                    </li>
-                    <li className={`${categoryBtnStyles} ${location.pathname === '/toys' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
-                        <button type='button'>
-                            Toys
-                        </button>
-                    </li>
-                    <li className={`${categoryBtnStyles} ${location.pathname === '/others' ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}>
-                        <button type='button'>
-                            Others
-                        </button>
-                    </li>
+                    {Object.keys(productCategories).map((category, i) => (
+                        <li
+                            className={`${categoryBtnStyles} ${location.search.includes(category) ? 'text-hospital-green border-hospital-green' : 'text-very-light-pink border-transparent'}`}
+                            key={i}
+                        >
+                            <button
+                                className='capitalize'
+                                onClick={() => changeCategory(`?category=${category}`)}
+                                type='button'
+                            >
+                                {category}
+                            </button>
+                        </li>
+                    ))}
                 </ul>
             </div>
             <div>

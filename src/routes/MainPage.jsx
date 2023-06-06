@@ -7,29 +7,47 @@ import ProductItemDesc from '../containers/ProductItemDesc';
 import MainNavbar from '../containers/MainNavbar';
 import productsAPI from '../utils/requests/ProductsAPI';
 import IconLittleArrow from '../assets/icons/IconLittleArrow';
+import ProductItemSkeleton from '../containers/ProductItemSkeleton';
+import productCategories from '../utils/productCategories';
 
 const MainPage = () => {
-    const { productsData } = useSelector(productsState);
+    const mainProductsState = useSelector(productsState);
+    const { productsData } = mainProductsState;
     const { currentPage, maxPage } = productsData || {};
     const dispatcher = useDispatch();
 
+    function getProducts() {
+        const url = new URLSearchParams(location.search);
+        const page = url.get('page');
+        const category = productCategories[url.get('category')];
+
+        const config = {
+            params: {
+                page: page || 1,
+                categoryId: category,
+            },
+        };
+        productsAPI.PRODUCTS_LIST(config, dispatcher);
+    }
+
     function searchForPage(page = 1) {
-        location.search = `?page=${page}`;
+        const search = new URLSearchParams(location.search);
+        const hasCategory = search.has('category');
+
+        let url = location.origin + `/?page=${page}`;
+        if (hasCategory) url = location.href + `&page=${page}`;
+
+        history.replaceState({}, '', url);
+        window.scrollTo(0, 0);
+        getProducts();
     }
 
     useEffect(() => {
-        const url = new URLSearchParams(location.search);
-        const currentPage = url.get('page');
-        if (!productsData || currentPage) {
-            const config = {
-                params: {
-                    page: currentPage || 1,
-                },
-            };
-            productsAPI.PRODUCTS_LIST(config, dispatcher);
+        if (!productsData){
+            getProducts();
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location.search]);
+    }, [productsData]);
 
     return (
         <>
@@ -39,27 +57,40 @@ const MainPage = () => {
             <main className='relative h-screen pt-14'>
                 <section className='w-full h-full pt-6'>
                     <ul className='grid grid-auto-fill gap-6 justify-center'>
-                        {productsData?.products.map((item, index) => (
-                            <ProductItemDesc
-                                key={index}
-                                productData={item}
-                                openModal={() => dispatcher(productPreviewModal())}
-                            />
-                        ))}
+                        {(!productsData && mainProductsState.fetching) && (
+                          <>
+                            {[...Array(10).keys()].map(i => <ProductItemSkeleton key={i}/>)}
+                          </>
+                        )}
+                        {(productsData && !mainProductsState.fetching) && (
+                          <>
+                            {productsData.products.map((item, index) => (
+                                <ProductItemDesc
+                                    key={index}
+                                    productData={item}
+                                    openModal={() => dispatcher(productPreviewModal())}
+                                />
+                            ))}
+                          </>
+                        )}
                     </ul>
 
-                    <nav className='flex justify-center gap-3'>
-                        {currentPage > 1 && (
-                            <button onClick={() => searchForPage(currentPage - 1)} type='button'>
-                                <IconLittleArrow className='w-2.5 h-max rotate-180'/>
-                            </button>
-                        )}
+                    <nav className='flex justify-center gap-3 py-5'>
+                        <button
+                            className={`${!(currentPage > 1) && 'invisible'}`}
+                            onClick={() => searchForPage(currentPage - 1)}
+                            disabled={mainProductsState.fetching}
+                            type='button'
+                        >
+                            <IconLittleArrow className='w-2.5 h-max rotate-180'/>
+                        </button>
                         <ol className='flex gap-2 font-bold'>
                             {[...Array(maxPage || 1).keys()].map(i => (
                                 <li key={i}>
                                     <button
                                         className={`${currentPage === i + 1 ? 'text-hospital-green' : 'text-very-light-pink'} px-1`}
                                         onClick={() => searchForPage(i + 1)}
+                                        disabled={mainProductsState.fetching}
                                         type='button'
                                     >
                                         {i + 1}
@@ -67,11 +98,14 @@ const MainPage = () => {
                                 </li>
                             ))}
                         </ol>
-                        {currentPage !== maxPage && (
-                            <button onClick={() => searchForPage(currentPage + 1)} type='button'>
-                                <IconLittleArrow className='w-2.5 h-max'/>
-                            </button>
-                        )}
+                        <button
+                            className={`${currentPage === maxPage && 'invisible'}`}
+                            onClick={() => searchForPage(currentPage + 1)}
+                            disabled={mainProductsState.fetching}
+                            type='button'
+                        >
+                            <IconLittleArrow className='w-2.5 h-max'/>
+                        </button>
                     </nav>
                 </section>
             </main>

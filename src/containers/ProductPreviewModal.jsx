@@ -57,7 +57,7 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
                 >
                     {arraySample.map(i => (
                         <SwiperSlide key={i}>
-                            <img className='w-full h-min object-cover' src={productPreview?.image ?? productNotFoundImg} alt=""/>
+                            <img className='w-full h-min aspect-[4/4] object-cover' src={productPreview?.image ?? productNotFoundImg} alt=""/>
                         </SwiperSlide>
                     ))}
                 </Swiper>
