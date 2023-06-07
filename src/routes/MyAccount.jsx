@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RiLoader4Fill } from "react-icons/ri";
 import { userState } from "../context/sliceUserState";
 import { Toaster, toast } from "sonner";
-import LogoYardSale from "../assets/logos/logoYardSale";
+import LogoYardSale from "../assets/logos/LogoYardSale";
 import LoadingPage from "../containers/LoadingPage";
 import userAPI from "../utils/requests/UserAPI";
 import MainNavbar from "../containers/MainNavbar";
