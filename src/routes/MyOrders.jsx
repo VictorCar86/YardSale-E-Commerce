@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelectedOrder, ordersState } from "../context/sliceOrdersState";
 import { Link, useNavigate } from "react-router-dom";
-import IconLittleArrow from "../assets/icons/IconLittleArrow";
 import MainNavbar from "../containers/MainNavbar";
-import ordersAPI from "../utils/requests/OrdersAPI";
 import OrderDesc from "../containers/OrderDesc";
+import ordersAPI from "../utils/requests/OrdersAPI";
+import IconLittleArrow from "../assets/icons/IconLittleArrow";
 
 const MyOrders = () => {
     const dispatcher = useDispatch();

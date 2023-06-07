@@ -6,7 +6,7 @@ import { RiLoader4Fill } from "react-icons/ri";
 import userAPI from "../utils/requests/UserAPI";
 import FormError from "../components/FormError";
 import MainNavbar from "../containers/MainNavbar";
-import LogoYardSale from "../assets/logos/logoYardSale";
+import LogoYardSale from "../assets/logos/LogoYardSale";
 
 const Signup = () => {
     const navigator = useNavigate();

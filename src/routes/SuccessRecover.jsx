@@ -4,9 +4,9 @@ import { Toaster, toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { GoAlert } from "react-icons/go";
 import LogoYardSale from "../assets/logos/LogoYardSale";
+import FormError from "../components/FormError";
 import userAPI from "../utils/requests/UserAPI";
 import shoppingCartAPI from "../utils/requests/ShoppingCartAPI";
-import FormError from "../components/FormError";
 
 const SuccessRecover = () => {
     const navigate = useNavigate();
