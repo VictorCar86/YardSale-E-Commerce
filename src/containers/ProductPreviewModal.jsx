@@ -45,7 +45,7 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
     }, [itemsList, productPreview]);
 
     return (
-        <aside className={`${className} w-full sm:max-w-sm sm:w-screen min-h-[calc(100vh-56px)] h-full border-l border-l-very-light-pink bg-white transition-all duration-500 ${(stateModal !== 'PRODUCT_PREVIEW') && 'translate-x-full'}`}>
+        <aside className={`${className} w-full sm:max-w-sm sm:w-screen min-h-[calc(100vh-56px)] h-[calc(100vh-112px)] border-l border-l-very-light-pink max-sm:overflow-y-scroll bg-white transition-all duration-500 ${(stateModal !== 'PRODUCT_PREVIEW') && 'translate-x-full'}`}>
             <button className='fixed z-20 grid p-2 mt-3 ml-3 rounded-full bg-white shadow-[0px_0px_4px_1px_#7B7B7B]' type='button' onClick={closeModal}>
                 <IoMdClose className='inline-block w-[26px] h-min fill-very-light-pink'/>
             </button>

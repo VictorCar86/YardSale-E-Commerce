@@ -33,9 +33,20 @@ const MainPage = () => {
     function searchForPage(page = 1) {
         const search = new URLSearchParams(location.search);
         const hasCategory = search.has('category');
+        const hasPage = search.has('page');
 
-        let url = location.origin + `/?page=${page}`;
-        if (hasCategory) url = location.href + `&page=${page}`;
+        let url = '';
+
+        if (hasCategory && !hasPage) {
+            url = location.href + `&page=${page}`;
+        }
+        else if (hasPage) {
+            const pageIndex = location.href.search('page');
+            url = location.href.slice(0, pageIndex) + `page=${page}`
+        }
+        else {
+            url = location.origin + `/?page=${page}`
+        }
 
         history.replaceState({}, '', url);
         window.scrollTo(0, 0);

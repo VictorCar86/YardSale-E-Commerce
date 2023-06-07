@@ -99,7 +99,7 @@ const Recovery = () => {
                             Email has been sent!
                         </h1>
                         <p className="mb-8 text-very-light-pink text-base font-light text-center">
-                            Pleas check your inbox for instructions on how to reset the password
+                            Please check your inbox for instructions on how to reset the password
                         </p>
 
                         <picture className="w-min py-9 px-6 mx-auto mb-5 rounded-full bg-gray-100">
