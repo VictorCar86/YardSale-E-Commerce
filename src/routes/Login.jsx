@@ -8,7 +8,7 @@ import fetchUser from "../utils/requests/UserAPI";
 import FormError from "../components/FormError";
 import MainNavbar from "../containers/MainNavbar";
 import LoadingPage from "../containers/LoadingPage";
-import LogoYardSale from "../assets/logos/logoYardSale";
+import LogoYardSale from "../assets/logos/LogoYardSale";
 
 const Login = () => {
     const { userInfo } = useSelector(userState);

@@ -3,7 +3,7 @@ import { RiLoader4Fill } from 'react-icons/ri';
 import { Toaster, toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import LogoYardSale from '../assets/logos/logoYardSale';
+import LogoYardSale from "../assets/logos/LogoYardSale";
 import IconEmail from '../assets/icons/IconEmail';
 import MainNavbar from '../containers/MainNavbar';
 import FormError from '../components/FormError';

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 import DialogModal from "../components/DialogModal";
-import LogoYardSale from "../assets/logos/logoYardSale";
+import LogoYardSale from "../assets/logos/LogoYardSale";
 
 // eslint-disable-next-line react/prop-types
 const AdviceSessionModal = ({ closeModal }) => {

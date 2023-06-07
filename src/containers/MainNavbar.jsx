@@ -13,7 +13,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { IoMdArrowBack } from 'react-icons/io';
 import { FaRegUser } from 'react-icons/fa';
 import IconShoppingCart from '../assets/icons/IconShoppingCart';
-import LogoYardSale from '../assets/logos/logoYardSale';
+import LogoYardSale from "../assets/logos/LogoYardSale";
 import IconMenu from '../assets/icons/IconMenu';
 import ShoppingCartModal from './ShoppingCartModal';
 import AdviceSessionModal from './AdviceSessionModal';
