@@ -66,7 +66,7 @@ const MainPage = () => {
                 <MainNavbar />
             </header>
             <main className='relative h-screen pt-14'>
-                <section className='w-full h-full pt-6'>
+                <section className='flex flex-col justify-between min-h-[calc(100vh-56px)] h-max w-full pt-6'>
                     <ul className='grid grid-auto-fill gap-6 justify-center'>
                         {(!productsData && mainProductsState.fetching) && (
                           <>
@@ -86,7 +86,7 @@ const MainPage = () => {
                         )}
                     </ul>
 
-                    <nav className='flex justify-center gap-3 py-5'>
+                    <nav className='flex justify-center gap-3 py-8'>
                         <button
                             className={`${!(currentPage > 1) && 'invisible'}`}
                             onClick={() => searchForPage(currentPage - 1)}

@@ -106,6 +106,7 @@ const MainNavbar = () => {
             </span>
             <div className='flex items-center'>
                 <button
+                    className='max-md:mr-5'
                     onClick={() => changeCategory('')}
                     type='button'
                 >
