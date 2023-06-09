@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { productPreviewModal } from '../context/sliceModalsState';
 import { productsState } from '../context/sliceProductsState';
-import { Toaster } from 'sonner';
 import ProductItemDesc from '../containers/ProductItemDesc';
 import MainNavbar from '../containers/MainNavbar';
 import productsAPI from '../utils/requests/ProductsAPI';
@@ -53,10 +52,36 @@ const MainPage = () => {
         getProducts();
     }
 
+    const [pageNumbers, setPageNumbers] = useState([]);
+
+    function generateNavbarPages() {
+        if (maxPage > 7){
+            const maxDisplayedPages = 7;
+            let startPage = currentPage - Math.floor(maxDisplayedPages / 2);
+
+            if (startPage < 1) startPage = 1;
+
+            let endPage = startPage + maxDisplayedPages - 1;
+
+            if (endPage > maxPage) {
+                endPage = maxPage;
+                startPage = endPage - maxDisplayedPages + 1;
+                if (startPage < 1) {
+                    startPage = 1;
+                }
+            }
+            setPageNumbers([...Array(endPage - startPage + 1)].map((_, i) => startPage + i));
+        }
+        else {
+            setPageNumbers([...Array(maxPage).keys()].map(i => i + 1));
+        }
+    }
+
     useEffect(() => {
         if (!productsData){
             getProducts();
         }
+        generateNavbarPages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsData]);
 
@@ -70,14 +95,16 @@ const MainPage = () => {
                     <ul className='grid grid-auto-fill gap-6 justify-center'>
                         {(!productsData && mainProductsState.fetching) && (
                           <>
-                            {[...Array(10).keys()].map(i => <ProductItemSkeleton key={i}/>)}
+                            {[...Array( window.innerWidth > 768 ? 20 : 10 ).keys()].map(i => (
+                                <ProductItemSkeleton key={i}/>
+                            ))}
                           </>
                         )}
                         {(productsData && !mainProductsState.fetching) && (
                           <>
-                            {productsData.products.map((item, index) => (
+                            {productsData.products.map((item, i) => (
                                 <ProductItemDesc
-                                    key={index}
+                                    key={i}
                                     productData={item}
                                     openModal={() => dispatcher(productPreviewModal())}
                                 />
@@ -96,15 +123,15 @@ const MainPage = () => {
                             <IconLittleArrow className='w-2.5 h-max rotate-180'/>
                         </button>
                         <ol className='flex gap-2 font-bold'>
-                            {[...Array(maxPage || 1).keys()].map(i => (
+                            {pageNumbers.map(i => (
                                 <li key={i}>
                                     <button
-                                        className={`${currentPage === i + 1 ? 'text-hospital-green' : 'text-very-light-pink'} px-1`}
-                                        onClick={() => searchForPage(i + 1)}
+                                        className={`${currentPage === i ? 'text-hospital-green' : 'text-very-light-pink'} px-1`}
+                                        onClick={() => searchForPage(i)}
                                         disabled={mainProductsState.fetching}
                                         type='button'
                                     >
-                                        {i + 1}
+                                        {i}
                                     </button>
                                 </li>
                             ))}
@@ -120,8 +147,6 @@ const MainPage = () => {
                     </nav>
                 </section>
             </main>
-
-            <Toaster richColors position="bottom-center"/>
         </>
     )
 }

@@ -4,6 +4,7 @@ import { resetShopCartState, shoppingCartState } from "../context/sliceShoppingC
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import { toast } from "sonner";
 import MainNavbar from "../containers/MainNavbar";
 import IconLittleArrow from "../assets/icons/IconLittleArrow";
 import IconVisaCard from "../assets/icons/IconVisaCard"
@@ -11,6 +12,7 @@ import IconMasterCard from "../assets/icons/IconMasterCard"
 import IconJcbCard from "../assets/icons/IconJcbIcon"
 import IconAmericanCard from "../assets/icons/IconAmericanCard"
 import ordersAPI from "../utils/requests/OrdersAPI";
+import floorTotalPrice from "../utils/floorTotalPrice";
 
 const Checkout = () => {
     const mainShopCartState = useSelector(shoppingCartState);
@@ -35,29 +37,26 @@ const Checkout = () => {
             body: {
                 products,
             },
-            onSuccess: () => dispatcher(resetShopCartState()),
+            onSuccess: () => {
+                navigate('/my-orders');
+                toast.success('Order created successfully!');
+                dispatcher(resetShopCartState());
+            },
         };
         ordersAPI.CREATE_ORDER(config, dispatcher);
     }
 
     const reducePrices = useMemo(() => {
         const cb = (prev, current) => prev + (current.cartInfo.productAmount * current.price);
-        return itemsList?.reduce(cb, 0);
+        return itemsList ? floorTotalPrice(itemsList.reduce(cb, 0)) : '0';
     }, [itemsList])
-
-    // function randomPrice() {
-    //     return Math.floor(Math.random() * 20);
-    // }
-
-    // const shippingFee = randomPrice();
-    // const salesTax = randomPrice();
 
     return (
         <>
             <header>
                 <MainNavbar />
             </header>
-            <main className="grid place-content-center md:grid-flow-col gap-[8%] min-h-screen h-full w-screen pt-14">
+            <main className="grid place-content-center md:grid-flow-col gap-[8%] min-h-screen h-full w-full pt-14">
                 <section className="w-80">
                     <ol className="flex justify-center gap-2 mt-5 mb-6">
                         <li className={`${!isPaymentSection ? 'text-hospital-green font-bold' : 'text-very-light-pink'}`}>
@@ -117,14 +116,14 @@ const Checkout = () => {
                                 Order summary
                             </p>
 
-                            <ul className="grid gap-1">
+                            <ul className="grid gap-1 md:h-[20vh] md:pr-2 md:overflow-y-scroll">
                                 {itemsList?.map((item, index) => (
                                     <li key={index}>
-                                        <span>
+                                        <span className="inline-block w-3/4 whitespace-nowrap overflow-hidden overflow-ellipsis">
                                             {item.cartInfo.productAmount} x {item.name}
                                         </span>
-                                        <span className="float-right">
-                                            ${item.price * item.cartInfo.productAmount}
+                                        <span className="w-1/4 text-right float-right">
+                                            ${floorTotalPrice(item.price * item.cartInfo.productAmount)}
                                         </span>
                                     </li>
                                 ))}

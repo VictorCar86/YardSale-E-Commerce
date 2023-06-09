@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSelectedOrder, ordersState } from "../context/sliceOrdersState";
-import IconLittleArrow from "../assets/icons/IconLittleArrow";
 import { createProductPreview } from "../context/sliceProductsState";
 import { productPreviewModal } from "../context/sliceModalsState";
+import IconLittleArrow from "../assets/icons/IconLittleArrow";
+import floorTotalPrice from "../utils/floorTotalPrice";
 
 const OrderDesc = () => {
     const dispatcher = useDispatch();
@@ -20,7 +21,7 @@ const OrderDesc = () => {
         const cb = (prev, current) => {
             return prev + (current.price * current.Order_Product.productAmount);
         }
-        return items.reduce(cb, 0);
+        return floorTotalPrice(items.reduce(cb, 0));
     }
 
     function productPreview(item) {
@@ -29,7 +30,7 @@ const OrderDesc = () => {
     }
 
     return (
-        <aside className="w-[300px] h-full font-bold">
+        <aside className="w-[325px] h-full py-9 font-bold">
             <article className="flex gap-3">
                 <button className="md:hidden" onClick={() => dispatcher(deleteSelectedOrder())} type="button">
                     <IconLittleArrow className='w-3 h-max rotate-180 cursor-pointer'/>
@@ -49,11 +50,11 @@ const OrderDesc = () => {
                     </p>
                 </span>
                 <span className="font-bold">
-                    $ {reduceTotalPrice(currentOrder.items)},00
+                    $ {reduceTotalPrice(currentOrder.items)}
                 </span>
             </article>
 
-            <ul className="grid gap-4 mt-8">
+            <ul className="grid gap-4 max-h-[50vh] px-1.5 py-1 mt-8 overflow-y-auto overflow-x-hidden">
                 {currentOrder.items.map((item, index) => (
                     <li className="flex justify-between items-center h-16 w-full text-base" key={index}>
                         <button onClick={() => productPreview(item)} type="button">
@@ -73,7 +74,7 @@ const OrderDesc = () => {
                                 x{item.Order_Product.productAmount}
                             </span>
                             <span className='font-bold'>
-                                ${item.price},00
+                                ${item.price}
                             </span>
                         </span>
                     </li>

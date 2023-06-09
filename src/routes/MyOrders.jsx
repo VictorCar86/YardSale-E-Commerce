@@ -6,6 +6,7 @@ import MainNavbar from "../containers/MainNavbar";
 import OrderDesc from "../containers/OrderDesc";
 import ordersAPI from "../utils/requests/OrdersAPI";
 import IconLittleArrow from "../assets/icons/IconLittleArrow";
+import floorTotalPrice from "../utils/floorTotalPrice";
 
 const MyOrders = () => {
     const dispatcher = useDispatch();
@@ -23,7 +24,7 @@ const MyOrders = () => {
         const cb = (prev, current) => {
             return prev + (current.price * current.Order_Product.productAmount);
         }
-        return items.reduce(cb, 0);
+        return floorTotalPrice(items.reduce(cb, 0));
     }
 
     useEffect(() => {
@@ -41,7 +42,7 @@ const MyOrders = () => {
             <header>
                 <MainNavbar/>
             </header>
-            <main className="grid place-content-center md:grid-flow-col gap-[8%] min-h-screen h-full w-screen pt-14">
+            <main className="grid place-content-center md:grid-flow-col gap-[8%] min-h-screen h-full w-full pt-14">
                 <section className={`${typeof selectedOrder === 'number' && 'max-md:hidden'} w-[300px] min-h-[35vh] h-full font-bold`}>
                     <h1 className="mt-9 text-2xl">
                         My orders
@@ -75,7 +76,7 @@ const MyOrders = () => {
                             </>
                         )}
                         {ordersList && (
-                            <ul className="grid gap-4 mt-9">
+                            <ul className="grid gap-4 max-h-[63.5vh] px-1.5 py-1 mt-8 overflow-y-auto overflow-x-hidden">
                                 {ordersList?.map((order, index) => (
                                     <li key={index}>
                                         <button
@@ -92,7 +93,7 @@ const MyOrders = () => {
                                                 </p>
                                             </span>
                                             <span className="flex items-center gap-4 h-full text-very-light-pink">
-                                                <span>${order?.items?.length > 0 ? reduceTotalPrice(order.items) : '0'},00</span>
+                                                <span>${order?.items?.length > 0 ? reduceTotalPrice(order.items) : '0'}</span>
                                                 <IconLittleArrow className='inline-block w-2 h-max mt-0.5'/>
                                             </span>
                                         </button>

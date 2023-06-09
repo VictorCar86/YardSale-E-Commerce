@@ -8,12 +8,14 @@ import {
 } from "../../context/sliceProductsState";
 
 class ProductsAPI extends MakeRequest {
-    async PRODUCTS_LIST(config = {}, dispatcher) {
+    async PRODUCTS_LIST(config = { params: {} }, dispatcher) {
         const dispatchConfig = {
             beforeRequest: requestProductsGeneral,
             afterRequest: resultProductsData,
             catchError: errorProductsGeneral,
         };
+
+        config.params.itemsPerPage = window.innerWidth > 768 ? 20 : 10;
 
         await this.makeRequest(
             dispatcher,

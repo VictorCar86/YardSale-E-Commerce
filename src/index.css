@@ -6,6 +6,28 @@
     body {
         font-family: 'Quicksand', sans-serif;
     }
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #bababa #e8e8e8;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #e8e8e8;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #bababa;
+    border-radius: 10px;
+    border: 2px solid #e3e3e3;
+  }
 }
 
 @layer components {

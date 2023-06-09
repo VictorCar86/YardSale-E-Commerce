@@ -33,7 +33,7 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
     }
 
     return (
-        <nav className={`fixed top-14 left-0 flex flex-col justify-between h-[calc(100vh-56px)] w-screen max-w-sm py-9 px-6 bg-white overflow-scroll transition-all duration-500 ${(stateModal !== 'NAVBAR_MOBILE') && '-translate-x-full'}`}>
+        <nav className={`fixed top-14 left-0 flex flex-col justify-between h-[calc(100vh-56px)] w-screen max-w-sm py-9 px-6 bg-white overflow-auto transition-all duration-500 ${(stateModal !== 'NAVBAR_MOBILE') && '-translate-x-full'}`}>
             <article className="font-bold">
                 <h1 className="mb-5">CATEGORIES</h1>
                 <ul className="grid gap-5">
@@ -74,7 +74,7 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
                 )}
             </article>
 
-            <article className="mt-5">
+            <article className="mt-7">
                 {userState.userInfo && (
                   <>
                     <p className={`mb-5 text-sm text-very-light-pink ${userState.userInfo?.fetching && 'blur-[2px]'}`}>

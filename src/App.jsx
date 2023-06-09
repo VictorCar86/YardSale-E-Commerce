@@ -14,11 +14,13 @@ import InitialRequests from './hooks/InitialRequests';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 import "./App.css";
+import { Toaster } from 'sonner';
 
 const App = () => {
   return (
     <Provider store={store}>
       <InitialRequests/>
+      <Toaster richColors position="bottom-center"/>
       <BrowserRouter>
         <Routes>
           <Route index element={<MainPage />} />

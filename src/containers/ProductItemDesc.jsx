@@ -7,6 +7,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { toast } from 'sonner';
 import IconAddToCart from '../assets/icons/IconAddToCart';
 import productNotFoundImg from '../assets/images/product_not_found.webp';
+import skeletonImg from '../assets/images/skeleton.webp';
 import AdviceSessionModal from './AdviceSessionModal';
 import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
 import IconAddedToCart from '../assets/icons/IconAddedToCart';
@@ -28,6 +29,7 @@ const ProductItemDesc = ({ productData = {}, openModal }) => {
         openModal();
     }
 
+    const [lazyImage, setLazyImage] = useState(skeletonImg);
     const [adviceModal, setAdviceModal] = useState(false);
     const [itemFetching, setItemFetching] = useState(false);
 
@@ -52,8 +54,9 @@ const ProductItemDesc = ({ productData = {}, openModal }) => {
             <figure className='inline-block sm:w-60 w-[140px] cursor-pointer' onClick={createPreview}>
                 <img
                     className='sm:h-60 h-[140px] sm:w-60 w-[140px] object-cover rounded-2xl shadow-[0px_0px_3px_0px_#7B7B7B]'
-                    src={productData.image || productNotFoundImg}
+                    src={productData.image ? lazyImage : productNotFoundImg}
                     alt={productData.title}
+                    onLoad={() => setLazyImage(productData.image)}
                 />
                 <figcaption className='mt-3.5'>
                     <p className='font-bold'>

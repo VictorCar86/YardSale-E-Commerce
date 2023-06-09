@@ -5,6 +5,7 @@ import { productsState } from '../context/sliceProductsState';
 import { shoppingCartState } from '../context/sliceShoppingCartState';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdClose } from 'react-icons/io';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import productNotFoundImg from '../assets/images/product_not_found.webp';
 import AdviceSessionModal from './AdviceSessionModal';
 import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
@@ -18,7 +19,7 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
     const mainShopCartState = useSelector(shoppingCartState);
     const { productPreview } = useSelector(productsState);
     const { userInfo } = useSelector(userState);
-    const { itemsList } = mainShopCartState;
+    const { itemsList, fetching } = mainShopCartState;
 
     const [swiperIndex, setSwiperIndex] = useState(0);
     const swiperRef = useRef(null);
@@ -88,7 +89,11 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
                     onClick={sendToCart}
                     type="button"
                 >
-                    {alreadyExistItem ? <IconAddedToCart className='w-10'/> : <IconAddToCart />}
+                    {fetching && <AiOutlineLoading3Quarters className='inline-block w-7 h-max fill-white animate-spin'/>}
+                    {!fetching && (<>
+                        {alreadyExistItem && <IconAddedToCart className='w-10'/>}
+                        {!alreadyExistItem && <IconAddToCart/>}
+                    </>)}
                     <span>
                         {alreadyExistItem ? 'Already added to cart' : 'Add to cart'}
                     </span>
