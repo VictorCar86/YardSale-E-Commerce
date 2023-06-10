@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RiLoader4Fill } from "react-icons/ri";
 import { userState } from "../context/sliceUserState";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import userAPI from "../utils/requests/UserAPI";
 import MainNavbar from "../containers/MainNavbar";
 import LoadingPage from "../containers/LoadingPage";
@@ -188,8 +188,6 @@ const MyAccount = () => {
                         </article>
                     )}
                 </section>
-
-                <Toaster richColors position="bottom-center"/>
 
                 {(!userInfo || mainUserState.fetching) && (
                     <LoadingPage />

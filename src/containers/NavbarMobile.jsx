@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import productCategories from "../utils/productCategories";
 import productsAPI from "../utils/requests/ProductsAPI";
 import SignoutModal from "./SignoutModal";
+import { resetCurrentModal } from "../context/sliceModalsState";
 
 // eslint-disable-next-line react/prop-types
 const NavbarMobile = ({ userState = {}, stateModal }) => {
@@ -16,7 +17,10 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
     }
 
     function changeCategory(search) {
-        if (location.href.split('/').at(-1) === search) return;
+        if (location.href.split('/').at(-1) === search) {
+            dispatcher(resetCurrentModal());
+            return;
+        }
         navigate('/');
         history.replaceState({}, '', location.href + search);
 

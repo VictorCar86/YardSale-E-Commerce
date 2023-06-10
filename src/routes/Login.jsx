@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { RiLoader4Fill } from "react-icons/ri";
 import { userState } from "../context/sliceUserState";
 import { Link, useNavigate } from "react-router-dom";
@@ -118,8 +118,6 @@ const Login = () => {
                         Sign up
                     </Link>
                 </section>
-
-                <Toaster richColors position="bottom-center"/>
 
                 {userInfo && (
                     <LoadingPage />

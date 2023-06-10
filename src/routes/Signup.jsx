@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RiLoader4Fill } from "react-icons/ri";
@@ -60,7 +60,10 @@ const Signup = () => {
 
         const fetchConfig = {
             body: { user: taskPayload },
-            onSuccess: () => navigator('/'),
+            onSuccess: () => {
+                navigator('/');
+                toast.error('Account created successfully!');
+            },
             onError: (err) => {
                 toast.error('Something went wrong 😳', { description: err });
             },
@@ -171,8 +174,6 @@ const Signup = () => {
                         </button>
                     </form>
                 </section>
-
-                <Toaster richColors position="bottom-center"/>
             </main>
         </>
     )

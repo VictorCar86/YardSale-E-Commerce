@@ -67,15 +67,15 @@ const MyOrders = () => {
                     )}
                     {!fetching && (
                       <>
-                        {!ordersList && (
+                        {!ordersList?.length >= 1 && (
                             <>
-                                <p className="mt-9 text-center">
+                                <p className="mt-9 text-center font-medium">
                                     {"There's no orders yet 🧦"}
                                 </p>
                                 <Link className="primary-button w-3/4 mx-auto mb-24" to={'/'}>Explore now</Link>
                             </>
                         )}
-                        {ordersList && (
+                        {ordersList?.length >= 1 && (
                             <ul className="grid gap-4 max-h-[63.5vh] px-1.5 py-1 mt-8 overflow-y-auto overflow-x-hidden">
                                 {ordersList?.map((order, index) => (
                                     <li key={index}>

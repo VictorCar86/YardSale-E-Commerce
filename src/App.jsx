@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { store } from './context/reduxState';
 import { Provider } from 'react-redux';
+import { store } from './context/reduxState';
+import { Toaster } from 'sonner';
 import Login from './routes/Login';
 import Signup from './routes/Signup';
 import Recovery from './routes/Recovery';
@@ -14,7 +15,6 @@ import InitialRequests from './hooks/InitialRequests';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 import "./App.css";
-import { Toaster } from 'sonner';
 
 const App = () => {
   return (

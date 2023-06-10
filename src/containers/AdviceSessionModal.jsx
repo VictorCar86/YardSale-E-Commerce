@@ -5,11 +5,18 @@ import LogoYardSale from "../assets/logos/LogoYardSale";
 
 // eslint-disable-next-line react/prop-types
 const AdviceSessionModal = ({ closeModal }) => {
+    document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+
+    function callbackCloseModal() {
+        document.getElementsByTagName('html')[0].style.overflow = 'auto';
+        closeModal();
+    }
+
     return (
         <DialogModal className="overflow-visible">
             <button
-                className="absolute -top-4 -right-4 z-30 p-2 rounded-full bg-white shadow-[0px_0px_2px_1px_#7B7B7B]"
-                onClick={closeModal}
+                className="absolute -top-3 -right-3 z-30 p-2 rounded-full bg-white shadow-[0px_0px_2px_1px_#7B7B7B]"
+                onClick={callbackCloseModal}
                 type="button"
             >
                 <IoMdClose className='inline-block w-7 h-min fill-very-light-pink'/>

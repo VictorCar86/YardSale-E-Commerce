@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { GoAlert } from "react-icons/go";
 import LogoYardSale from "../assets/logos/LogoYardSale";
@@ -105,8 +105,6 @@ const SuccessRecover = () => {
                     </Link>
                 </section>
             )}
-
-            <Toaster richColors position="bottom-center"/>
         </main>
     )
 }

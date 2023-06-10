@@ -55,11 +55,7 @@ const MainNavbar = () => {
         }
     }
 
-    function changeCategory(search) {
-        if (location.href.split('/').at(-1) === search) return;
-        navigate('/');
-        history.replaceState({}, '', location.href + search);
-
+    function getProducts() {
         const url = new URLSearchParams(location.search);
         const currentCategory = productCategories[url.get('category')];
 
@@ -70,6 +66,13 @@ const MainNavbar = () => {
             },
         };
         productsAPI.PRODUCTS_LIST(config, dispatcher);
+    }
+
+    function changeCategory(search) {
+        if (location.href.split('/').at(-1) === search) return;
+        navigate('/');
+        history.replaceState({}, '', location.href + search);
+        getProducts();
     }
 
     useEffect(() => {
@@ -92,12 +95,17 @@ const MainNavbar = () => {
         };
     }, [accountMenuRef]);
 
+    function returnOrClose() {
+        if (currentModal) dispatcher(resetCurrentModal());
+        else navigate(-1);
+    }
+
     const categoryBtnStyles = 'inline-block px-1.5 py-1 rounded-md border hover:text-hospital-green hover:border-hospital-green';
 
     return (
         <nav className='fixed z-30 flex justify-between items-center h-14 w-full py-2 px-4 lg:px-6 border-b-very-light-pink border-b bg-white'>
             <span className='flex gap-3 md:hidden'>
-                <button onClick={() => navigate(-1)} type='button'>
+                <button className={`${location.pathname === '/' && 'hidden'}`} onClick={returnOrClose} type='button'>
                     <IoMdArrowBack className="w-7 h-max"/>
                 </button>
                 <button onClick={toggleNavbarMobile} type='button'>

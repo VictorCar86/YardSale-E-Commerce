@@ -116,7 +116,7 @@ const Checkout = () => {
                                 Order summary
                             </p>
 
-                            <ul className="grid gap-1 md:h-[20vh] md:pr-2 md:overflow-y-scroll">
+                            <ul className="grid gap-1 md:max-h-[20vh] md:pr-2 md:overflow-y-auto">
                                 {itemsList?.map((item, index) => (
                                     <li key={index}>
                                         <span className="inline-block w-3/4 whitespace-nowrap overflow-hidden overflow-ellipsis">

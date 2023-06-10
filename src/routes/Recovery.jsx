@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { RiLoader4Fill } from 'react-icons/ri';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LogoYardSale from "../assets/logos/LogoYardSale";
@@ -126,8 +126,6 @@ const Recovery = () => {
                         </span>
                     </section>
                 )}
-
-                <Toaster richColors position="bottom-center"/>
             </main>
         </>
     )
