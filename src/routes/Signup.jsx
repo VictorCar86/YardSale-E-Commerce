@@ -62,7 +62,7 @@ const Signup = () => {
             body: { user: taskPayload },
             onSuccess: () => {
                 navigator('/');
-                toast.error('Account created successfully!');
+                toast.success('Account created successfully!');
             },
             onError: (err) => {
                 toast.error('Something went wrong 😳', { description: err });
