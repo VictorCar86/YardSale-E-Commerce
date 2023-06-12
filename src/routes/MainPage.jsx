@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { productPreviewModal } from '../context/sliceModalsState';
+import { modalsState, productPreviewModal } from '../context/sliceModalsState';
 import { productsState } from '../context/sliceProductsState';
 import ProductItemDesc from '../containers/ProductItemDesc';
 import MainNavbar from '../containers/MainNavbar';
@@ -11,6 +11,7 @@ import productCategories from '../utils/productCategories';
 
 const MainPage = () => {
     const mainProductsState = useSelector(productsState);
+    const { currentModal } = useSelector(modalsState);
     const { productsData } = mainProductsState;
     const { currentPage, maxPage } = productsData || {};
     const dispatcher = useDispatch();
@@ -85,12 +86,33 @@ const MainPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsData]);
 
+    const mainTagRef = useRef(null);
+
+    useEffect(() => {
+        const tag = mainTagRef.current;
+        if (tag !== null){
+            if (currentModal && window.innerWidth < 468) {
+                tag.style.top = `-${scrollY}px`;
+                tag.style.position = 'fixed';
+                tag.style.overflowY = 'hidden';
+            }
+            else {
+                const lastPosition = parseInt(tag.style.top.slice(1));
+                tag.style.top = '';
+                tag.style.position = '';
+                tag.style.overflowY = '';
+                window.scrollTo(0, lastPosition);
+            }
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentModal]);
+
     return (
         <>
             <header>
                 <MainNavbar />
             </header>
-            <main className='relative h-screen pt-14'>
+            <main className='relative min-h-screen w-full pt-14' ref={mainTagRef}>
                 <section className='flex flex-col justify-between min-h-[calc(100vh-56px)] h-max w-full pt-6'>
                     <ul className='grid grid-auto-fill gap-6 justify-center'>
                         {(!productsData && mainProductsState.fetching) && (

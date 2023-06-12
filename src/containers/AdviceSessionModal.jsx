@@ -5,10 +5,13 @@ import LogoYardSale from "../assets/logos/LogoYardSale";
 
 // eslint-disable-next-line react/prop-types
 const AdviceSessionModal = ({ closeModal }) => {
-    document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+    const htmlTag = document.getElementsByTagName('html')[0];
+    htmlTag.style.overflowY = 'hidden';
+    htmlTag.style.touchAction = 'none';
 
     function callbackCloseModal() {
-        document.getElementsByTagName('html')[0].style.overflow = 'auto';
+        htmlTag.style.overflowY = 'auto';
+        htmlTag.style.touchAction = 'auto';
         closeModal();
     }
 
@@ -30,10 +33,10 @@ const AdviceSessionModal = ({ closeModal }) => {
                     <p>To buy, log in to your account or create a new one</p>
                 </span>
 
-                <Link className="primary-button mb-5" to={'/signup'}>
+                <Link className="primary-button mb-5" onClick={callbackCloseModal} to={'/signup'}>
                     Create account
                 </Link>
-                <Link className="secondary-button" to={'/login'}>
+                <Link className="secondary-button" onClick={callbackCloseModal} to={'/login'}>
                     Log in
                 </Link>
             </section>
