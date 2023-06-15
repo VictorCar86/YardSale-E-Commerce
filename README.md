@@ -1,6 +1,6 @@
 # YardSale E-Commerce 🏡
 
-YardSale is a modern and user-friendly e-commerce web application that allows users to explore, shop, and purchase a wide range of products. With a variety of features such as explore products, categorized browsing, shopping cart dedicated section, and customized order's section. YardSale provides a seamless and enjoyable online shopping experience by letting users organized their own custom account in order to follow every action in the platform.
+YardSale is a modern and user-friendly e-commerce web application that allows users to explore, compare, and purchase a wide range of products. With a variety of features such as explore products, categorized browsing, shopping cart dedicated section, and customized order's section. YardSale provides a seamless and enjoyable online shopping experience by letting users organized their own custom account in order to follow every action in the platform.
 
 ## Take a look at the project online 👇
 🔗 [YardSale E-Commerce](https://yardsale-ecommerce.netlify.app)
