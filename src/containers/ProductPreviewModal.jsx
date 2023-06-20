@@ -21,6 +21,11 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
     const { userInfo } = useSelector(userState);
     const { itemsList, fetching } = mainShopCartState;
 
+    function beforeToClose() {
+        closeModal();
+        if (window.innerWidth < 768) window.history.back();
+    }
+
     const [swiperIndex, setSwiperIndex] = useState(0);
     const swiperRef = useRef(null);
 
@@ -47,7 +52,7 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
 
     return (
         <aside className={`${className} w-full sm:max-w-sm sm:w-screen min-h-[calc(100vh-56px)] h-[calc(100vh-112px)] border-l border-l-very-light-pink max-sm:overflow-y-scroll bg-white transition-all duration-500 ${(stateModal !== 'PRODUCT_PREVIEW') && 'translate-x-full'}`}>
-            <button className='fixed z-20 grid p-2 mt-3 ml-3 rounded-full bg-white shadow-[0px_0px_4px_1px_#7B7B7B]' type='button' onClick={closeModal}>
+            <button className='fixed z-20 grid p-2 mt-3 ml-3 rounded-full bg-white shadow-[0px_0px_4px_1px_#7B7B7B]' type='button' onClick={beforeToClose}>
                 <IoMdClose className='inline-block w-[26px] h-min fill-very-light-pink'/>
             </button>
             <figure>
@@ -84,7 +89,6 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
                 </figcaption>
                 <button
                     className={`primary-button gap-2 w-4/5 mx-auto ${alreadyExistItem && 'secondary-button cursor-default border-none shadow-[0px_0px_4px_0px_#7B7B7B]'}`}
-                    // className='flex justify-center items-center w-4/5 mx-auto py-1 rounded-lg text-white font-bold bg-hospital-green'
                     disabled={mainShopCartState.fetching || alreadyExistItem}
                     onClick={sendToCart}
                     type="button"

@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import productCategories from "../utils/productCategories";
-import productsAPI from "../utils/requests/ProductsAPI";
 import SignoutModal from "./SignoutModal";
 import { resetCurrentModal } from "../context/sliceModalsState";
 
 // eslint-disable-next-line react/prop-types
 const NavbarMobile = ({ userState = {}, stateModal }) => {
     const dispatcher = useDispatch();
-    const navigate = useNavigate();
     const [signoutModal, setSignoutModal] = useState(false);
 
     function toggleModal() {
@@ -21,19 +19,7 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
             dispatcher(resetCurrentModal());
             return;
         }
-        navigate('/');
-        history.replaceState({}, '', location.href + search);
-
-        const url = new URLSearchParams(location.search);
-        const currentCategory = productCategories[url.get('category')];
-
-        const config = {
-            params: {
-                page: 1,
-                categoryId: currentCategory,
-            },
-        };
-        productsAPI.PRODUCTS_LIST(config, dispatcher);
+        location.href = `${location.origin}/${search}`;
     }
 
     return (

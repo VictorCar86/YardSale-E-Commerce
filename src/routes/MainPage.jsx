@@ -48,9 +48,7 @@ const MainPage = () => {
             url = location.origin + `/?page=${page}`
         }
 
-        history.replaceState({}, '', url);
-        window.scrollTo(0, 0);
-        getProducts();
+        window.location.href = url;
     }
 
     const [pageNumbers, setPageNumbers] = useState([]);
@@ -81,6 +79,7 @@ const MainPage = () => {
     useEffect(() => {
         if (!productsData){
             getProducts();
+            window.scrollTo(0, 0);
         }
         generateNavbarPages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,6 +106,11 @@ const MainPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentModal]);
 
+    function openModal() {
+        if (window.innerWidth < 768) window.location.hash = "product-preview";
+        setTimeout(() => dispatcher(productPreviewModal()), 0);
+    }
+
     return (
         <>
             <header>
@@ -128,7 +132,7 @@ const MainPage = () => {
                                 <ProductItemDesc
                                     key={i}
                                     productData={item}
-                                    openModal={() => dispatcher(productPreviewModal())}
+                                    openModal={openModal}
                                 />
                             ))}
                           </>

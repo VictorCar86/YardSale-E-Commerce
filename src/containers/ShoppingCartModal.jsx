@@ -15,10 +15,15 @@ const ShoppingCartModal = ({ modalState = false , closeModal, shoppingCartState 
         return floorTotalPrice(item.reduce(reducer, 0));
     }
 
+    function beforeToClose() {
+        closeModal();
+        if (window.innerWidth < 768) window.history.back();
+    }
+
     return (
         <section className={`fixed top-14 right-0 max-w-sm w-full h-[calc(100vh-56px)] px-4 border-l border-l-very-light-pink overflow-y-auto bg-white transition-all duration-500 ${(modalState !== 'SHOPPING_CART') && 'translate-x-full'}`}>
             <div className='flex items-center gap-3'>
-                <button type="button" onClick={closeModal}>
+                <button type="button" onClick={beforeToClose}>
                     <IconLittleArrow className='w-3 h-max rotate-180 cursor-pointer'/>
                 </button>
                 <h3 className='my-[18px] font-bold text-lg'>

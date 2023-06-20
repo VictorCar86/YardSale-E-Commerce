@@ -21,7 +21,6 @@ import ProductPreviewModal from './ProductPreviewModal';
 import productCategories from '../utils/productCategories'
 import AccountMenu from './AccountMenu';
 import NavbarMobile from './NavbarMobile';
-import productsAPI from '../utils/requests/ProductsAPI';
 
 const MainNavbar = () => {
     const mainUserState = useSelector(userState);
@@ -38,8 +37,10 @@ const MainNavbar = () => {
     function toggleNavbarMobile() {
         if (currentModal === 'NAVBAR_MOBILE') {
             dispatcher(resetCurrentModal());
+            if (window.innerWidth < 768) window.history.back();
         } else {
-            dispatcher(navbarMobileModal());
+            if (window.innerWidth < 768) window.location.hash = "navbar";
+            setTimeout(() => dispatcher(navbarMobileModal()), 0);
         }
     }
 
@@ -50,29 +51,16 @@ const MainNavbar = () => {
         }
         if (currentModal === 'SHOPPING_CART') {
             dispatcher(resetCurrentModal());
+            if (window.innerWidth < 768) window.history.back();
         } else {
-            dispatcher(shoppingCartModal());
+            if (window.innerWidth < 768) window.location.hash = "shopping-cart";
+            setTimeout(() => dispatcher(shoppingCartModal()), 0);
         }
-    }
-
-    function getProducts() {
-        const url = new URLSearchParams(location.search);
-        const currentCategory = productCategories[url.get('category')];
-
-        const config = {
-            params: {
-                page: 1,
-                categoryId: currentCategory,
-            },
-        };
-        productsAPI.PRODUCTS_LIST(config, dispatcher);
     }
 
     function changeCategory(search) {
         if (location.href.split('/').at(-1) === search) return;
-        navigate('/');
-        history.replaceState({}, '', location.href + search);
-        getProducts();
+        location.href = `${location.origin}/${search}`;
     }
 
     useEffect(() => {
