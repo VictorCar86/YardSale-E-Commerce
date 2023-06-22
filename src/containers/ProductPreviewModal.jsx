@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { userState } from '../context/sliceUserState';
 import { productsState } from '../context/sliceProductsState';
@@ -50,8 +50,18 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [itemsList, productPreview]);
 
+    const modalRef = useRef(null);
+
+    useEffect(() => {
+        if (stateModal !== 'PRODUCT_PREVIEW') {
+            setTimeout(() => {
+                modalRef.current?.scrollTo(0, 0);
+            }, 500);
+        }
+    }, [stateModal]);
+
     return (
-        <aside className={`${className} w-full sm:max-w-sm sm:w-screen min-h-[calc(100vh-56px)] h-[calc(100vh-112px)] border-l border-l-very-light-pink max-sm:overflow-y-scroll bg-white transition-all duration-500 ${(stateModal !== 'PRODUCT_PREVIEW') && 'translate-x-full'}`}>
+        <aside className={`${className} w-full sm:max-w-sm sm:w-screen min-h-[calc(100vh-56px)] h-[calc(100vh-112px)] border-l border-l-very-light-pink max-sm:overflow-y-scroll bg-white transition-all duration-500 ${(stateModal !== 'PRODUCT_PREVIEW') && 'translate-x-full'}`} ref={modalRef}>
             <button className='fixed z-20 grid p-2 mt-3 ml-3 rounded-full bg-white shadow-[0px_0px_4px_1px_#7B7B7B]' type='button' onClick={beforeToClose}>
                 <IoMdClose className='inline-block w-[26px] h-min fill-very-light-pink'/>
             </button>
