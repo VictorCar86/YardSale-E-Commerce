@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState, RefObject, Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import SignoutModal from './SignoutModal';
 
-// eslint-disable-next-line react/prop-types
-const AccountMenu = ({ customRef, setStateModal }) => {
+type Props = {
+    customRef: RefObject<HTMLElement>,
+    setStateModal: Dispatch<SetStateAction<boolean>>,
+};
+
+const AccountMenu = ({ customRef, setStateModal }: Props) => {
     const [signoutModal, setSignoutModal] = useState(false);
 
     function toggleDialog() {

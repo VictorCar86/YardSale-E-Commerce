@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { RiLoader4Fill } from "react-icons/ri";
@@ -9,8 +9,9 @@ import FormError from "../components/FormError";
 import MainNavbar from "../containers/MainNavbar";
 import LoadingPage from "../containers/LoadingPage";
 import LogoYardSale from "../assets/logos/LogoYardSale";
+import { FetchConfig } from "../utils/requests/MakeRequest";
 
-const Login = () => {
+const Login = (): JSX.Element => {
     const { userInfo } = useSelector(userState);
     const dispatcher = useDispatch();
     const navigator = useNavigate();
@@ -24,12 +25,12 @@ const Login = () => {
     const [formMistakes, setFormMistakes] = useState({ email: false, password: false });
     const [loader, setLoader] = useState(false);
 
-    const formRef = useRef(null);
+    const formRef = useRef<HTMLFormElement>(null);
 
-    async function sendUserInfo(event) {
+    function sendUserInfo(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const formData = new FormData(formRef.current);
+        const formData = new FormData(formRef?.current ?? undefined);
         const taskPayload = {
             email: formData.get('email'),
             password: formData.get('password'),
@@ -46,7 +47,7 @@ const Login = () => {
 
         setLoader(true);
 
-        const fetchConfig = {
+        const fetchConfig: FetchConfig = {
             body: taskPayload,
             onSuccess: () => navigator('/'),
             onError: (err) => {
@@ -70,7 +71,7 @@ const Login = () => {
                         Log in
                     </h1>
 
-                    <form className="grid" action="POST" ref={formRef}>
+                    <form className="grid" action="POST" ref={formRef} onSubmit={sendUserInfo}>
                         <label htmlFor="email" className="mb-1.5 text-sm font-bold">
                             Email address
                         </label>
@@ -104,7 +105,6 @@ const Login = () => {
                             type="submit"
                             className="primary-button"
                             disabled={loader}
-                            onClick={sendUserInfo}
                         >
                             {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Log in"}
                         </button>

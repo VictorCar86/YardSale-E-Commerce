@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "./reduxState";
 
 export const sliceOrdersState = createSlice({
     name: 'ordersState',
@@ -44,7 +45,7 @@ export const sliceOrdersState = createSlice({
     }
 });
 
-export const ordersState = (state) => state.sliceOrdersState;
+export const ordersState = (state: RootState) => state.sliceOrdersState;
 export const {
     requestOrdersGeneral,
     resultOrdersGeneral,

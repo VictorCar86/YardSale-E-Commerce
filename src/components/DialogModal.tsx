@@ -1,8 +1,12 @@
 import { useEffect, useRef } from 'react';
 
-// eslint-disable-next-line react/prop-types
-const DialogModal = ({ className = "", children }) => {
-    const dialogRef = useRef(null);
+type Props = {
+    className?: string,
+    children?: JSX.Element[]
+};
+
+const DialogModal = ({ className = "", children }: Props) => {
+    const dialogRef = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {
         if (dialogRef.current !== null && !dialogRef.current.open){

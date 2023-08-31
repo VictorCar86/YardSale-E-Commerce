@@ -14,3 +14,6 @@ export const store = configureStore({
         sliceModalsState,
     }
 });
+
+export type Dispatcher = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;

@@ -1,4 +1,4 @@
-const IconMenu = ({ className = "" }) => {
+const IconMenu = ({ className = "" }): JSX.Element => {
   return (
     <svg
         className={className}

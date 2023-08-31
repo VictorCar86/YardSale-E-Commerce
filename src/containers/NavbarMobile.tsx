@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import productCategories from "../utils/productCategories";
+import { productCategories } from "../utils/productCategories";
 import SignoutModal from "./SignoutModal";
-import { resetCurrentModal } from "../context/sliceModalsState";
+import { ModalOptions, resetCurrentModal } from "../context/sliceModalsState";
+import { UserState } from "../context/sliceUserState";
 
-// eslint-disable-next-line react/prop-types
-const NavbarMobile = ({ userState = {}, stateModal }) => {
+type Props = {
+    userState: UserState,
+    stateModal: typeof ModalOptions[keyof typeof ModalOptions],
+};
+
+const NavbarMobile = ({ userState, stateModal }: Props) => {
     const dispatcher = useDispatch();
     const [signoutModal, setSignoutModal] = useState(false);
 
@@ -14,7 +19,7 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
         setSignoutModal(prev => !prev);
     }
 
-    function changeCategory(search) {
+    function changeCategory(search: string) {
         if (location.href.split('/').at(-1) === search) {
             dispatcher(resetCurrentModal());
             return;
@@ -23,7 +28,7 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
     }
 
     return (
-        <nav className={`fixed top-14 left-0 flex flex-col justify-start h-[calc(100vh-56px)] w-screen max-w-sm py-9 px-6 bg-white overflow-auto transition-all duration-500 ${(stateModal !== 'NAVBAR_MOBILE') && '-translate-x-full'}`}>
+        <nav className={`fixed top-14 left-0 flex flex-col justify-start h-[calc(100vh-56px)] w-screen max-w-sm py-9 px-6 bg-white overflow-auto transition-all duration-500 ${(stateModal !== ModalOptions.NAVBAR_MOBILE) && '-translate-x-full'}`}>
             <article className="font-bold">
                 <h1 className="mb-5">CATEGORIES</h1>
                 <ul className="grid gap-5">
@@ -65,9 +70,9 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
             </article>
 
             <article className="mt-9">
-                {userState.userInfo && (
+                {userState.userInfo.firstName && (
                   <>
-                    <p className={`mb-5 text-sm text-very-light-pink ${userState.userInfo?.fetching && 'blur-[2px]'}`}>
+                    <p className={`mb-5 text-sm text-very-light-pink ${userState.fetching && 'blur-[2px]'}`}>
                         {userState.userInfo ? userState.userInfo.email : 'example@email.com'}
                     </p>
                     <button
@@ -79,7 +84,7 @@ const NavbarMobile = ({ userState = {}, stateModal }) => {
                     </button>
                   </>
                 )}
-                {!userState.userInfo && (
+                {!userState.userInfo.firstName && (
                   <>
                     <Link className='inline-block h-9 py-1.5 px-3 mr-4 rounded-md text-white bg-hospital-green' to={'/login'}>
                         Log In

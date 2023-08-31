@@ -1,4 +1,5 @@
 import {
+    ModalOptions,
     modalsState,
     navbarMobileModal,
     resetCurrentModal,
@@ -35,7 +36,7 @@ const MainNavbar = () => {
     const [accountModal, setAccountModal] = useState(false);
 
     function toggleNavbarMobile() {
-        if (currentModal === 'NAVBAR_MOBILE') {
+        if (currentModal === ModalOptions.NAVBAR_MOBILE) {
             dispatcher(resetCurrentModal());
             if (window.innerWidth < 768) window.history.back();
         } else {
@@ -49,7 +50,7 @@ const MainNavbar = () => {
             setAdviceModal(true);
             return;
         }
-        if (currentModal === 'SHOPPING_CART') {
+        if (currentModal === ModalOptions.SHOPPING_CART) {
             dispatcher(resetCurrentModal());
             if (window.innerWidth < 768) window.history.back();
         } else {
@@ -58,7 +59,7 @@ const MainNavbar = () => {
         }
     }
 
-    function changeCategory(search) {
+    function changeCategory(search: string) {
         if (location.href.split('/').at(-1) === search) return;
         location.href = `${location.origin}/${search}`;
     }
@@ -68,12 +69,12 @@ const MainNavbar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.location.href]);
 
-    const accountMenuRef = useRef(null);
+    const accountMenuRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        function handleClickOutside(event) {
+        function handleClickOutside(event: MouseEvent) {
             const menu = accountMenuRef.current;
-            if (menu && !menu.contains(event.target)) {
+            if (menu && !menu.contains(event.target as Node)) {
                 setAccountModal(prev => !prev);
             }
         }
@@ -220,7 +221,6 @@ const MainNavbar = () => {
                 <NavbarMobile
                     userState={mainUserState}
                     stateModal={currentModal}
-                    closeModal={() => dispatcher(resetCurrentModal())}
                 />
             )}
         </nav>

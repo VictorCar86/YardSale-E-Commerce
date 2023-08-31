@@ -4,8 +4,9 @@ import { useDispatch } from 'react-redux';
 import userAPI from '../utils/requests/UserAPI';
 import DialogModal from '../components/DialogModal';
 
-// eslint-disable-next-line react/prop-types
-const SignoutModal = ({ toggleModal }) => {
+type Props = { toggleModal: () => void };
+
+const SignoutModal = ({ toggleModal }: Props) => {
     const dispatcher = useDispatch();
 
     function closeSession() {

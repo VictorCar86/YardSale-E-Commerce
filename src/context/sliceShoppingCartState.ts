@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "./reduxState";
 
 export const sliceShoppingCartState = createSlice({
     name: 'shoppingCartState',
@@ -34,7 +35,7 @@ export const sliceShoppingCartState = createSlice({
     }
 });
 
-export const shoppingCartState = (state) => state.sliceShoppingCartState;
+export const shoppingCartState = (state: RootState) => state.sliceShoppingCartState;
 export const {
     requestShopCartGeneral,
     resultShopCartGeneral,
