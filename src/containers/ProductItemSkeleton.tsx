@@ -1,7 +1,7 @@
 import skeletonImg from '../assets/images/skeleton.webp';
 import IconAddToCart from "../assets/icons/IconAddToCart";
 
-const ProductItemSkeleton = () => {
+const ProductItemSkeleton = (): JSX.Element => {
   return (
     <li className='relative animate-pulse'>
         <figure className='inline-block sm:w-60 w-[140px]'>

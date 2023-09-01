@@ -1,5 +1,5 @@
 import axios, { Method } from 'axios';
-import { Dispatcher } from '../../context/reduxState';
+import { DispatcherStore } from '../../context/reduxState';
 import { ActionCreator } from "@reduxjs/toolkit";
 
 type ActionCreatorDTO = ActionCreator<any> | ActionCreator<any>[];
@@ -14,8 +14,8 @@ export type DispatchConfig = {
 export type RequestConfig = {
     method: Method,
     url: string,
-    body?: any,
-    params?: object,
+    body?: {[key: string]: any},
+    params?: {[key: string]: any},
     onSuccess?: (message: string) => any,
     onError?: (error: string) => any,
     onFinally?: () => any,
@@ -27,7 +27,7 @@ class MakeRequest {
 
     #BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-    async makeRequest(dispatch: Dispatcher, requestConfig: RequestConfig, dispatchConfig: DispatchConfig) {
+    async makeRequest(dispatch: DispatcherStore, requestConfig: RequestConfig, dispatchConfig: DispatchConfig) {
         const { method, url, body, params, onSuccess, onError, onFinally } = requestConfig;
         const { beforeRequest, afterRequest, catchError, catchFinally } = dispatchConfig;
 

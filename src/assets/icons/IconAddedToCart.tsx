@@ -1,4 +1,4 @@
-const IconAddedToCart = ({ className = "" }) => {
+const IconAddedToCart = ({ className = "" }): JSX.Element => {
   return (
     <svg
         className={className}
@@ -60,7 +60,7 @@ const IconAddedToCart = ({ className = "" }) => {
         </filter>
         </defs>
     </svg>
-    );
+  );
 }
 
 export default IconAddedToCart;

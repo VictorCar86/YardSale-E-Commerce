@@ -1,34 +1,35 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
-import { shoppingCartState } from '../context/sliceShoppingCartState';
+import { ItemCartInfo, shoppingCartState } from '../context/sliceShoppingCartState';
 import { productPreviewModal } from '../context/sliceModalsState';
 import { createProductPreview } from '../context/sliceProductsState';
 import { toast } from 'sonner';
 import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
 import productNotFoundImg from '../assets/images/product_not_found.webp';
 
-// eslint-disable-next-line react/prop-types
-const ItemShoppingCart = ({ productData = {} }) => {
+type Props = { itemCart: ItemCartInfo };
+
+const ItemShoppingCart = ({ itemCart }: Props): JSX.Element => {
     const dispatcher = useDispatch();
     const mainShopCartState = useSelector(shoppingCartState);
 
     function showPreview() {
-        dispatcher(createProductPreview(productData));
+        dispatcher(createProductPreview(itemCart));
         dispatcher(productPreviewModal());
     }
 
-    const [amount, setAmount] = useState(productData.cartInfo.productAmount);
+    const [amount, setAmount] = useState(itemCart.cartInfo.productAmount);
 
-    function updateAmount(event) {
-        const currentValue = event.target.value;
-        if (currentValue === productData.cartInfo.productAmount){
+    function updateAmount(event: ChangeEvent<HTMLSelectElement>) {
+        const currentValue = parseInt(event.target.value);
+        if (currentValue === itemCart.cartInfo.productAmount){
             return;
         }
 
         const config = {
             body: {
-                productId: productData.id,
+                productId: itemCart.id,
                 productAmount: currentValue,
             },
             onSuccess: () => {
@@ -42,7 +43,7 @@ const ItemShoppingCart = ({ productData = {} }) => {
     function deleteItem() {
         const config = {
             body: {
-                productId: productData.id,
+                productId: itemCart.id,
             },
             onSuccess: () => toast.success('The item from your shopping cart was deleted!'),
         };
@@ -55,12 +56,12 @@ const ItemShoppingCart = ({ productData = {} }) => {
                 <figure className='flex items-center gap-4'>
                     <img
                         className='w-[70px] h-[70px] object-cover rounded-lg shadow-[0px_0px_2px_0px_#7B7B7B]'
-                        src={productData.image ?? productNotFoundImg}
-                        alt={productData.name}
+                        src={itemCart.image ?? productNotFoundImg}
+                        alt={itemCart.name}
                     />
                     <figcaption className="flex justify-between items-center">
                         <p className='text-very-light-pink overflow-hidden whitespace-break-spaces overflow-ellipsis'>
-                            {productData.name}
+                            {itemCart.name}
                         </p>
                     </figcaption>
                 </figure>
@@ -73,7 +74,7 @@ const ItemShoppingCart = ({ productData = {} }) => {
                     <option value='4'> 4 </option>
                     <option value='5'> 5 </option>
                 </select>
-                <span className='font-bold'>${productData.price}</span>
+                <span className='font-bold'>${itemCart.price}</span>
                 <button
                     className='contents'
                     disabled={mainShopCartState.fetching}

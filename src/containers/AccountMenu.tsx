@@ -7,7 +7,7 @@ type Props = {
     setStateModal: Dispatch<SetStateAction<boolean>>,
 };
 
-const AccountMenu = ({ customRef, setStateModal }: Props) => {
+const AccountMenu = ({ customRef, setStateModal }: Props): JSX.Element => {
     const [signoutModal, setSignoutModal] = useState(false);
 
     function toggleDialog() {

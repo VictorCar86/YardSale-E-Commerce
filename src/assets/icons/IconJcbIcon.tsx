@@ -1,4 +1,4 @@
-const JcbCardIcon = ({ className = "" }) => {
+const JcbCardIcon = ({ className = "" }): JSX.Element => {
   return (
     <svg className={className} height="800px" width="800px" viewBox="0 0 512 512">
         <path fill="#f2f2f2" d="M512,402.282c0,16.716-13.55,30.267-30.265,30.267H30.265C13.55,432.549,0,418.996,0,402.282V109.717  c0-16.716,13.55-30.266,30.265-30.266h451.469c16.716,0,30.265,13.551,30.265,30.266L512,402.282L512,402.282z"/>

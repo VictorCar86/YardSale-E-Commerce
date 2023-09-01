@@ -2,7 +2,7 @@ import { AiFillBug } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import MainNavbar from '../containers/MainNavbar';
 
-const Error404 = () => {
+const Error404 = (): JSX.Element => {
     const navigate = useNavigate();
     return (
         <>

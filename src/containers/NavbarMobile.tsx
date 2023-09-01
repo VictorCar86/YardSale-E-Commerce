@@ -11,7 +11,7 @@ type Props = {
     stateModal: typeof ModalOptions[keyof typeof ModalOptions],
 };
 
-const NavbarMobile = ({ userState, stateModal }: Props) => {
+const NavbarMobile = ({ userState, stateModal }: Props): JSX.Element => {
     const dispatcher = useDispatch();
     const [signoutModal, setSignoutModal] = useState(false);
 

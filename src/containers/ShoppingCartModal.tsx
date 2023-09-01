@@ -1,15 +1,23 @@
 import { Link } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import IconLittleArrow from "../assets/icons/IconLittleArrow.jsx";
-import ItemShoppingCart from './ItemShoppingCart';
+import IconLittleArrow from "../assets/icons/IconLittleArrow.js";
+import ItemShoppingCart from './ItemShoppingCart.jsx';
 import floorTotalPrice from "../utils/floorTotalPrice.js";
+import { ModalOptions } from "../context/sliceModalsState.js";
+import { ItemCartInfo, ShoppingCartState } from "../context/sliceShoppingCartState.js";
+import { PayloadAction } from "@reduxjs/toolkit";
 
-// eslint-disable-next-line react/prop-types
-const ShoppingCartModal = ({ modalState = false , closeModal, shoppingCartState = {} }) => {
+type Props = {
+    shoppingCartState: ShoppingCartState,
+    stateModal: typeof ModalOptions[keyof typeof ModalOptions],
+    closeModal: () => PayloadAction<any>,
+}
+
+const ShoppingCartModal = ({ stateModal, closeModal, shoppingCartState }: Props): JSX.Element => {
     const { itemsList } = shoppingCartState;
 
-    const sumTotal = (item) => {
-        const reducer = (accumulator, currentValue) => {
+    const sumTotal = (item: ItemCartInfo[]) => {
+        const reducer = (accumulator: number, currentValue: ItemCartInfo) => {
             return accumulator + (currentValue.price * currentValue.cartInfo.productAmount);
         }
         return floorTotalPrice(item.reduce(reducer, 0));
@@ -21,7 +29,7 @@ const ShoppingCartModal = ({ modalState = false , closeModal, shoppingCartState 
     }
 
     return (
-        <section className={`fixed top-14 right-0 max-w-sm w-full h-[calc(100vh-56px)] px-4 border-l border-l-very-light-pink overflow-y-auto bg-white transition-all duration-500 ${(modalState !== 'SHOPPING_CART') && 'translate-x-full'}`}>
+        <section className={`fixed top-14 right-0 max-w-sm w-full h-[calc(100vh-56px)] px-4 border-l border-l-very-light-pink overflow-y-auto bg-white transition-all duration-500 ${(stateModal !== ModalOptions.SHOPPING_CART) && 'translate-x-full'}`}>
             <div className='flex items-center gap-3'>
                 <button type="button" onClick={beforeToClose}>
                     <IconLittleArrow className='w-3 h-max rotate-180 cursor-pointer'/>
@@ -37,7 +45,7 @@ const ShoppingCartModal = ({ modalState = false , closeModal, shoppingCartState 
               <>
                 <section>
                     {itemsList.map((product, index) => (
-                        <ItemShoppingCart productData={product} key={index} />
+                        <ItemShoppingCart itemCart={product} key={index} />
                     ))}
                 </section>
                 <div className='flex justify-between items-center px-6 bg-input-field rounded-lg font-bold h-[70px]'>

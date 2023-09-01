@@ -3,8 +3,11 @@ import { IoMdClose } from "react-icons/io";
 import DialogModal from "../components/DialogModal";
 import LogoYardSale from "../assets/logos/LogoYardSale";
 
-// eslint-disable-next-line react/prop-types
-const AdviceSessionModal = ({ closeModal }) => {
+type Props = {
+    closeModal: () => void,
+};
+
+const AdviceSessionModal = ({ closeModal }: Props): JSX.Element => {
     const htmlTag = document.getElementsByTagName('html')[0];
     htmlTag.style.overflowY = 'hidden';
     htmlTag.style.touchAction = 'none';

@@ -12,11 +12,11 @@ import {
 } from "../../context/sliceUserState";
 import { resetShopCartState } from "../../context/sliceShoppingCartState";
 import { resetOrdersState } from "../../context/sliceOrdersState";
-import { Dispatcher } from "../../context/reduxState";
+import { DispatcherStore } from "../../context/reduxState";
 // import shoppingCartAPI from './ShoppingCartAPI';
 
 class UserAPI extends MakeRequest {
-    async LOGIN(config: FetchConfig, dispatcher: Dispatcher) {
+    async LOGIN(config: FetchConfig, dispatcher: DispatcherStore) {
         const requestConfig: RequestConfig = {
             method: 'POST',
             url: '/api/v1/auth/login',
@@ -38,7 +38,7 @@ class UserAPI extends MakeRequest {
         // await shoppingCartAPI.CART_ITEMS({}, dispatcher);
     }
 
-    async SIGNUP(config: FetchConfig, dispatcher: Dispatcher) {
+    async SIGNUP(config: FetchConfig, dispatcher: DispatcherStore) {
         const requestConfig: RequestConfig = {
             method: 'POST',
             url: '/api/v1/customers',
@@ -59,7 +59,7 @@ class UserAPI extends MakeRequest {
         await this.USER_INFO({}, dispatcher);
     }
 
-    async SIGNOUT(config: FetchConfig, dispatcher: Dispatcher) {
+    async SIGNOUT(config: FetchConfig, dispatcher: DispatcherStore) {
         const requestConfig: RequestConfig = {
             method: 'POST',
             url: '/api/v1/auth/signout',
@@ -78,7 +78,7 @@ class UserAPI extends MakeRequest {
         );
     }
 
-    async UPDATE_DATA(config: FetchConfig, dispatcher: Dispatcher) {
+    async UPDATE_DATA(config: FetchConfig, dispatcher: DispatcherStore) {
         const requestConfig: RequestConfig = {
             method: 'PATCH',
             url: '/api/v1/users',
@@ -97,7 +97,7 @@ class UserAPI extends MakeRequest {
         );
     }
 
-    async USER_INFO(config: FetchConfig, dispatcher: Dispatcher) {
+    async USER_INFO(config: FetchConfig, dispatcher: DispatcherStore) {
         const requestConfig: RequestConfig = {
             method: 'GET',
             url: '/api/v1/users/info',
@@ -116,7 +116,7 @@ class UserAPI extends MakeRequest {
         );
     }
 
-    async RECOVER_BY_EMAIL(config: FetchConfig, dispatcher: Dispatcher) {
+    async RECOVER_BY_EMAIL(config: FetchConfig, dispatcher: DispatcherStore) {
         const requestConfig: RequestConfig = {
             method: 'POST',
             url: '/api/v1/auth/recovery',
@@ -135,7 +135,7 @@ class UserAPI extends MakeRequest {
         );
     }
 
-    async CHANGE_PASSWORD(config: FetchConfig, dispatcher: Dispatcher) {
+    async CHANGE_PASSWORD(config: FetchConfig, dispatcher: DispatcherStore) {
         const requestConfig: RequestConfig = {
             method: 'POST',
             url: '/api/v1/auth/new-password',

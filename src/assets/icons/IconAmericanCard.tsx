@@ -1,4 +1,4 @@
-const AmericanCardIcon = ({ className = "" }) => {
+const AmericanCardIcon = ({ className = "" }): JSX.Element => {
   return (
     <svg className={className} height="800px" width="800px" viewBox="0 0 512 512">
         <path fill="#306FC5" d="M512,402.281c0,16.716-13.55,30.267-30.265,30.267H30.265C13.55,432.549,0,418.997,0,402.281V109.717  c0-16.715,13.55-30.266,30.265-30.266h451.47c16.716,0,30.265,13.551,30.265,30.266V402.281L512,402.281z"/>

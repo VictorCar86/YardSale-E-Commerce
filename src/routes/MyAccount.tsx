@@ -8,8 +8,9 @@ import userAPI from "../utils/requests/UserAPI";
 import MainNavbar from "../containers/MainNavbar";
 import LoadingPage from "../containers/LoadingPage";
 import LogoYardSale from "../assets/logos/LogoYardSale";
+import { FetchConfig } from "../utils/requests/MakeRequest";
 
-const MyAccount = () => {
+const MyAccount = (): JSX.Element => {
     const mainUserState = useSelector(userState);
     const { userInfo } = mainUserState;
 
@@ -23,7 +24,6 @@ const MyAccount = () => {
             };
             userAPI.USER_INFO(config, dispatcher);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const [editMode, setEditMode] = useState(false);
@@ -33,14 +33,14 @@ const MyAccount = () => {
     }
 
     const [loader, setLoader] = useState(false);
-    const formRef = useRef(null);
+    const formRef = useRef<HTMLFormElement>(null);
 
     async function patchUserInfo() {
-        const formData = new FormData(formRef.current);
+        const formData = new FormData(formRef?.current ?? undefined);
         const fields = ['firstName', 'lastName', 'email', 'password'];
 
-        const payload = {};
-        fields.forEach(key => {
+        const payload: {[key: string]: any} = {};
+        fields.forEach((key: string) => {
             const value = formData.get(key);
             if (value !== "") payload[key] = value;
         });
@@ -52,7 +52,7 @@ const MyAccount = () => {
 
         setLoader(true);
 
-        const fetchConfig = {
+        const fetchConfig: FetchConfig = {
             body: payload,
             onSuccess: () => {
                 toggleEditMode();

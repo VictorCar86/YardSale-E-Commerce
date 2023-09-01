@@ -1,17 +1,52 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./reduxState";
+import { ItemCartInfo } from "./sliceShoppingCartState";
+import { OrderInfo } from "./sliceOrdersState";
+
+export type ProductInfo = {
+    id:          number;
+    name:        string;
+    image:       string;
+    price:       number;
+    rating:      string | null;
+    description: string;
+    categoryId:  number;
+    category:    Category;
+}
+
+export type Category = {
+    id:        number;
+    name:      string;
+    image:     string;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+}
+
+export type ProductsData = {
+    products:    ProductInfo[],
+    currentPage: number,
+    maxPage:     number,
+};
+
+let productPreviewInitial!: ProductInfo | ItemCartInfo | OrderInfo;
+
+const productsDataInitial: ProductsData = {
+    products: [],
+    currentPage: 0,
+    maxPage: 0,
+};
 
 export const sliceProductsState = createSlice({
     name: 'productsState',
     initialState: {
-        productsData: null,
-        productPreview: null,
+        productsData: productsDataInitial,
+        productPreview: productPreviewInitial,
         fetching: false,
         error: false,
     },
     reducers: {
         requestProductsGeneral: (state) => {
-            state.productsData = null;
+            state.productsData = productsDataInitial;
             state.fetching = true;
             state.error = false;
         },
@@ -20,19 +55,19 @@ export const sliceProductsState = createSlice({
             state.fetching = false;
             state.error = false;
         },
-        resultProductsData: (state, action) => {
+        resultProductsData: (state, action: PayloadAction<ProductsData>) => {
             const data = action.payload;
             state.productsData = data;
             state.fetching = false;
             state.error = false;
         },
 
-        createProductPreview: (state, action) => {
+        createProductPreview: (state, action: PayloadAction<ProductInfo | ItemCartInfo | OrderInfo>) => {
             const data = action.payload;
             state.productPreview = data;
         },
         deleteProductPreview: (state) => {
-            state.productPreview = null;
+            state.productPreview = productPreviewInitial;
         },
 
         errorProductsGeneral: (state) => {
@@ -43,6 +78,7 @@ export const sliceProductsState = createSlice({
 });
 
 export const productsState = (state: RootState) => state.sliceProductsState;
+export type ProductsState = ReturnType<typeof productsState>;
 export const {
     requestProductsGeneral,
     resultProductsGeneral,

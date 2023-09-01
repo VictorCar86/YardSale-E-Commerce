@@ -1,4 +1,4 @@
-const VisaCardIcon = ({ className = "" }) => {
+const VisaCardIcon = ({ className = "" }): JSX.Element => {
   return (
     <svg className={className} viewBox="0 -11 70 70" height="800px" width="800px">
         <rect x="0.5" y="0.5" width="69" height="47" rx="5.5" fill="white" stroke="#D9D9D9"/>

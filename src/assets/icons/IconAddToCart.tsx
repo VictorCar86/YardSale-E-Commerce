@@ -1,4 +1,4 @@
-const IconAddToCart = ({ className = "" }) => {
+const IconAddToCart = ({ className = "" }): JSX.Element => {
   return (
     <svg
         className={className}

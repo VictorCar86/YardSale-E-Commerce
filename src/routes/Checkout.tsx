@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { resetShopCartState, shoppingCartState } from "../context/sliceShoppingCartState";
+import { ItemCartInfo, resetShopCartState, shoppingCartState } from "../context/sliceShoppingCartState";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import { AiOutlineInfoCircle } from "react-icons/ai";
@@ -14,7 +14,7 @@ import IconAmericanCard from "../assets/icons/IconAmericanCard"
 import ordersAPI from "../utils/requests/OrdersAPI";
 import floorTotalPrice from "../utils/floorTotalPrice";
 
-const Checkout = () => {
+const Checkout = (): JSX.Element => {
     const mainShopCartState = useSelector(shoppingCartState);
     const { itemsList } = mainShopCartState;
     const dispatcher = useDispatch();
@@ -23,10 +23,9 @@ const Checkout = () => {
     const [isPaymentSection, setIsPaymentSection] = useState(false);
 
     useEffect(() => {
-        if (!itemsList){
+        if (!itemsList) {
             navigate('/');
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function postOrder() {
@@ -47,9 +46,9 @@ const Checkout = () => {
     }
 
     const reducePrices = useMemo(() => {
-        const cb = (prev, current) => prev + (current.cartInfo.productAmount * current.price);
+        const cb = (prev: number, current: ItemCartInfo) => prev + (current.cartInfo.productAmount * current.price);
         return itemsList ? floorTotalPrice(itemsList.reduce(cb, 0)) : '0';
-    }, [itemsList])
+    }, [itemsList]);
 
     return (
         <>

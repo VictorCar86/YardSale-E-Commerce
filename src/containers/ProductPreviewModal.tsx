@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
 import { userState } from '../context/sliceUserState';
 import { productsState } from '../context/sliceProductsState';
 import { shoppingCartState } from '../context/sliceShoppingCartState';
@@ -11,10 +11,17 @@ import AdviceSessionModal from './AdviceSessionModal';
 import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
 import IconAddToCart from '../assets/icons/IconAddToCart';
 import IconAddedToCart from '../assets/icons/IconAddedToCart';
+import { ModalOptions } from '../context/sliceModalsState';
 import 'swiper/css';
+import { PayloadAction } from '@reduxjs/toolkit';
 
-// eslint-disable-next-line react/prop-types
-const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
+type Props = {
+    className: string,
+    stateModal: typeof ModalOptions[keyof typeof ModalOptions],
+    closeModal: () => PayloadAction<any>,
+};
+
+const ProductPreviewModal = ({ className = "", stateModal, closeModal }: Props): JSX.Element => {
     const dispatcher = useDispatch();
     const mainShopCartState = useSelector(shoppingCartState);
     const { productPreview } = useSelector(productsState);
@@ -27,7 +34,7 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
     }
 
     const [swiperIndex, setSwiperIndex] = useState(0);
-    const swiperRef = useRef(null);
+    const swiperRef = useRef<SwiperRef>(null);
 
     const arraySample = [...Array(productPreview?.image || 3).keys()];
     const [adviceModal, setAdviceModal] = useState(false);
@@ -50,10 +57,10 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [itemsList, productPreview]);
 
-    const modalRef = useRef(null);
+    const modalRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        if (stateModal !== 'PRODUCT_PREVIEW') {
+        if (stateModal !== ModalOptions.PRODUCT_PREVIEW) {
             setTimeout(() => {
                 modalRef.current?.scrollTo(0, 0);
             }, 500);
@@ -61,7 +68,7 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
     }, [stateModal]);
 
     return (
-        <aside className={`${className} w-full sm:max-w-sm sm:w-screen min-h-[calc(100vh-56px)] h-[calc(100vh-112px)] border-l border-l-very-light-pink max-sm:overflow-y-scroll bg-white transition-all duration-500 ${(stateModal !== 'PRODUCT_PREVIEW') && 'translate-x-full'}`} ref={modalRef}>
+        <aside className={`${className} w-full sm:max-w-sm sm:w-screen min-h-[calc(100vh-56px)] h-[calc(100vh-112px)] border-l border-l-very-light-pink max-sm:overflow-y-scroll bg-white transition-all duration-500 ${(stateModal !== ModalOptions.PRODUCT_PREVIEW) && 'translate-x-full'}`} ref={modalRef}>
             <button className='fixed z-20 grid p-2 mt-3 ml-3 rounded-full bg-white shadow-[0px_0px_4px_1px_#7B7B7B]' type='button' onClick={beforeToClose}>
                 <IoMdClose className='inline-block w-[26px] h-min fill-very-light-pink'/>
             </button>
@@ -82,7 +89,7 @@ const ProductPreviewModal = ({ className = "", stateModal, closeModal }) => {
                     {arraySample.map(i => (
                         <span
                             className={`h-3 w-3 rounded-full cursor-pointer ${swiperIndex === i ? 'bg-hospital-green' : 'bg-very-light-pink/70'}`}
-                            onClick={() => swiperRef.current.swiper.slideTo(i)}
+                            onClick={() => swiperRef.current?.swiper.slideTo(i)}
                             key={i}
                         />
                     ))}

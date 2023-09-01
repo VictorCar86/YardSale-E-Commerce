@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deleteSelectedOrder, ordersState } from "../context/sliceOrdersState";
+import { OrderInfo, OrderList, deleteSelectedOrder, ordersState } from "../context/sliceOrdersState";
 import { createProductPreview } from "../context/sliceProductsState";
 import { productPreviewModal } from "../context/sliceModalsState";
 import IconLittleArrow from "../assets/icons/IconLittleArrow";
@@ -9,22 +9,22 @@ const OrderDesc = () => {
     const dispatcher = useDispatch();
     const mainOrdersState = useSelector(ordersState);
     const { ordersList, selectedOrder } = mainOrdersState;
-    const currentOrder = ordersList[selectedOrder];
+    const currentOrder = ordersList[selectedOrder ?? Infinity];
 
-    function orderDateFormat(date = "") {
-        if (typeof date !== 'string') return false;
+    function orderDateFormat(date: OrderList['createdAt']) {
+        if (!date) return false;
         const d = new Date(date);
         return `${d.getMonth()}.${d.getDay()}.${d.getFullYear()}`
     }
 
-    function reduceTotalPrice(items = []) {
-        const cb = (prev, current) => {
+    function reduceTotalPrice(items: OrderInfo[]) {
+        const cb = (prev: number, current: OrderInfo) => {
             return prev + (current.price * current.Order_Product.productAmount);
         }
         return floorTotalPrice(items.reduce(cb, 0));
     }
 
-    function productPreview(item) {
+    function productPreview(item: OrderInfo) {
         dispatcher(createProductPreview(item));
         dispatcher(productPreviewModal());
     }

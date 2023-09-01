@@ -7,9 +7,9 @@ import MainNavbar from '../containers/MainNavbar';
 import productsAPI from '../utils/requests/ProductsAPI';
 import IconLittleArrow from '../assets/icons/IconLittleArrow';
 import ProductItemSkeleton from '../containers/ProductItemSkeleton';
-import productCategories from '../utils/productCategories';
+import { productCategories } from '../utils/productCategories';
 
-const MainPage = () => {
+const MainPage = (): JSX.Element => {
     const mainProductsState = useSelector(productsState);
     const { productsData } = mainProductsState;
     const { currentPage, maxPage } = productsData || {};
@@ -17,12 +17,12 @@ const MainPage = () => {
 
     function getProducts() {
         const url = new URLSearchParams(location.search);
-        const page = url.get('page');
-        const category = productCategories[url.get('category')];
+        const page = url.get('page') ?? 1;
+        const category = productCategories[url.get('category') ?? ''];
 
         const config = {
             params: {
-                page: page || 1,
+                page: page,
                 categoryId: category,
             },
         };
@@ -50,7 +50,7 @@ const MainPage = () => {
         window.location.href = url;
     }
 
-    const [pageNumbers, setPageNumbers] = useState([]);
+    const [pageNumbers, setPageNumbers] = useState<number[]>([]);
 
     function generateNavbarPages() {
         if (maxPage > 7){
@@ -81,7 +81,6 @@ const MainPage = () => {
             window.scrollTo(0, 0);
         }
         generateNavbarPages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsData]);
 
     function openModal() {

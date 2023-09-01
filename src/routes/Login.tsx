@@ -17,7 +17,7 @@ const Login = (): JSX.Element => {
     const navigator = useNavigate();
 
     useEffect(() => {
-        if (userInfo !== null){
+        if (userInfo.email !== ''){
             navigator('/');
         }
     }, [navigator, userInfo]);
@@ -119,7 +119,7 @@ const Login = (): JSX.Element => {
                     </Link>
                 </section>
 
-                {userInfo && (
+                {userInfo.email !== '' && (
                     <LoadingPage />
                 )}
             </main>

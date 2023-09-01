@@ -1,10 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./reduxState";
+import { ProductInfo } from "./sliceProductsState";
+
+export type ItemCartInfo = {
+    cartInfo: {
+        productAmount: number,
+    },
+} & Omit<ProductInfo, 'category' | 'categoryId'>;
+
+const itemsListInitial: ItemCartInfo[] = [];
 
 export const sliceShoppingCartState = createSlice({
     name: 'shoppingCartState',
     initialState: {
-        itemsList: null,
+        itemsList: itemsListInitial,
         fetching: false,
         error: false,
     },
@@ -17,14 +26,14 @@ export const sliceShoppingCartState = createSlice({
         resultShopCartGeneral: (state) => {
             state.fetching = false;
         },
-        resultShopCartData: (state, action) => {
+        resultShopCartData: (state, action: PayloadAction<ItemCartInfo[]>) => {
             const data = action.payload;
             state.itemsList = data;
             state.fetching = false;
         },
 
         resetShopCartState: (state) => {
-            state.itemsList = null;
+            state.itemsList = itemsListInitial;
             state.fetching = false;
             state.error = false;
         },
@@ -36,6 +45,7 @@ export const sliceShoppingCartState = createSlice({
 });
 
 export const shoppingCartState = (state: RootState) => state.sliceShoppingCartState;
+export type ShoppingCartState = ReturnType<typeof shoppingCartState>
 export const {
     requestShopCartGeneral,
     resultShopCartGeneral,

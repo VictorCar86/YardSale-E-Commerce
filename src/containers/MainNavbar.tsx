@@ -16,14 +16,14 @@ import { FaRegUser } from 'react-icons/fa';
 import IconShoppingCart from '../assets/icons/IconShoppingCart';
 import LogoYardSale from "../assets/logos/LogoYardSale";
 import IconMenu from '../assets/icons/IconMenu';
+import AccountMenu from './AccountMenu';
+import NavbarMobile from './NavbarMobile';
 import ShoppingCartModal from './ShoppingCartModal';
 import AdviceSessionModal from './AdviceSessionModal';
 import ProductPreviewModal from './ProductPreviewModal';
-import productCategories from '../utils/productCategories'
-import AccountMenu from './AccountMenu';
-import NavbarMobile from './NavbarMobile';
+import { productCategories } from '../utils/productCategories'
 
-const MainNavbar = () => {
+const MainNavbar = (): JSX.Element => {
     const mainUserState = useSelector(userState);
     const mainShopCartState = useSelector(shoppingCartState);
     const { currentModal } = useSelector(modalsState);
@@ -206,7 +206,7 @@ const MainNavbar = () => {
             )}
 
             <ShoppingCartModal
-                modalState={currentModal}
+                stateModal={currentModal}
                 closeModal={() => dispatcher(resetCurrentModal())}
                 shoppingCartState={mainShopCartState}
             />

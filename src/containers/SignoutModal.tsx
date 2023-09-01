@@ -6,7 +6,7 @@ import DialogModal from '../components/DialogModal';
 
 type Props = { toggleModal: () => void };
 
-const SignoutModal = ({ toggleModal }: Props) => {
+const SignoutModal = ({ toggleModal }: Props): JSX.Element => {
     const dispatcher = useDispatch();
 
     function closeSession() {

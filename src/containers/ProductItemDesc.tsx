@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userState } from '../context/sliceUserState';
 import { shoppingCartState } from '../context/sliceShoppingCartState';
-import { createProductPreview } from '../context/sliceProductsState';
+import { ProductInfo, createProductPreview } from '../context/sliceProductsState';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { toast } from 'sonner';
 import IconAddToCart from '../assets/icons/IconAddToCart';
@@ -12,8 +12,12 @@ import AdviceSessionModal from './AdviceSessionModal';
 import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
 import IconAddedToCart from '../assets/icons/IconAddedToCart';
 
-// eslint-disable-next-line react/prop-types
-const ProductItemDesc = ({ productData = {}, openModal }) => {
+type Props = {
+    productData: ProductInfo,
+    openModal: () => void,
+};
+
+const ProductItemDesc = ({ productData, openModal }: Props): JSX.Element => {
     const mainShopCartState = useSelector(shoppingCartState);
     const { userInfo } = useSelector(userState);
     const { itemsList } = mainShopCartState;
@@ -29,7 +33,7 @@ const ProductItemDesc = ({ productData = {}, openModal }) => {
         openModal();
     }
 
-    const [lazyImage, setLazyImage] = useState(skeletonImg);
+    const [lazyImage, setLazyImage] = useState<string>(skeletonImg);
     const [adviceModal, setAdviceModal] = useState(false);
     const [itemFetching, setItemFetching] = useState(false);
 
@@ -55,7 +59,7 @@ const ProductItemDesc = ({ productData = {}, openModal }) => {
                 <img
                     className='sm:h-60 h-[140px] sm:w-60 w-[140px] object-cover rounded-2xl shadow-[0px_0px_3px_0px_#7B7B7B]'
                     src={productData.image ? lazyImage : productNotFoundImg}
-                    alt={productData.title}
+                    alt={productData.name}
                     onLoad={() => setLazyImage(productData.image)}
                 />
                 <figcaption className='mt-3.5'>
