@@ -5,7 +5,7 @@ type Props = {
     children?: JSX.Element[]
 };
 
-const DialogModal = ({ className = "", children }: Props) => {
+const DialogModal = ({ className = "", children }: Props): JSX.Element => {
     const dialogRef = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {

@@ -6,11 +6,12 @@ import { ProductInfo, createProductPreview } from '../context/sliceProductsState
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { toast } from 'sonner';
 import IconAddToCart from '../assets/icons/IconAddToCart';
+import IconAddedToCart from '../assets/icons/IconAddedToCart';
 import productNotFoundImg from '../assets/images/product_not_found.webp';
 import skeletonImg from '../assets/images/skeleton.webp';
 import AdviceSessionModal from './AdviceSessionModal';
 import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
-import IconAddedToCart from '../assets/icons/IconAddedToCart';
+import { FetchConfig } from '../utils/requests/MakeRequest';
 
 type Props = {
     productData: ProductInfo,
@@ -25,7 +26,6 @@ const ProductItemDesc = ({ productData, openModal }: Props): JSX.Element => {
 
     const alreadyExistItem = useMemo(() => {
         return itemsList?.some(item => item.id === productData.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [itemsList]);
 
     function createPreview() {
@@ -45,12 +45,12 @@ const ProductItemDesc = ({ productData, openModal }: Props): JSX.Element => {
 
         setItemFetching(true);
 
-        const config = {
+        const fetchConfig: FetchConfig = {
             body: { productId: productData.id, },
             onSuccess: () => toast.success('One item was added to your shopping cart!'),
             onFinally: () => setItemFetching(false),
         };
-        shoppingCartAPI.ADD_ITEM(config, dispatcher);
+        shoppingCartAPI.ADD_ITEM(fetchConfig, dispatcher);
     }
 
     return (

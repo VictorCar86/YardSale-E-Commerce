@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,20 +7,21 @@ import LogoYardSale from "../assets/logos/LogoYardSale";
 import FormError from "../components/FormError";
 import userAPI from "../utils/requests/UserAPI";
 import shoppingCartAPI from "../utils/requests/ShoppingCartAPI";
+import { FetchConfig } from "../utils/requests/MakeRequest";
 
-const SuccessRecover = () => {
+const SuccessRecover = (): JSX.Element => {
     const navigate = useNavigate();
     const dispatcher = useDispatch();
     const searchParams = new URLSearchParams(window.location.search);
     const token = searchParams.get('token');
 
     const [passwordError, setPasswordError] = useState(false);
-    const formRef = useRef(null);
+    const formRef = useRef<HTMLFormElement>(null);
 
-    function sendPassword(event) {
+    function sendPassword(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const formData = new FormData(formRef.current);
+        const formData = new FormData(formRef.current ?? undefined);
         const pass1 = formData.get('password_#1');
         const pass2 = formData.get('password_#2');
 
@@ -32,7 +33,7 @@ const SuccessRecover = () => {
             setPasswordError(false);
         }
 
-        const config = {
+        const fetchConfig: FetchConfig = {
             body: {
                 token,
                 newPassword: pass2,
@@ -44,7 +45,7 @@ const SuccessRecover = () => {
             },
             onError: (err) => toast.error('Something went wrong! 😳', { description: err }),
         };
-        userAPI.CHANGE_PASSWORD(config, dispatcher);
+        userAPI.CHANGE_PASSWORD(fetchConfig, dispatcher);
     }
 
     return (

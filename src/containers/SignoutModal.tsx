@@ -3,15 +3,17 @@ import { GoAlert } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import userAPI from '../utils/requests/UserAPI';
 import DialogModal from '../components/DialogModal';
+import { useNavigate } from 'react-router-dom';
 
 type Props = { toggleModal: () => void };
 
 const SignoutModal = ({ toggleModal }: Props): JSX.Element => {
     const dispatcher = useDispatch();
+    const navigate = useNavigate();
 
     function closeSession() {
         toggleModal();
-        userAPI.SIGNOUT({}, dispatcher);
+        userAPI.SIGNOUT({ onFinally: () => navigate('/') }, dispatcher);
     }
 
     return (

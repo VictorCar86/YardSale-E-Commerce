@@ -5,7 +5,7 @@ import { productPreviewModal } from "../context/sliceModalsState";
 import IconLittleArrow from "../assets/icons/IconLittleArrow";
 import floorTotalPrice from "../utils/floorTotalPrice";
 
-const OrderDesc = () => {
+const OrderDesc = (): JSX.Element => {
     const dispatcher = useDispatch();
     const mainOrdersState = useSelector(ordersState);
     const { ordersList, selectedOrder } = mainOrdersState;
@@ -56,11 +56,11 @@ const OrderDesc = () => {
 
             <ul className="grid gap-4 max-h-[50vh] px-1.5 py-1 mt-8 overflow-y-auto overflow-x-hidden">
                 {currentOrder.items.map((item, index) => (
-                    <li className="flex justify-between items-center h-16 w-full text-base" key={index}>
-                        <button onClick={() => productPreview(item)} type="button">
+                    <li key={index}>
+                        <button className="flex justify-between items-center h-16 w-full text-base" type="button" onClick={() => productPreview(item)}>
                             <figure className="flex items-center gap-4 h-full">
                                 <img
-                                    className="w-16 h-16 rounded-md shadow-[0px_0px_3px_0px_#7B7B7B]"
+                                    className="w-16 h-16 rounded-md object-contain shadow-[0px_0px_3px_0px_#7B7B7B]"
                                     src={item.image}
                                     alt={item.name}
                                 />
@@ -68,15 +68,15 @@ const OrderDesc = () => {
                                     {item.name}
                                 </figcaption>
                             </figure>
+                            <span>
+                                <span className="mt-[3px] mr-2 text-sm">
+                                    x{item.Order_Product.productAmount}
+                                </span>
+                                <span className='font-bold'>
+                                    ${item.price}
+                                </span>
+                            </span>
                         </button>
-                        <span>
-                            <span className="mt-[3px] mr-2 text-sm">
-                                x{item.Order_Product.productAmount}
-                            </span>
-                            <span className='font-bold'>
-                                ${item.price}
-                            </span>
-                        </span>
                     </li>
                 ))}
             </ul>

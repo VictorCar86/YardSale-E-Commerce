@@ -13,6 +13,7 @@ import IconJcbCard from "../assets/icons/IconJcbIcon"
 import IconAmericanCard from "../assets/icons/IconAmericanCard"
 import ordersAPI from "../utils/requests/OrdersAPI";
 import floorTotalPrice from "../utils/floorTotalPrice";
+import { FetchConfig } from "../utils/requests/MakeRequest";
 
 const Checkout = (): JSX.Element => {
     const mainShopCartState = useSelector(shoppingCartState);
@@ -23,7 +24,7 @@ const Checkout = (): JSX.Element => {
     const [isPaymentSection, setIsPaymentSection] = useState(false);
 
     useEffect(() => {
-        if (!itemsList) {
+        if (!itemsList.length) {
             navigate('/');
         }
     }, []);
@@ -32,7 +33,7 @@ const Checkout = (): JSX.Element => {
         const products = itemsList.map(item => {
             return { productId: item.id, productAmount: item.cartInfo.productAmount };
         });
-        const config = {
+        const fetchConfig: FetchConfig = {
             body: {
                 products,
             },
@@ -42,7 +43,7 @@ const Checkout = (): JSX.Element => {
                 dispatcher(resetShopCartState());
             },
         };
-        ordersAPI.CREATE_ORDER(config, dispatcher);
+        ordersAPI.CREATE_ORDER(fetchConfig, dispatcher);
     }
 
     const reducePrices = useMemo(() => {

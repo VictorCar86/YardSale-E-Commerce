@@ -5,6 +5,7 @@ import { ItemCartInfo, shoppingCartState } from '../context/sliceShoppingCartSta
 import { productPreviewModal } from '../context/sliceModalsState';
 import { createProductPreview } from '../context/sliceProductsState';
 import { toast } from 'sonner';
+import { FetchConfig } from '../utils/requests/MakeRequest';
 import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
 import productNotFoundImg from '../assets/images/product_not_found.webp';
 
@@ -27,7 +28,7 @@ const ItemShoppingCart = ({ itemCart }: Props): JSX.Element => {
             return;
         }
 
-        const config = {
+        const fetchConfig: FetchConfig = {
             body: {
                 productId: itemCart.id,
                 productAmount: currentValue,
@@ -37,17 +38,17 @@ const ItemShoppingCart = ({ itemCart }: Props): JSX.Element => {
                 setAmount(currentValue);
             },
         };
-        shoppingCartAPI.UPDATE_ITEM(config, dispatcher);
+        shoppingCartAPI.UPDATE_ITEM(fetchConfig, dispatcher);
     }
 
     function deleteItem() {
-        const config = {
+        const fetchConfig: FetchConfig = {
             body: {
                 productId: itemCart.id,
             },
             onSuccess: () => toast.success('The item from your shopping cart was deleted!'),
         };
-        shoppingCartAPI.DELETE_ITEM(config, dispatcher);
+        shoppingCartAPI.DELETE_ITEM(fetchConfig, dispatcher);
     }
 
     return (

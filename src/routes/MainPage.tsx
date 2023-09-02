@@ -12,7 +12,7 @@ import { productCategories } from '../utils/productCategories';
 const MainPage = (): JSX.Element => {
     const mainProductsState = useSelector(productsState);
     const { productsData } = mainProductsState;
-    const { currentPage, maxPage } = productsData || {};
+    const { currentPage, maxPage } = productsData;
     const dispatcher = useDispatch();
 
     function getProducts() {
@@ -76,7 +76,7 @@ const MainPage = (): JSX.Element => {
     }
 
     useEffect(() => {
-        if (!productsData){
+        if (!productsData.products.length){
             getProducts();
             window.scrollTo(0, 0);
         }

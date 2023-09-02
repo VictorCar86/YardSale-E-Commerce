@@ -18,7 +18,7 @@ const MyAccount = (): JSX.Element => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (userInfo === null){
+        if (!userInfo.email){
             const config = {
                 onError: () => navigate('/login'),
             };
@@ -85,21 +85,21 @@ const MyAccount = (): JSX.Element => {
                                 <article className="mb-1.5 text-sm">
                                     <p>First name</p>
                                     <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                        {userInfo !== null ? userInfo.firstName : 'loading...'}
+                                        {userInfo.firstName || 'loading...'}
                                     </p>
                                 </article>
 
                                 <article className="mb-1.5 text-sm">
                                     <p>Last name</p>
                                     <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                        {userInfo !== null ? userInfo.lastName : 'loading...'}
+                                        {userInfo.lastName || 'loading...'}
                                     </p>
                                 </article>
 
                                 <article className="mb-1.5 text-sm">
                                     <p>Email address</p>
                                     <p className={`mt-2 text-base text-very-light-pink ${mainUserState.fetching && 'blur-[3px]'}`}>
-                                        {userInfo !== null ? userInfo.email : 'loading...'}
+                                        {userInfo.email || 'loading...'}
                                     </p>
                                 </article>
 
@@ -189,7 +189,7 @@ const MyAccount = (): JSX.Element => {
                     )}
                 </section>
 
-                {(!userInfo || mainUserState.fetching) && (
+                {(!userInfo.email || mainUserState.fetching) && (
                     <LoadingPage />
                 )}
             </main>

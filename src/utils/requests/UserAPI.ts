@@ -13,7 +13,7 @@ import {
 import { resetShopCartState } from "../../context/sliceShoppingCartState";
 import { resetOrdersState } from "../../context/sliceOrdersState";
 import { DispatcherStore } from "../../context/reduxState";
-// import shoppingCartAPI from './ShoppingCartAPI';
+import shoppingCartAPI from './ShoppingCartAPI';
 
 class UserAPI extends MakeRequest {
     async LOGIN(config: FetchConfig, dispatcher: DispatcherStore) {
@@ -35,7 +35,7 @@ class UserAPI extends MakeRequest {
         );
 
         await this.USER_INFO({}, dispatcher);
-        // await shoppingCartAPI.CART_ITEMS({}, dispatcher);
+        await shoppingCartAPI.CART_ITEMS({}, dispatcher);
     }
 
     async SIGNUP(config: FetchConfig, dispatcher: DispatcherStore) {

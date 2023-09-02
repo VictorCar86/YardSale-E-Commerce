@@ -8,8 +8,9 @@ import IconEmail from '../assets/icons/IconEmail';
 import MainNavbar from '../containers/MainNavbar';
 import FormError from '../components/FormError';
 import userAPI from '../utils/requests/UserAPI';
+import { FetchConfig } from '../utils/requests/MakeRequest';
 
-const Recovery = () => {
+const Recovery = (): JSX.Element => {
     const dispatcher = useDispatch();
 
     const [inputEmail, setInputEmail] = useState("");
@@ -32,7 +33,7 @@ const Recovery = () => {
 
         setLoader(true);
 
-        const fetchConfig = {
+        const fetchConfig: FetchConfig = {
             body: taskPayload,
             onSuccess: (message) => {
                 setEmailSent(true);

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, FormEvent } from "react";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,9 @@ import userAPI from "../utils/requests/UserAPI";
 import FormError from "../components/FormError";
 import MainNavbar from "../containers/MainNavbar";
 import LogoYardSale from "../assets/logos/LogoYardSale";
+import { FetchConfig } from "../utils/requests/MakeRequest";
 
-const Signup = () => {
+const Signup = (): JSX.Element => {
     const navigator = useNavigate();
     const dispatcher = useDispatch();
 
@@ -23,12 +24,12 @@ const Signup = () => {
     const [loader, setLoader] = useState(false);
     const [formError, setFormError] = useState(initialFormErrors);
 
-    const formRef = useRef(null);
+    const formRef = useRef<HTMLFormElement>(null);
 
-    async function sendUserInfo(event) {
+    function sendUserInfo(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const formData = new FormData(formRef.current);
+        const formData = new FormData(formRef.current ?? undefined);
         const taskPayload = {
             firstName: formData.get('first_name'),
             lastName: formData.get('last_name'),
@@ -58,7 +59,7 @@ const Signup = () => {
 
         setLoader(true);
 
-        const fetchConfig = {
+        const fetchConfig: FetchConfig = {
             body: { user: taskPayload },
             onSuccess: () => {
                 navigator('/');
@@ -74,7 +75,7 @@ const Signup = () => {
     }
 
     function chechPassword(){
-        const formData = new FormData(formRef.current);
+        const formData = new FormData(formRef.current ?? undefined);
 
         if (formData.get('password_1') !== formData.get('password_2')) {
             setFormError(prev => ({ ...prev, password_2: true }));
@@ -95,7 +96,7 @@ const Signup = () => {
                         Sign up
                     </h1>
 
-                    <form className="grid" action="POST" ref={formRef}>
+                    <form className="grid" action="POST" ref={formRef} onSubmit={sendUserInfo}>
                         <label htmlFor="first_name" className="mb-1.5 text-sm font-bold">
                             First name
                         </label>
@@ -167,7 +168,6 @@ const Signup = () => {
 
                         <button
                             className="flex justify-center items-center primary-button"
-                            onClick={sendUserInfo}
                             type="submit"
                         >
                             {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Create"}

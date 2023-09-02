@@ -28,7 +28,7 @@ const MyOrders = (): JSX.Element => {
     }
 
     useEffect(() => {
-        if (ordersList === null){
+        if (!ordersList.length){
             const config = {
                 onError: () => navigate('/login'),
             };
@@ -66,7 +66,7 @@ const MyOrders = (): JSX.Element => {
                     )}
                     {!fetching && (
                       <>
-                        {!ordersList.length && (
+                        {!Boolean(ordersList.length) && (
                             <>
                                 <p className="mt-9 text-center font-medium">
                                     {"There's no orders yet 🧦"}
@@ -74,7 +74,7 @@ const MyOrders = (): JSX.Element => {
                                 <Link className="primary-button w-3/4 mx-auto mb-24" to={'/'}>Explore now</Link>
                             </>
                         )}
-                        {ordersList.length && (
+                        {Boolean(ordersList.length) && (
                             <ul className="grid gap-4 max-h-[63.5vh] px-1.5 py-1 mt-8 overflow-y-auto overflow-x-hidden">
                                 {ordersList?.map((order, index) => (
                                     <li key={index}>

@@ -1,19 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { IoMdClose } from 'react-icons/io';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { userState } from '../context/sliceUserState';
 import { productsState } from '../context/sliceProductsState';
 import { shoppingCartState } from '../context/sliceShoppingCartState';
-import { useDispatch, useSelector } from 'react-redux';
-import { IoMdClose } from 'react-icons/io';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import productNotFoundImg from '../assets/images/product_not_found.webp';
+import { ModalOptions } from '../context/sliceModalsState';
 import AdviceSessionModal from './AdviceSessionModal';
 import shoppingCartAPI from '../utils/requests/ShoppingCartAPI';
+import productNotFoundImg from '../assets/images/product_not_found.webp';
 import IconAddToCart from '../assets/icons/IconAddToCart';
 import IconAddedToCart from '../assets/icons/IconAddedToCart';
-import { ModalOptions } from '../context/sliceModalsState';
 import 'swiper/css';
-import { PayloadAction } from '@reduxjs/toolkit';
 
 type Props = {
     className: string,

@@ -46,7 +46,7 @@ const MainNavbar = (): JSX.Element => {
     }
 
     function toggleCart() {
-        if (!userInfo) {
+        if (!userInfo.email) {
             setAdviceModal(true);
             return;
         }
@@ -66,7 +66,6 @@ const MainNavbar = (): JSX.Element => {
 
     useEffect(() => {
         dispatcher(resetCurrentModal());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.location.href]);
 
     const accountMenuRef = useRef<HTMLElement>(null);
