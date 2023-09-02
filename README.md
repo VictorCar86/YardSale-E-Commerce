@@ -53,6 +53,7 @@ YardSale is built using the following technologies:
 #### Frontend Framework:
 - <img src="https://skills.thijs.gg/icons?i=react" width="18px"> React.js
 #### Libraries:
+- <img src="https://skills.thijs.gg/icons?i=typescript" width="18px"> TypeScript
 - <img src="https://skills.thijs.gg/icons?i=tailwind" width="18px"> Tailwind CSS
 - <img src="https://skills.thijs.gg/icons?i=redux" width="18px"> Redux
 - 🔝 React Router
