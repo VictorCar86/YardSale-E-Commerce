@@ -7,7 +7,6 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "sonner";
 import IconAddToCart from "../assets/icons/IconAddToCart";
 import IconAddedToCart from "../assets/icons/IconAddedToCart";
-import productNotFoundImg from "../assets/images/product_not_found.webp";
 import skeletonImg from "../assets/images/skeleton.webp";
 import AdviceSessionModal from "./AdviceSessionModal";
 import shoppingCartAPI from "../utils/requests/ShoppingCartAPI";
