@@ -17,8 +17,8 @@ const Login = (): JSX.Element => {
     const navigator = useNavigate();
 
     useEffect(() => {
-        if (userInfo.email){
-            navigator('/');
+        if (userInfo.email) {
+            navigator("/");
         }
     }, [navigator, userInfo]);
 
@@ -32,12 +32,12 @@ const Login = (): JSX.Element => {
 
         const formData = new FormData(formRef?.current ?? undefined);
         const taskPayload = {
-            email: formData.get('email'),
-            password: formData.get('password'),
+            email: formData.get("email"),
+            password: formData.get("password"),
         };
 
-        const emailExist = taskPayload.email !== '';
-        const passwordExist = taskPayload.password !== '';
+        const emailExist = taskPayload.email !== "";
+        const passwordExist = taskPayload.password !== "";
 
         setFormMistakes({ email: !emailExist, password: !passwordExist });
 
@@ -49,9 +49,9 @@ const Login = (): JSX.Element => {
 
         const fetchConfig: FetchConfig = {
             body: taskPayload,
-            onSuccess: () => navigator('/'),
+            onSuccess: () => navigator("/"),
             onError: (err) => {
-                toast.error('Something went wrong 😳', { description: err });
+                toast.error("Something went wrong 😳", { description: err });
             },
             onFinally: () => setLoader(false),
         };
@@ -66,12 +66,15 @@ const Login = (): JSX.Element => {
             </header>
             <main className="grid place-content-center min-h-screen pt-14">
                 <section className="w-[300px] h-max">
-                    <LogoYardSale className="hidden sm:block w-40 h-min my-6 mx-auto"/>
-                    <h1 className="block sm:hidden mb-5 text-2xl font-bold">
-                        Log in
-                    </h1>
+                    <LogoYardSale className="hidden sm:block w-40 h-min my-6 mx-auto" />
+                    <h1 className="block sm:hidden mb-5 text-2xl font-bold">Log in</h1>
 
-                    <form className="grid" action="POST" ref={formRef} onSubmit={sendUserInfo}>
+                    <form
+                        className="grid"
+                        action="POST"
+                        ref={formRef}
+                        onSubmit={sendUserInfo}
+                    >
                         <label htmlFor="email" className="mb-1.5 text-sm font-bold">
                             Email address
                         </label>
@@ -94,11 +97,16 @@ const Login = (): JSX.Element => {
                             className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
                         />
 
+                        <p className="mb-3 text-sm text-very-light-pink">
+                            <span className="block font-bold">Test credentials:</span>
+                            <span>admin@localhost.com | admin123</span>
+                        </p>
+
                         {formMistakes.email && (
-                            <FormError text="Please introduce a valid email"/>
+                            <FormError text="Please introduce a valid email" />
                         )}
                         {formMistakes.password && (
-                            <FormError text="Please introduce a valid password"/>
+                            <FormError text="Please introduce a valid password" />
                         )}
 
                         <button
@@ -106,25 +114,30 @@ const Login = (): JSX.Element => {
                             className="primary-button"
                             disabled={loader}
                         >
-                            {loader ? <RiLoader4Fill className="h-9 w-9 animate-spin" /> : "Log in"}
+                            {loader ? (
+                                <RiLoader4Fill className="h-9 w-9 animate-spin" />
+                            ) : (
+                                "Log in"
+                            )}
                         </button>
                     </form>
 
-                    <Link to={'/recovery'} className="block w-max mx-auto mb-12 text-sm text-hospital-green text-center">
+                    <Link
+                        to={"/recovery"}
+                        className="block w-max mx-auto mb-12 text-sm text-hospital-green text-center"
+                    >
                         Forgot my password
                     </Link>
 
-                    <Link to={'/signup'} className="secondary-button">
+                    <Link to={"/signup"} className="secondary-button">
                         Sign up
                     </Link>
                 </section>
 
-                {userInfo.email && (
-                    <LoadingPage />
-                )}
+                {userInfo.email && <LoadingPage />}
             </main>
         </>
-    )
-}
+    );
+};
 
 export default Login;
