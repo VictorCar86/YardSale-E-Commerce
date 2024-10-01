@@ -97,7 +97,7 @@ const Login = (): JSX.Element => {
                             className="bg-input-field h-[42px] p-2 mb-3 rounded-lg text-base"
                         />
 
-                        <p className="mb-3 text-sm text-very-light-pink">
+                        <p className="mb-3 text-sm text-center text-very-light-pink">
                             <span className="block font-bold">Test credentials:</span>
                             <span>admin@localhost.com | admin123</span>
                         </p>
