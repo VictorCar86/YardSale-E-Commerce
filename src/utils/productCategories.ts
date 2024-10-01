@@ -1,16 +1,29 @@
-interface ProductCategories {
-    [key: string]: number,
-    clothes: number,
-    electronics: number,
-    toys: number,
-    others: number,
-    furnitures: number,
-}
+import { DispatcherStore } from "../context/reduxState";
+import { resetCurrentModal } from "../context/sliceModalsState";
 
-export const productCategories: ProductCategories = {
-    clothes: 13,
-    electronics: 14,
-    toys: 6,
-    others: 10,
-    furnitures: 15,
+export enum AvailableCategories {
+    "ALL" = "",
+    "CLOTHES" = "clothes",
+    "ELECTRONICS" = "electronics",
+    "TOYS" = "toys",
+    "SPORTS" = "sports",
+    "BOOKS" = "books",
+    "OTHERS" = "others",
+    "FURNITURES" = "furnitures",
 };
+
+export type CategoriesKey = keyof typeof AvailableCategories;
+export type CategoriesValue = `${AvailableCategories}`;
+
+export function changeCategory(search: string = "", dispatcher: DispatcherStore) {
+    if (location.href.split("/").at(-1) === search) {
+        return;
+    }
+    if (typeof search === "string" && search !== "") {
+        search = `?category=${search}`;
+    } else {
+        search = "";
+    }
+    location.href = `${location.origin}/${search}`;
+    dispatcher(resetCurrentModal());
+}

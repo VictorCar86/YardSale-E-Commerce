@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { productPreviewModal } from '../context/sliceModalsState';
-import { productsState } from '../context/sliceProductsState';
-import ProductItemDesc from '../containers/ProductItemDesc';
-import MainNavbar from '../containers/MainNavbar';
-import productsAPI from '../utils/requests/ProductsAPI';
-import IconLittleArrow from '../assets/icons/IconLittleArrow';
-import ProductItemSkeleton from '../containers/ProductItemSkeleton';
-import { productCategories } from '../utils/productCategories';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { productPreviewModal } from "../context/sliceModalsState";
+import { productsState } from "../context/sliceProductsState";
+import ProductItemDesc from "../containers/ProductItemDesc";
+import MainNavbar from "../containers/MainNavbar";
+import productsAPI from "../utils/requests/ProductsAPI";
+import IconLittleArrow from "../assets/icons/IconLittleArrow";
+import ProductItemSkeleton from "../containers/ProductItemSkeleton";
+import { AvailableCategories, CategoriesKey } from "../utils/productCategories";
 
 const MainPage = (): JSX.Element => {
     const mainProductsState = useSelector(productsState);
@@ -17,13 +17,18 @@ const MainPage = (): JSX.Element => {
 
     function getProducts() {
         const url = new URLSearchParams(location.search);
-        const page = url.get('page') ?? 1;
-        const category = productCategories[url.get('category') ?? ''];
+        const page: number = parseInt(url.get("page") ?? "1");
+        const categoryName: string | undefined = url.get("category")?.toUpperCase();
+        let category: string = "";
+        if (categoryName) {
+            category = AvailableCategories[categoryName as CategoriesKey];
+            category = category[0].toUpperCase() + category.slice(1);
+        }
 
         const config = {
             params: {
                 page: page,
-                categoryId: category,
+                category: category,
             },
         };
         productsAPI.PRODUCTS_LIST(config, dispatcher);
@@ -31,20 +36,18 @@ const MainPage = (): JSX.Element => {
 
     function searchForPage(page = 1) {
         const search = new URLSearchParams(location.search);
-        const hasCategory = search.has('category');
-        const hasPage = search.has('page');
+        const hasCategory = search.has("category");
+        const hasPage = search.has("page");
 
-        let url = '';
+        let url = "";
 
         if (hasCategory && !hasPage) {
             url = location.href + `&page=${page}`;
-        }
-        else if (hasPage) {
-            const pageIndex = location.href.search('page');
-            url = location.href.slice(0, pageIndex) + `page=${page}`
-        }
-        else {
-            url = location.origin + `/?page=${page}`
+        } else if (hasPage) {
+            const pageIndex = location.href.search("page");
+            url = location.href.slice(0, pageIndex) + `page=${page}`;
+        } else {
+            url = location.origin + `/?page=${page}`;
         }
 
         window.location.href = url;
@@ -53,7 +56,7 @@ const MainPage = (): JSX.Element => {
     const [pageNumbers, setPageNumbers] = useState<number[]>([]);
 
     function generateNavbarPages() {
-        if (maxPage > 7){
+        if (maxPage > 7) {
             const maxDisplayedPages = 7;
             let startPage = currentPage - Math.floor(maxDisplayedPages / 2);
 
@@ -68,15 +71,16 @@ const MainPage = (): JSX.Element => {
                     startPage = 1;
                 }
             }
-            setPageNumbers([...Array(endPage - startPage + 1)].map((_, i) => startPage + i));
-        }
-        else {
-            setPageNumbers([...Array(maxPage).keys()].map(i => i + 1));
+            setPageNumbers(
+                [...Array(endPage - startPage + 1)].map((_, i) => startPage + i),
+            );
+        } else {
+            setPageNumbers([...Array(maxPage).keys()].map((i) => i + 1));
         }
     }
 
     useEffect(() => {
-        if (!productsData.products.length){
+        if (!productsData.products.length) {
             getProducts();
             window.scrollTo(0, 0);
         }
@@ -93,46 +97,48 @@ const MainPage = (): JSX.Element => {
             <header>
                 <MainNavbar />
             </header>
-            <main className='relative min-h-screen w-full pt-14'>
-                <section className='flex flex-col justify-between min-h-[calc(100vh-56px)] h-max w-full pt-6'>
-                    <ul className='grid grid-auto-fill gap-6 justify-center'>
-                        {(!productsData && mainProductsState.fetching) && (
-                          <>
-                            {[...Array( window.innerWidth > 768 ? 20 : 10 ).keys()].map(i => (
-                                <ProductItemSkeleton key={i}/>
-                            ))}
-                          </>
+            <main className="relative min-h-screen w-full pt-14">
+                <section className="flex flex-col justify-between min-h-[calc(100vh-56px)] h-max w-full pt-6">
+                    <ul className="grid grid-auto-fill gap-6 justify-center">
+                        {!productsData && mainProductsState.fetching && (
+                            <>
+                                {[...Array(window.innerWidth > 768 ? 20 : 10).keys()].map(
+                                    (i) => (
+                                        <ProductItemSkeleton key={i} />
+                                    ),
+                                )}
+                            </>
                         )}
-                        {(productsData && !mainProductsState.fetching) && (
-                          <>
-                            {productsData.products.map((item, i) => (
-                                <ProductItemDesc
-                                    key={i}
-                                    productData={item}
-                                    openModal={openModal}
-                                />
-                            ))}
-                          </>
+                        {productsData && !mainProductsState.fetching && (
+                            <>
+                                {productsData.products.map((item, i) => (
+                                    <ProductItemDesc
+                                        key={i}
+                                        productData={item}
+                                        openModal={openModal}
+                                    />
+                                ))}
+                            </>
                         )}
                     </ul>
 
-                    <nav className='flex justify-center gap-3 py-8'>
+                    <nav className="flex justify-center gap-3 py-8">
                         <button
-                            className={`${!(currentPage > 1) && 'invisible'}`}
+                            className={`${!(currentPage > 1) && "invisible"}`}
                             onClick={() => searchForPage(currentPage - 1)}
                             disabled={mainProductsState.fetching}
-                            type='button'
+                            type="button"
                         >
-                            <IconLittleArrow className='w-2.5 h-max rotate-180'/>
+                            <IconLittleArrow className="w-2.5 h-max rotate-180" />
                         </button>
-                        <ol className='flex gap-2 font-bold'>
-                            {pageNumbers.map(i => (
+                        <ol className="flex gap-2 font-bold">
+                            {pageNumbers.map((i) => (
                                 <li key={i}>
                                     <button
-                                        className={`${currentPage === i ? 'text-hospital-green' : 'text-very-light-pink'} px-1`}
+                                        className={`${currentPage === i ? "text-hospital-green" : "text-very-light-pink"} px-1`}
                                         onClick={() => searchForPage(i)}
                                         disabled={mainProductsState.fetching}
-                                        type='button'
+                                        type="button"
                                     >
                                         {i}
                                     </button>
@@ -140,18 +146,18 @@ const MainPage = (): JSX.Element => {
                             ))}
                         </ol>
                         <button
-                            className={`${currentPage === maxPage && 'invisible'}`}
+                            className={`${currentPage === maxPage && "invisible"}`}
                             onClick={() => searchForPage(currentPage + 1)}
                             disabled={mainProductsState.fetching}
-                            type='button'
+                            type="button"
                         >
-                            <IconLittleArrow className='w-2.5 h-max'/>
+                            <IconLittleArrow className="w-2.5 h-max" />
                         </button>
                     </nav>
                 </section>
             </main>
         </>
-    )
-}
+    );
+};
 
 export default MainPage;

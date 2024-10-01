@@ -14,8 +14,8 @@ export type DispatchConfig = {
 export type RequestConfig = {
     method: Method,
     url: string,
-    body?: {[key: string]: any},
-    params?: {[key: string]: any},
+    body?: { [key: string]: any },
+    params?: { [key: string]: any },
     onSuccess?: (message: string) => any,
     onError?: (error: string) => any,
     onFinally?: () => any,
