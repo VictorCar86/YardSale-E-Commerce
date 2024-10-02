@@ -4,19 +4,21 @@ import MakeRequest, {
     FetchConfig,
 } from "./MakeRequest";
 import {
-    requestProductsGeneral,
-    resultProductsGeneral,
+    beforeProductsGeneral,
+    afterProductsGeneral,
     resultProductsData,
-    createProductPreview,
     errorProductsGeneral,
+    finallyProductsGeneral,
+    createProductPreview,
 } from "../../context/sliceProductsState";
 import { DispatcherStore } from "../../context/reduxState";
+import { itemsPerPage } from "../itemsPerPage";
 
 class ProductsAPI extends MakeRequest {
     async PRODUCTS_LIST(config: FetchConfig, dispatcher: DispatcherStore) {
         config.params = {
             ...config.params,
-            itemsPerPage: window.innerWidth > 768 ? 20 : 10,
+            itemsPerPage: itemsPerPage(),
         };
 
         const requestConfig: RequestConfig = {
@@ -25,9 +27,10 @@ class ProductsAPI extends MakeRequest {
             ...config,
         };
         const dispatchConfig: DispatchConfig = {
-            beforeRequest: requestProductsGeneral,
-            afterRequest: resultProductsData,
+            beforeRequest: beforeProductsGeneral,
+            afterRequest: [resultProductsData, afterProductsGeneral],
             catchError: errorProductsGeneral,
+            catchFinally: finallyProductsGeneral,
         };
 
         await this.makeRequest(
@@ -44,9 +47,10 @@ class ProductsAPI extends MakeRequest {
             ...config,
         };
         const dispatchConfig: DispatchConfig = {
-            beforeRequest: requestProductsGeneral,
-            afterRequest: [createProductPreview, resultProductsGeneral],
+            beforeRequest: beforeProductsGeneral,
+            afterRequest: [createProductPreview, afterProductsGeneral],
             catchError: errorProductsGeneral,
+            catchFinally: finallyProductsGeneral,
         };
 
         await this.makeRequest(

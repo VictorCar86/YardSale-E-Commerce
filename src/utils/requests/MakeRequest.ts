@@ -39,32 +39,32 @@ class MakeRequest {
             params,
         };
 
-        function dispatchItems(configToDispatch: ActionCreatorDTO, parameters?: any) {
-            if (Array.isArray(configToDispatch)) {
-                configToDispatch.forEach(itemToDispatch => {
-                    dispatch(itemToDispatch(parameters));
-                });
-            }
-            else {
-                dispatch(configToDispatch(parameters));
-            }
-        }
-
         try {
-            if (beforeRequest) dispatchItems(beforeRequest);
+            if (beforeRequest) this.dispatchItems(dispatch, beforeRequest);
 
             const response = await axios(axiosOptions);
 
-            if (afterRequest) dispatchItems(afterRequest, response.data);
+            if (afterRequest) this.dispatchItems(dispatch, afterRequest, response.data);
             if (onSuccess) onSuccess(response.data.message);
         }
         catch (err: any) {
-            if (catchError) dispatchItems(catchError);
+            if (catchError) this.dispatchItems(dispatch, catchError);
             if (onError) onError(err.response.data.message);
         }
         finally {
-            if (catchFinally) dispatchItems(catchFinally);
+            if (catchFinally) this.dispatchItems(dispatch, catchFinally);
             if (onFinally) onFinally();
+        }
+    }
+
+    private dispatchItems(dispatcher: DispatcherStore, configToDispatch: ActionCreatorDTO, parameters?: any) {
+        if (Array.isArray(configToDispatch)) {
+            configToDispatch.forEach(itemToDispatch => {
+                dispatcher(itemToDispatch(parameters));
+            });
+        }
+        else {
+            dispatcher(configToDispatch(parameters));
         }
     }
 }

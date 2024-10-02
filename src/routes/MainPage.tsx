@@ -8,10 +8,11 @@ import productsAPI from "../utils/requests/ProductsAPI";
 import IconLittleArrow from "../assets/icons/IconLittleArrow";
 import ProductItemSkeleton from "../containers/ProductItemSkeleton";
 import { AvailableCategories, CategoriesKey } from "../utils/productCategories";
+import { itemsPerPage } from "../utils/itemsPerPage";
 
 const MainPage = (): JSX.Element => {
     const mainProductsState = useSelector(productsState);
-    const { productsData } = mainProductsState;
+    const { productsData, fetching: fetchingProducts } = mainProductsState;
     const { currentPage, maxPage } = productsData;
     const dispatcher = useDispatch();
 
@@ -67,9 +68,7 @@ const MainPage = (): JSX.Element => {
             if (endPage > maxPage) {
                 endPage = maxPage;
                 startPage = endPage - maxDisplayedPages + 1;
-                if (startPage < 1) {
-                    startPage = 1;
-                }
+                startPage = Math.max(startPage, 1);
             }
             setPageNumbers(
                 [...Array(endPage - startPage + 1)].map((_, i) => startPage + i),
@@ -100,16 +99,14 @@ const MainPage = (): JSX.Element => {
             <main className="relative min-h-screen w-full pt-14">
                 <section className="flex flex-col justify-between min-h-[calc(100vh-56px)] h-max w-full pt-6">
                     <ul className="grid grid-auto-fill gap-6 justify-center">
-                        {!productsData && mainProductsState.fetching && (
+                        {!productsData.products.length && (
                             <>
-                                {[...Array(window.innerWidth > 768 ? 20 : 10).keys()].map(
-                                    (i) => (
-                                        <ProductItemSkeleton key={i} />
-                                    ),
-                                )}
+                                {[...Array(itemsPerPage()).keys()].map((i) => (
+                                    <ProductItemSkeleton key={i} />
+                                ))}
                             </>
                         )}
-                        {productsData && !mainProductsState.fetching && (
+                        {!!productsData.products.length && (
                             <>
                                 {productsData.products.map((item, i) => (
                                     <ProductItemDesc
@@ -126,7 +123,7 @@ const MainPage = (): JSX.Element => {
                         <button
                             className={`${!(currentPage > 1) && "invisible"}`}
                             onClick={() => searchForPage(currentPage - 1)}
-                            disabled={mainProductsState.fetching}
+                            disabled={fetchingProducts}
                             type="button"
                         >
                             <IconLittleArrow className="w-2.5 h-max rotate-180" />
@@ -137,7 +134,7 @@ const MainPage = (): JSX.Element => {
                                     <button
                                         className={`${currentPage === i ? "text-hospital-green" : "text-very-light-pink"} px-1`}
                                         onClick={() => searchForPage(i)}
-                                        disabled={mainProductsState.fetching}
+                                        disabled={fetchingProducts}
                                         type="button"
                                     >
                                         {i}
@@ -148,7 +145,7 @@ const MainPage = (): JSX.Element => {
                         <button
                             className={`${currentPage === maxPage && "invisible"}`}
                             onClick={() => searchForPage(currentPage + 1)}
-                            disabled={mainProductsState.fetching}
+                            disabled={fetchingProducts}
                             type="button"
                         >
                             <IconLittleArrow className="w-2.5 h-max" />

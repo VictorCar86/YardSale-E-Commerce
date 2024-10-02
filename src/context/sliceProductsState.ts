@@ -4,28 +4,28 @@ import { ItemCartInfo } from "./sliceShoppingCartState";
 import { OrderInfo } from "./sliceOrdersState";
 
 export type ProductInfo = {
-    id:          number;
-    name:        string;
-    image:       string;
-    price:       number;
-    rating:      string | null;
+    id: number;
+    name: string;
+    image: string;
+    price: number;
+    rating: string | null;
     description: string;
-    categoryId:  number;
-    category:    Category;
+    categoryId: number;
+    category: Category;
 }
 
 export type Category = {
-    id:        number;
-    name:      string;
-    image:     string;
+    id: number;
+    name: string;
+    image: string;
     createdAt: Date | null;
     updatedAt: Date | null;
 }
 
 export type ProductsData = {
-    products:    ProductInfo[],
+    products: ProductInfo[],
     currentPage: number,
-    maxPage:     number,
+    maxPage: number,
 };
 
 let productPreviewInitial!: ProductInfo | ItemCartInfo | OrderInfo;
@@ -41,25 +41,29 @@ export const sliceProductsState = createSlice({
     initialState: {
         productsData: productsDataInitial,
         productPreview: productPreviewInitial,
+        hasFetched: false,
         fetching: false,
         error: false,
     },
     reducers: {
-        requestProductsGeneral: (state) => {
+        beforeProductsGeneral: (state) => {
             state.productsData = productsDataInitial;
             state.fetching = true;
-            state.error = false;
-        },
-
-        resultProductsGeneral: (state) => {
-            state.fetching = false;
             state.error = false;
         },
         resultProductsData: (state, action: PayloadAction<ProductsData>) => {
             const data = action.payload;
             state.productsData = data;
+        },
+        afterProductsGeneral: (state) => {
             state.fetching = false;
             state.error = false;
+        },
+        errorProductsGeneral: (state) => {
+            state.error = true;
+        },
+        finallyProductsGeneral: (state) => {
+            state.hasFetched = true;
         },
 
         createProductPreview: (state, action: PayloadAction<ProductInfo | ItemCartInfo | OrderInfo>) => {
@@ -69,21 +73,17 @@ export const sliceProductsState = createSlice({
         deleteProductPreview: (state) => {
             state.productPreview = productPreviewInitial;
         },
-
-        errorProductsGeneral: (state) => {
-            state.fetching = false;
-            state.error = true;
-        },
     }
 });
 
 export const productsState = (state: RootState) => state.sliceProductsState;
 export type ProductsState = ReturnType<typeof productsState>;
 export const {
-    requestProductsGeneral,
-    resultProductsGeneral,
+    beforeProductsGeneral,
     resultProductsData,
+    afterProductsGeneral,
     errorProductsGeneral,
+    finallyProductsGeneral,
     createProductPreview,
     deleteProductPreview,
 } = sliceProductsState.actions;
